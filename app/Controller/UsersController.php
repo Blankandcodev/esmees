@@ -53,9 +53,6 @@
 			
 			$this->set('flowCounts',$flowCount);
 			
-			
-			
-			
 		}
 		else
 		{

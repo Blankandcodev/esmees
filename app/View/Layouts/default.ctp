@@ -52,7 +52,7 @@ $cakeDescription = __d('cake_dev', 'Esmees');
             <div class="header_sectn">
                 <div class="upr_sec">
                    <div class="left_sec">
-                      <div class="logo"><a href="#"><img src="<?php echo $this->webroot; ?>img/logo.png" alt="logo" /></a></div>
+                      <div class="logo"><a href="<?php echo $this->Html->url(array('controller'=>'', 'action'=>'index')); ?>"><img src="<?php echo $this->webroot; ?>img/logo.png" alt="logo" /></a></div>
                       <div class="image1"><a href="#"><img src="<?php echo $this->webroot; ?>img/img1.png" /></a></div>
                    
                    </div>
