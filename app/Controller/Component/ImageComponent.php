@@ -106,7 +106,7 @@ class ImageComponent extends Component
 							 *	Generate the home page version of the image center cropped
 							 */
 							 
-							$this->resizeImage('resize', $tempuploaddir, $filename, $homeuploaddir, $filename, 142, 192, $quality);
+							$this->resizeImage('resize', $tempuploaddir, $filename, $homeuploaddir, $filename,178,227, $quality);
 							/*
 							 *	Generate the big version of the image with max of $imgscale in either directions
 							 */

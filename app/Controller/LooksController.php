@@ -29,12 +29,15 @@
 			$userlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $user_id )));
 			
 			$this->set('memberLooks',$userlooks);
+		
+			
 		}
 		
 		if(!empty($product_id))
 		{
 			$productlists = $this->Look->find('all', array('conditions' => array('Look.product_id' => $product_id ),'limit'=>3));
 			$this->set('memberImages',$productlists);
+			
 			
 		}
 		

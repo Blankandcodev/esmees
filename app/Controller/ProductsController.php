@@ -58,15 +58,34 @@
     }
 	public function product_details($productId=null)
 	{
+			
+		
+		
 		if(!empty($productId))
 		{
+			
 			$details=$this->Product->find('first', array('conditions' => array('Product.id' => $productId )));
 			$this->set('products', $details);  
-		}
+	
+			
+			
+			
+			$whowearlists = $this->Product->find('all',array('conditions' => array('Product.id' => $productId)));
+			$this->set('whoWears',$whowearlists);
+			
+			
+			
+			$orderlists = $this->Order->find('all', array('conditions'=>array('Order.product_id'=> $productId)));
+			
+			$this->set('userLists', $orderlists);  
+			
 		
-		$whowearlists = $this->Look->find('all',array('conditions' => array('Look.Product_id' => $productId )));
-		$this->set('whoWears',$whowearlists);
-		//debug($whowearlists);
+
+			
+		}
+			
+		
+		
 		
     }
 	

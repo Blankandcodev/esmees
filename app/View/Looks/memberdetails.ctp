@@ -18,12 +18,15 @@
 									 
 									<li>
 									<a href="#"><?php echo $this->Html->image('Looks/small/'.$mimage['Look']['image']);?></a></li>
-								
+															
+									
 								
 									</li>
 								<?php } ?>
 								
+								
 								</ul>
+								
 							</div>
 						  
 					</div>
@@ -46,15 +49,20 @@
 						  </div>
 							  <div class="ppi_btn">
 						  <?php 
+						  
+
 							 if( $looks['Product']['type'] == 1){
-								$trakker = "&u1=UPLOADERUID-CURRENTUID";
+								 $referid=$looks['User']['member_id'];
+								 $cid = isset($loggeduser['member_id']) ? $loggeduser['member_id'] : 'GUEST';
+								
+								$trakker = "&u1=$referid-$cid";
 							}else if($looks['Product']['type'] == 0){
-								$trakker = "&sid=UPLOADERUID-CURRENTUID";
+								$trakker = "&sid=$referid-$cid";
 							}else{
 								$trakker = "";
 							}
 							  ?>
-							  <a href="<?php echo $looks['Product']['buy_url'].$trakker; ?>"><img src="../../img/by_now_btn.png" /></a>
+							  <a target="_blank" href="<?php echo $looks['Product']['buy_url'].$trakker; ?>"><img src="../../img/by_now_btn.png" /></a>
 							 
 							  </div>
 						</div>

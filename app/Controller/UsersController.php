@@ -115,8 +115,9 @@
 			
 			$productid = $this->Order->find('all', array('conditions' => array('Order.user_id' => $this->user['id'])));
 			
-			$productlists = $this->Look->find('all', array('conditions' => array('Look.product_id' => $productid[0]['Order']['product_id'], 'Look.user_id' => $this->user['id'] ),'limit'=>3));
+			$productlists = $this->Look->find('all', array('conditions' => array('Look.user_id' => $this->user['id'] )));
 			$this->set('memberImages',$productlists);
+			
 			
 		
 			
@@ -284,7 +285,7 @@
 	}
 	
 	
-	public function add_Like($objId = null){
+	public function add_Like($objId = null,$type = 1){
 		
 		if($this->user && $objId){
 		
@@ -442,9 +443,10 @@
     {
 		if(!$id)
 		{
-    	$this->Look->delete($id);
-        $this->Session->setFlash('The Looks Image has Deleted .', 'flash_success');
-		//$this->redirect(array('controller'=>'Users', 'action' => 'purchase_items'));
+		$this->Look->delete($id);
+        $this->Session->setFlash('The Look with id: '.$id.' has been deleted.');
+        $this->redirect(array('action'=>'portfolio'));
+		
 		}
 		
     }

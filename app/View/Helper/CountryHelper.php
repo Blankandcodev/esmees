@@ -27,9 +27,9 @@ class CountryHelper extends FormHelper{
 				'options' => array(
 					'  ' =>  'Plese Select a Country',
 					'--' => 'None',
-					'AF' =>    'Afganistan',
-					'AL' =>    'Albania',
-					'DZ' =>    'Algeria',
+					'AF' =>'Afganistan',
+					'AL' =>'Albania',
+					'DZ' =>'Algeria',
 					'AS' => 'American Samoa',
 					'AD' => 'Andorra', 
 					'AO' => 'Angola',

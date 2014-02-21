@@ -25,23 +25,14 @@
 										<div class="ppi_txt3">
 										<?php echo	$product['descrition'];?>
 										
+										
 										</div>
 								
 						  </div>
 							  <div class="ppi_btn">
-							   <?php 
-							 if( $product['type'] == 1){
-								$trakker = "&u1=UPLOADERUID-CURRENTUID";
-							}else if($product['type'] == 0){
-								$trakker = "&sid=UPLOADERUID-CURRENTUID";
-							}else{
-								$trakker = "";
-								
-							}
 							
-							  ?>
 							  
-							 <a href="<?php echo $product['buy_url'].$trakker; ?>"><img src="../../img/by_now_btn.png" /></a>
+							 <a href="<?php echo $product['buy_url'] ?>"><img src="../../img/by_now_btn.png" /></a>
 							
 							  
 							  
@@ -79,16 +70,16 @@
 				  	  <div class="ul_hd"><b>Who wears this</b></div>
                 		 <div class="list7_a">
 						 <ul>
-								<?php foreach($whoWears as $whowear){?>
+								<?php foreach($userLists as $whowear){?>
 							  <li>
 								<div class="div_pic1">
 								
 								
 								
-								<?php echo $this->Html->link($this->Html->image('Looks/big/'.$whowear['Look']['image'], array( 'alt' => 'Clear list')), array(
-                                                    'controller' => 'Looks',
-                                                    'action' =>'memberdetails',
-                                                    $whowear['Look']['product_id']
+								<?php echo $this->Html->link($this->Html->image($whowear['Product']['image_url'], array( 'alt' => 'No Image')), array(
+                                                    'controller' => 'Products',
+                                                    'action' => 'product_details',
+                                                    $whowear['Product']['id']
                                                ), array(
                                                     'escape' => false
                                                    
@@ -103,7 +94,7 @@
 								
 								</div>
 								  <div class="list_txt">
-								    <div class="txt5"><?php echo $whowear['Look']['caption_name']; ?>
+								    <div class="txt5"><?php echo $whowear['Product']['name']; ?>
 									
 									</div>
 								      <div class="ul_txt"><span class="labl">

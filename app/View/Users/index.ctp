@@ -50,8 +50,7 @@
 										 <ul>
 										
 										   <li>Email Address : <?php echo  $user['username']; ?></li>
-										   <li>First Name:  <?php echo  $user['name']; ?> </li>
-										   <li>Last Name :</a></li>
+										   <li>Name:  <?php echo  $user['name']; ?> </li>
 										   <li>City:  <?php echo  $user['city']; ?> </li>
 										   <li>State:  <?php echo  $user['state']; ?></li>
 										   <li>Zip Code:  <?php echo  $user['zip']; ?></li>

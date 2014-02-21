@@ -27,7 +27,7 @@
 						 <?php foreach ($orderLists as $order): ?>
                        <li>
 							<div class="div_pic3">
-							<?php echo '<a href="'. $order['Product']['buy_url'] .'"><img width=65%  src="'. $order['Product']['image_url'].'" ></a>' ?>
+							<?php echo '<a href=""><img width=65%  src="'. $order['Product']['image_url'].'" ></a>' ?>
 							<div class="div_pic4">
 						
 							</div>
@@ -62,7 +62,8 @@
 						</div>
                         <div class="list2_txt">
                          <div class="port_txt3">
-                           <div class="port_txt"><img src="../img/like.jpg" /> 999<span><img src="../img/setting_icon.png" /><?php echo $this->Html->link('edit', array('controller' => 'Users', 'action' => 'edit_lookimage',  $mlook['Look']['id']));?> <img src="../img/portfolio_icon.png" /><?php echo $this->Html->link('delete', array('controller' => 'Users', 'action' => 'edit_lookimage',  $mlook['Look']['id']));?></span> </div>
+                           <div class="port_txt"><img src="../img/like.jpg" /> 999<span><img src="../img/setting_icon.png" /><?php echo $this->Html->link('edit', array('controller' => 'Users', 'action' => 'edit_lookimage',  $mlook['Look']['id']));?> <img src="../img/portfolio_icon.png" />
+						   <?php echo $this->Html->link('delete', array('action' => 'delete_lookimage',  $mlook['Look']['id']));?></span> </div>
                           </div> 
                            <div class="port_txt2"><?php echo $mlook['Look']['caption_name']; ?></div>
                         
@@ -79,28 +80,14 @@
                        </div>
                        </div>
                     
-                    </div>
-                  </div>
-                
-                </div>
-                
+                 
                 
                 
                 
             
             
             </div>
-            <div class="footer_sec">
-               <div class="fotr_lft">All Rights Recieved. Copyright @ Site Name Here 2012.</div>
-               <div class="fotr_rgt">
-                  <ul>
-                    <li><a href="#">Terms & Condition</a></li>
-                    <li>.<a href="#">Privacy Policy</a></li>
-                    <li>.<a href="#">Contact Us</a></li>
-                  </ul>
-               
-               </div>
-            </div>
+           
         
         <div class="clear"></div>
         </div>
@@ -108,5 +95,3 @@
    </div>
 
 
-</body>
-</html>

@@ -53,13 +53,13 @@
 										
 										   <li>
 										   
-										   <?php echo $this->Form->input('username', array('label'=>'User Name', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>      
+										   <?php echo $this->Form->input('username', array('label'=>'Username (your email ID)', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>      
 										   
 										   </li>
 									
 										  
 										   <li> 
-											<?php echo $this->Form->input('name',array('label'=>'Full Name', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
+											<?php echo $this->Form->input('name',array('label'=>' Name', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
 
 										  </li>
 										  
