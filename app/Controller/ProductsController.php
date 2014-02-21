@@ -1,5 +1,5 @@
 <?php class ProductsController extends AppController {
-	var $uses = array('Product','Order','Look','User');
+	var $uses = array('Product','Order','Look','User','Category');
 	var $helpers = array('Form', 'Country');
 	var $components = array('Session');
 	var $layout = 'default';
@@ -88,6 +88,24 @@
 		
 		
     }
+	
+	public function all_product()
+	{
+		$this->set('categories', $this->Category->find('all'));
+		$allproduct =$this->Product->find('all');
+		$this->set('allProducts', $allproduct);
+	}
+	
+	public function categories($id = null)
+	{
+		if(!empty($id))
+		{
+		$this->set('categories', $this->Category->find('all'));
+		$product_category =$this->Product->find('all', array('conditions' => array('Product.parent_id' => $id )));
+		$this->set('products', $product_category);
+		
+		}
+	}
 	
 	
 	

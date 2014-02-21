@@ -38,7 +38,7 @@ for Dummy Text.</div>
                 <div class="content_div2">
                   <div class="div_head">
                      <div class="txt_lft">#TREND<span class="span2">Setters</span></div>
-                     <div class="txt_rgt"><a href="#">Men/Women</a></div>
+                     <div class="txt_rgt"><a href="<?php echo $this->Html->url(array('controller'=>'products', 'action'=>'all_product'),true) ?>">Men/Women</a></div>
                   </div>
                   <div class="list1">
                     <ul>
@@ -70,7 +70,7 @@ for Dummy Text.</div>
                 <div class="content_div2">
                   <div class="div_head">
                      <div class="txt_lft">#NewOnThe<span class="span2">Web</span></div>
-                     <div class="txt_rgt"><a href="#">Men/Women</a></div>
+                     <div class="txt_rgt"><a href="<?php echo $this->Html->url(array('controller'=>'products', 'action'=>'all_product'),true) ?>">Men/Women</a></div>
                   </div>
 				  
 				

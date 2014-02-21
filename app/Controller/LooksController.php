@@ -13,6 +13,12 @@
 		
     }
 	
+	function search_esmees() {
+			
+			
+	
+	}
+	
 	
 	function memberdetails($productid=null){
 		$looks = $this->Look->find('first', array('conditions' => array('Look.product_id' => $productid )));

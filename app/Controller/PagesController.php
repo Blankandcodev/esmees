@@ -37,14 +37,22 @@ class PagesController extends AppController {
 	
 	public function index()
 	{
-		echo "hello";
+		
 	}
 	
 	public function home()
 	{
-		echo "hello";
+	
 	}
 	
+	
+public function search()
+{
+	
+	
+}
+  
+
 	
 	
 	public function display() {
