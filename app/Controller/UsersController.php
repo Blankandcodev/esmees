@@ -631,63 +631,35 @@
 					$this->request->data['User'],
 					array('id' => $id)
 				);
+				
 				$this->User->saveField('member_id', $newMemId);
 				
-				$this->sendNewUserMail($this->request->data['User']['username']);
+				$this->sendNewUserMail($this->request->data['User']['username'], $newMemId);
 				 $this->Session->setFlash(__('Please varify your account by clicking on varification link on your mail'), 'flash_success');
             } else {
                 $this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'flash_error');
             }
+			
         }
     }
 	
 	
-	function Registred($uid = NULL, $return = NULL, $model = NULL) {
 	
-        if ($uid != NULL) {
-	    
-            $this->set('uid', $uid);
-            $user = $this->User->find('first', array('conditions' => array('User.id' => $uid),
-						     'recursive' => -1));
-            if (!empty($user)) {
-		
-                if ($user['User']['active'] == 0) {
-		    
-                    /* Do not pass any args to send() */
-                    if ($this->sendNewUserMail($user['User']['username'], $user['User']['member_id'], $return, $model) == TRUE) 
-				   {
-			
-                        $this->set('status', 'There\'s just one more step to complete your membership. We\'ve sent you an email with a link. Please click the link to confirm your registration');
-                    } else {
-			
-                        $this->set('status', 'Mail was not sent. ');
-                    }
-                } else {
-		    
-                    $this->manualRelogin($uid);
-				if(isset($_SESSION["returnpath"]) && $_SESSION["returnpath"]=="contestsCreation"){
-				$this->redirect(array('controller' => "IdeaContest", 'action' => "create"));
-			}
-			else if(!empty($return)){
-			$this->redirect(array('controller'=>'Users', 'action' => 'index', $return));
-		    }else{
-			$this->redirect(array('action' => 'index'));
-		    }
-                }
-		
-            }
-        }
-    }
+	
 
 	
-	 function sendNewUserMail($data=null){
-	//	$email = $data["User"]['username'];
+	 function sendNewUserMail($email = null, $code = null){
+		
+		
+		//$email=array('sbdh.singh@gmail.com');
+		
         if ($email != NULL){
 
-            $this->Email->to = $email;
+            $this->Email->to =$email;
             $this->Email->subject = 'Welcome to Esmees';
             $this->Email->from = 'Esmees <Subodh@blankandco.com>';
-			$this->set('data', $data);
+			$this->set('code', $code);
+            $this->set('email', $email);
 			$this->Email->template = 'new_user';
             $this->Email->sendAs = 'html';
 	    
@@ -701,27 +673,10 @@
         }
     }
 	
+
+   
+
 	
-	function sendUserMail($data) {
-
-	    $this->Email->to = array('sbdh.singh@gmail.com');
-
-        $this->Email->subject = 'Welcome to Esmees!';
-
-        $this->Email->from = 'Esmees <Subodh@blankandco.com>';
-
-        $this->set('data', $data['User']);
-        $this->Email->template = 'new_user';
-        $this->Email->sendAs = 'html';
-
-        if ($this->Email->send()) {
-            return true;
-        } else {
-            return false;
-        }
-
-        //$this->redirect(array('controller'=>'Users', 'action'=>'Home'));
-    }
 
     public function edit($id = null) {
         $this->User->id = $id;
