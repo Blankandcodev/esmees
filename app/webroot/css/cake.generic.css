@@ -316,8 +316,11 @@ input, textarea {
 }
 select {
 	clear: both;
-	font-size: 120%;
-	vertical-align: text-bottom;
+	font-size: 140%;
+	
+	font-family: "frutiger linotype", "lucida grande", "verdana", sans-serif;
+	padding: 1%;
+	width:98%;
 }
 select[multiple=multiple] {
 	width: 100%;

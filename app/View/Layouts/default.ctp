@@ -78,8 +78,8 @@ $cakeDescription = __d('cake_dev', 'Esmees');
                 </div>
                 <div class="nav">
                    <ul>
-                     <li><a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'men'),true) ?>">Men</a></li>
-                     <li><a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'women'),true) ?>">Women</a></li>
+                     <li><a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_gallery_men'),true) ?>">Men</a></li>
+                     <li><a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_gallery_women'),true) ?>">Women</a></li>
 					    <li>
 					
 						<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'index'),true) ?>">DASHBOARD</a>

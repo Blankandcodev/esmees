@@ -1,12 +1,12 @@
 <?php class UsersController extends AppController {
 	var $uses = array('User','Product','Look','Wishlist','Order','Follower','Like');
 	var $helpers = array('Form', 'Country');
-	public $components = array('Image');
+	public $components = array('Image', 'Email');
 	
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->deny();
-        $this->Auth->allow('add', 'login', 'register');
+        $this->Auth->allow('add', 'login', 'register', 'sendNewUserMail');
     }
 	
     public function isAuthorized($user){
@@ -325,12 +325,20 @@
 	
 			
 			$userlooks = $this->Wishlist->find('all', array('conditions' => array('Wishlist.type' => '1'  )));
+			
 			$userlooks= $this->Look->find('all', array('conditions' => array('Look.product_id' => $userlooks[0]['Wishlist']['product_id'],'Look.user_id' => $this->user['id']  )));
 			$this->set('userLooks',$userlooks);
 			
 			
 			
+			
+			
 	}
+		
+	}
+	
+	public function commission()
+	{
 		
 	}
 	
@@ -347,8 +355,16 @@
 		
 			$this->set('totalUser', $total);
 			
-			$newlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $this->$userId)));
+			$newlooks = $this->Look->find('all', array('order' => array('Look.created' => 'DESC'),'limit' => '32'));
 			$this->set('userLooks',$newlooks);
+			
+			
+			
+			$whofollome =$this->Follower->find('all', array('conditions'=>array('Follower.user_id'=>$this->user['id'])));
+			$this->set('peopleFollos',$whofollome);
+			
+			
+			
 		
 		if ($this->request->is('post') || $this->request->is('put'))
 		{
@@ -378,10 +394,6 @@
 	
 
 	
-	public function commission()
-	{
-	
-	}
 	public function purchase()
 	{
 		
@@ -436,17 +448,67 @@
 	 
 	
 	
-	function delete_lookimage($id)
+	function delete_potfolio($id)
     {
-		if(!$id)
-		{
-		$this->Look->delete($id);
-        $this->Session->setFlash('The Look with id: '.$id.' has been deleted.');
-        $this->redirect(array('action'=>'portfolio'));
-		
+		if(!empty($this->user['id']))
+			{
+				
+				$this->Look->delete($id);
+				$this->Session->setFlash('The Portfolio with id: '.$id.' has been deleted.');
+				$this->redirect(array('action'=>'portfolio',$id));
+				
+				
+			}
+		}
+	
+	function delete_lookimage($id=null, $orderid=null)
+    {
+		if(!empty($this->user['id']))
+			{
+				echo $orderid;
+				$this->Look->delete($id);
+				$this->Session->setFlash('The Look with id: '.$id.' has been deleted.');
+				$this->redirect(array('action'=>'view_newlooks',$orderid));
+				
+				
+			}
+		}
+
+	function delete_wishlist($id=null)
+    {
+		if(!empty($this->user['id']))
+			{
+				
+				$this->Wishlist->delete($id);
+				$this->Session->setFlash('The WishList with id: '.$id.' has been deleted.');
+				$this->redirect(array('action'=>'viewall_wishlist',$id));
+
+				
+				
+			}
 		}
 		
-    }
+	function delete_wishlistlook($id=null)
+    {
+		if(!empty($this->user['id']))
+			{
+				
+				
+				
+				$this->Wishlist->delete(array('Wishlist.id' => '$id'));
+				$this->Session->setFlash('The WishList with id: '.$id.' has been deleted.');
+				$this->redirect(array('action'=>'viewall_wishlist',$id));
+				
+			
+				
+
+				
+				
+			}
+		}
+   
+   
+   
 	
 	function edit_lookimage($id)
     {
@@ -562,7 +624,7 @@
         if ($this->request->is('post')){
            //$this->User->create();
             if ($this->User->save($this->request->data)){
-                $this->Session->setFlash(__('Please varify your account by clicking on varification link on your mail'), 'flash_success');
+               
 				$id = $this->User->id;
 				$newMemId = "ES". sprintf("%06d", $id);
 				$this->request->data['User'] = array_merge(
@@ -570,13 +632,95 @@
 					array('id' => $id)
 				);
 				$this->User->saveField('member_id', $newMemId);
-				if ($this->Auth->login($this->request->data['User'])){
-					$this->redirect($this->Auth->redirect());
-				}
+				
+				$this->sendNewUserMail($this->request->data['User']['username']);
+				 $this->Session->setFlash(__('Please varify your account by clicking on varification link on your mail'), 'flash_success');
             } else {
                 $this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'flash_error');
             }
         }
+    }
+	
+	
+	function Registred($uid = NULL, $return = NULL, $model = NULL) {
+	
+        if ($uid != NULL) {
+	    
+            $this->set('uid', $uid);
+            $user = $this->User->find('first', array('conditions' => array('User.id' => $uid),
+						     'recursive' => -1));
+            if (!empty($user)) {
+		
+                if ($user['User']['active'] == 0) {
+		    
+                    /* Do not pass any args to send() */
+                    if ($this->sendNewUserMail($user['User']['username'], $user['User']['member_id'], $return, $model) == TRUE) 
+				   {
+			
+                        $this->set('status', 'There\'s just one more step to complete your membership. We\'ve sent you an email with a link. Please click the link to confirm your registration');
+                    } else {
+			
+                        $this->set('status', 'Mail was not sent. ');
+                    }
+                } else {
+		    
+                    $this->manualRelogin($uid);
+				if(isset($_SESSION["returnpath"]) && $_SESSION["returnpath"]=="contestsCreation"){
+				$this->redirect(array('controller' => "IdeaContest", 'action' => "create"));
+			}
+			else if(!empty($return)){
+			$this->redirect(array('controller'=>'Users', 'action' => 'index', $return));
+		    }else{
+			$this->redirect(array('action' => 'index'));
+		    }
+                }
+		
+            }
+        }
+    }
+
+	
+	 function sendNewUserMail($data=null){
+	//	$email = $data["User"]['username'];
+        if ($email != NULL){
+
+            $this->Email->to = $email;
+            $this->Email->subject = 'Welcome to Esmees';
+            $this->Email->from = 'Esmees <Subodh@blankandco.com>';
+			$this->set('data', $data);
+			$this->Email->template = 'new_user';
+            $this->Email->sendAs = 'html';
+	    
+	    if ($this->Email->send()) {
+				
+                return TRUE;
+            } else {
+				
+                return false;
+            }
+        }
+    }
+	
+	
+	function sendUserMail($data) {
+
+	    $this->Email->to = array('sbdh.singh@gmail.com');
+
+        $this->Email->subject = 'Welcome to Esmees!';
+
+        $this->Email->from = 'Esmees <Subodh@blankandco.com>';
+
+        $this->set('data', $data['User']);
+        $this->Email->template = 'new_user';
+        $this->Email->sendAs = 'html';
+
+        if ($this->Email->send()) {
+            return true;
+        } else {
+            return false;
+        }
+
+        //$this->redirect(array('controller'=>'Users', 'action'=>'Home'));
     }
 
     public function edit($id = null) {
@@ -613,11 +757,26 @@
         $this->redirect(array('action' => 'index'));
     }
 	
-	
-
-
-   
-  
-
-	
+public function password()
+{
+	 if($this->request->is('post') || $this->request->is('put')){
+            if(!empty($this->request->data['User']['password']) && !empty($this->request->data['User']['password_confirmation'])){
+                if($this->request->data['User']['password'] == $this->request->data['User']['password_confirmation']){
+                    $this->User->id=$this->Auth->user('id');
+                    if($this->User->save($this->request->data)){
+                        $this->Session->setFlash('Your password has been changed');
+						 $this->redirect(array('controller' => 'Users','action' => 'index'));
+                    } else {
+                        $this->Session->setFlash('Could not change your password due a server problem, try again latter');
+                    }
+                } else {
+                    $this->Session->setFlash('Your password and your retype must match');
+                }
+            } else {
+                $this->Session->setFlash('Password or retype not sent');
+            }
+			 
+        }
 }
+}
+

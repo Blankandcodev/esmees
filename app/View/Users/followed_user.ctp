@@ -19,8 +19,15 @@
 				
                  
                   <div class="list4">
+				  <?php if(!empty($followerLists)){ ?>
                     <ul>
-					<?php foreach($followerLists as $followerList){?>
+					
+					 <?php 
+					foreach($followerLists as $followerList){
+                        /*$count = 0;
+                        if(!empty($IdeaContest['ContestSubmission'])){
+                                $count = count($IdeaContest['ContestSubmission']);
+                        }*/?>
                       <li>
                         <div class="div_pic1_fwd">
 						<a href="#"><?php echo $this->Html->image('Users/small/'.$followerList['User']['image']);?></a>
@@ -33,21 +40,13 @@
                     
                     </ul>
 					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					                
-                  </div>
+			      </div>
                   <div class="more1">Load More...</div>
                 </div>
                 
-                
+                 <?php }else{
+		echo '<div class="more1">You don\'t have any followers, yet!</div>';
+	    } ?>
                 
                 
             

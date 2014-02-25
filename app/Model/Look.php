@@ -19,7 +19,12 @@
         'Product' => array(
             'className' => 'Product',
             'foreignKey' => 'product_id'
+        ),
+		 'Wishlist' => array(
+            'className' => 'Wishlist',
+            'foreignKey' => 'product_id'
         )
+		
 		
 		
 		

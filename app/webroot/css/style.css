@@ -129,7 +129,7 @@ h1,h2,h3,h4,h5,h6,ul,img,a,p{margin:0px; padding:0px;text-decoration:none;list-s
 .selct select{ float:right; font-size:14px; font-family:Arial, Helvetica, sans-serif; text-align:left; color:#000000; text-indent:3px;width:161px;height:25px; border:1px solid #dedede; border-radius:4px; padding:2px 6px;}
 .list3{ float:left; width:100%; margin-top:10px; height:auto;}
 .list3 ul{ float:left; width:100%; height:auto;}
-.list3 ul li{ float:left; width:145px; height:auto;margin-bottom:16px;margin-right:15px;}
+.list3 ul li{ float:left; width:145px; height:auto;margin-bottom:16px;margin-right:11px;}
 .div_pic1{ float:left; width:144px; height:192px; border:1px solid #d2d2d2; border-radius:4px;}
 .div_pic1 img{float:left; width:144px; height:192px; border-radius:4px;}
 .txt5{ float:left; text-align:left; font-size:14.47px; margin-bottom:5px; font-family:Arial, Helvetica, sans-serif; color:#444444; font-weight:bold; width:100%;}
@@ -240,7 +240,7 @@ h1,h2,h3,h4,h5,h6,ul,img,a,p{margin:0px; padding:0px;text-decoration:none;list-s
 .trnd_txt_rt{float: right;font-size: 20px;color: #fff;font-family: 'helvetica_blackregular';line-height:51px;margin-right: 16px; }
 .list5{ float:left; width:100%; margin-top:16px; height:auto;}
 .list5 ul{ float:left; width:100%; height:auto;}
-.list5 ul li{ float:left; width:149px; height:auto;margin-bottom:16px;margin-right:19px;}
+.list5 ul li{ float:left; width:149px; height:auto;margin-bottom:16px;margin-right:16px;}
 
 
 
@@ -280,7 +280,7 @@ h1,h2,h3,h4,h5,h6,ul,img,a,p{margin:0px; padding:0px;text-decoration:none;list-s
 .div_pic5 img{float:left; width:112px; height:auto;}
 .list7_a{ float:left; width:100%; margin-top:16px; height:auto;}
 .list7_a ul{ float:left; width:100%; height:auto;}
-.list7_a ul li{ float:left; width:149px; height:auto;margin-bottom:16px;margin-right:21px;}
+.list7_a ul li{ float:left; width:149px; height:auto;margin-bottom:16px;margin-right:16px;}
 
 
 

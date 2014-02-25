@@ -57,7 +57,10 @@ public function search()
 	
 	public function display() {
 	
-        $this->set('products', $this->Product->find('all'));
+     //   $this->set('products', $this->Product->find('all'));
+		
+		$women_product_list=$this->Product->find('all', array('order' => array('Product.created' => 'DESC'),'limit' => '32'));
+		$this->set('products', $women_product_list);
 		
 		
 		

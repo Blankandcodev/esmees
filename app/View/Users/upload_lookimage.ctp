@@ -24,7 +24,7 @@ foreach($orderDetail as $order){
 															<?php echo $this->Form->Hidden('product_id', array('value' => $order['Order']['product_id']));?>
 							
 														 <?php
-																 echo $this->Form->input('caption_name', array('label'=>'Caption Name', 'type'=>'text', 'required', 'div' => array(
+																 echo $this->Form->input('caption_name', array('label'=>'Caption', 'type'=>'text', 'required', 'div' => array(
 																	'class' => 'required'
 																)));
 															?>

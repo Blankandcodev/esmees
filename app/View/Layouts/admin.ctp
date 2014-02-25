@@ -128,7 +128,7 @@ $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 		<ul class="toggle">
 			<li class="icn_new_article"><?php echo $this->Html->link('View all User', array('controller' => 'Admin', 'action' => 'view_user')); ?> </li>
 			
-			<li class="icn_new_article"><?php echo $this->Html->link('View all Looks', array('controller' => 'Admin', 'action' => 'view_looksimage')); ?> </li>
+		
 			
 		
 		</ul>

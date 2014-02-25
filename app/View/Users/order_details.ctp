@@ -16,7 +16,7 @@
 				
                  
                   <div class="list4">
-                    
+                     <?php if(!empty($orderList)){ ?>
 					
 					<table class="tablesorter" cellspacing="0"> 
 			<thead> 
@@ -33,9 +33,14 @@
 			</thead> 
 			<tbody> 
 				
-
-
-    <?php foreach ($orderList as $order): ?>
+	
+		 
+						  <?php 
+					foreach ($orderList as $order){
+                        /*$count = 0;
+                       
+                        }*/?>
+	
 	<tbody> 
     <tr>
         <td>
@@ -71,18 +76,14 @@
         </td>
     </tr>
 	</tbody>
-    <?php endforeach; ?>
+      <?php } ?>
 
 </table>
-					
-					
-					
-					
-					
-					
-					
-					                
+				                
                   </div>
+				  <?php }else{
+		echo '<div class="more1">No Record yet!....</div>';
+	    } ?>  
                 
                 </div>
                 

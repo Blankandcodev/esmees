@@ -29,7 +29,7 @@
                        <li>
 					   
 					   <div class="div_pic3">
-							<?php echo '<a href="'. $product['Product']['buy_url'] .'"><img width=65%  src="'. $product['Product']['image_url'].'" ></a>' ?>
+							<?php echo '<a href="#"><img width=65%  src="'. $product['Product']['image_url'].'" ></a>' ?>
 							<div class="div_pic4">
 						
 							</div>
@@ -59,11 +59,11 @@
 						</div>
                         <div class="list2_txt">
                          <div class="port_txt3">
-                           <div class="port_txt"><img src="../../img/setting_icon.png" />  <?php echo $this->Html->link('edit', array('controller' => 'Users', 'action' => 'edit_lookimage',  $mlook['Look']['id']));?><span>
+                           <div class="port_txt"><img src="<?php echo $this->webroot; ?>img/setting_icon.png" />  <?php echo $this->Html->link('edit', array('controller' => 'Users', 'action' => 'edit_lookimage',  $mlook['Look']['id']));?><span>
 						  
 						  
-						   <img src="../../img/portfolio_icon.png" />
-						   <?php echo $this->Html->link('delete', array('controller' => 'Users', 'action' => '',  $mlook['Look']['id']),null, 'Are you sure?');?>
+						   <img src="<?php echo $this->webroot; ?>img/portfolio_icon.png" />
+						   <?php echo $this->Html->link('Delete', array('controller' => 'Users', 'action' => 'delete_lookimage',  $mlook['Look']['id'], $product['Order']['order_id']),null, 'Are you sure?');?>
 						   </span> </div>
                           </div> 
                            <div class="port_txt2"><?php echo $mlook['Look']['caption_name']; ?></div>

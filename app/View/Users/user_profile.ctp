@@ -18,6 +18,8 @@
 						
                         <li><a href="#">MY OFFER</a></li>
 						<li> <a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'followed_user'),true) ?>">FOLLOWED USERS</a></li>
+						<li> <a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'viewall_wishlist'),true) ?>">WISHLIST PRODUCT</a></li>
+						<li> <a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'commission'),true) ?>">COMMISSION</a></li>
 						
 						
                      
@@ -50,31 +52,23 @@
 											
 											</li>
 											
-										
+										  <li> 
+											<?php echo $this->Form->input('name',array('label'=>' Full Name', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
+
+										  </li>
 										   <li>
 										   
-										   <?php echo $this->Form->input('username', array('label'=>'Username (your email ID)', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>      
+										   <?php echo $this->Form->input('username', array('label'=>' Email Address', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>      
 										   
 										   </li>
 									
 										  
+										 
 										   <li> 
-											<?php echo $this->Form->input('name',array('label'=>' Name', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
+											<?php echo $this->Form->input('address',array('label'=>'Address', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
 
 										  </li>
-										  
-										   <li>
-										   <?php echo $this->Form->input('city',array('label'=>'City', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
-										   </li>
-											<li>
-										    <?php echo $this->Form->input('state',array('label'=>'State', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
-										   </li>
-										   <li>  
-										    <?php echo $this->Form->input('zip', array('label'=>'Zip Code', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
-										   
-										  </li>
-										  
-										   <li>  
+										    <li>  
 										    <?php echo $this->Form->input('ss_number', array('label'=>'Social Security Number', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
 										   
 										  </li>
@@ -93,6 +87,19 @@
 										    <?php echo $this->Form->input('bankrouting_no', array('label'=>'Bank Routing Number', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
 										   
 										  </li>
+										  
+										   <li>
+										   <?php echo $this->Form->input('city',array('label'=>'City', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
+										   </li>
+											<li>
+										    <?php echo $this->Form->input('state',array('label'=>'State', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
+										   </li>
+										   <li>  
+										    <?php echo $this->Form->input('zip', array('label'=>'Zip Code', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
+										   
+										  </li>
+										  
+										 
 										  
 										  <li>
 										<?php echo $this->Form->file('image',array('label'=>'Profile Image', 'type'=>'text')); ?>

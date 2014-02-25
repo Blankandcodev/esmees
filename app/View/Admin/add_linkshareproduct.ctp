@@ -1,5 +1,5 @@
 <div class="users form">
-
+<pre>
 <?php echo $this->Form->create('product_fetch');?>
 
 

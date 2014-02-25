@@ -4,9 +4,11 @@
          
             <div class="content">
                 <div class="content_div1">
+				  
                     <div class="div_lft">
+					
                        <div class="div_txt">
-                          <div class="titl">Shop by Hot Products</div>
+                          <div class="titl">Shop by Hot Products </div>
                           <div class="txt1">Lorem Ipsum Standard text Portion for
 Dummy Text Area Lorem Ipsum<br />
 Standard text Portion<br />
@@ -18,6 +20,8 @@ for Dummy Text.</div>
                        </div>
                     
                     </div>
+			
+				
                     <div class="div_rgt">
                        <div class="div_txt">
                           <div class="titl">Shop by Member Looks</div>
@@ -38,7 +42,7 @@ for Dummy Text.</div>
                 <div class="content_div2">
                   <div class="div_head">
                      <div class="txt_lft">#TREND<span class="span2">Setters</span></div>
-                     <div class="txt_rgt"><a href="<?php echo $this->Html->url(array('controller'=>'products', 'action'=>'all_product'),true) ?>">Men/Women</a></div>
+                     <div class="txt_rgt"><a href="#">Men/Women</a></div>
                   </div>
                   <div class="list1">
                     <ul>
@@ -70,7 +74,7 @@ for Dummy Text.</div>
                 <div class="content_div2">
                   <div class="div_head">
                      <div class="txt_lft">#NewOnThe<span class="span2">Web</span></div>
-                     <div class="txt_rgt"><a href="<?php echo $this->Html->url(array('controller'=>'products', 'action'=>'all_product'),true) ?>">Men/Women</a></div>
+                     <div class="txt_rgt"><a href="#">Men/Women</a></div>
                   </div>
 				  
 				
@@ -97,7 +101,9 @@ for Dummy Text.</div>
 						  
 						</div>
                         <div class="list_txt">
-                           <div class="txt3"><?php echo  $product['Product']['name']; ?></div>
+                           <div class="txt3">
+						    <?php echo $this->Text->truncate($product['Product']['name'],10,array('ellipsis' => '...','exact' => 'false')); ?>
+						   </div>
                            <div class="txtt3">$<?php echo  $product['Product']['price']; ?></div>
                       
                         </div>

@@ -7,7 +7,7 @@
    					 
     				<th>Adversiter ID</th> 
     				<th>Adversiter Name</th> 
-    				<th>Affilicate Type</th> 
+    				
     				<th>Actions</th> 
 				</tr> 
 			</thead> 
@@ -20,7 +20,7 @@
     <tr>
         
         <td><?php echo  $adv['Adv']['adv_id']; ?></td>
-        <td><?php echo  $adv['Adv']['adv_name']; ?></td>
+       
 		<td><?php echo  $adv['Adv']['adv_name']; ?></td>
         
         <td>
