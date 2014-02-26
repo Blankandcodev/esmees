@@ -1,8 +1,20 @@
 <?php class ProductsController extends AppController {
 	var $uses = array('Product','Order','Look','User','Category','Like');
 	var $helpers = array('Form', 'Country');
-	var $components = array('Session');
+	var $components = array('Session','Paginator');
 	var $layout = 'default';
+    public $paginate = array('Product' => array(
+            'limit' => 25,
+            'order' => array(
+		    'Product.name' => 'asc',
+		    )
+			),
+            
+    );
+	
+
+
+	
 	
 	public function beforeFilter(){
         parent::beforeFilter();
@@ -95,23 +107,6 @@
 			
 			$this->set('userLists', $orderlists);
 			
-			
-			
-			
-		
-			
-			
-			
-
-
-		
-			
-			
-			
-			
-		
-
-			
 		}
 			
 		
@@ -121,13 +116,52 @@
 	
 	public function all_product_gallery()
 	{
-		$this->set('categories', $this->Category->find('all'));
+	
+		if($this->request->is('post')){
+	    $keyword="";
+	    $keyword = $this->data['searchProduct']['keywords'];
+	
+	    if(!empty($keyword)){
 		
-		$allproduct =$this->Product->find('all');
-		$this->set('allProducts', $allproduct);
-		$brand_data = $this->Product->find('all',array('fields'=>'mnf_name','recursive'=>0,'group' => 'Product.mnf_name','conditions' => array('not' => array('Product.mnf_name'))));
-		$this->set('AllBrands',$brand_data);
+		 echo $keyword;
+		 $this->Paginator->settings = array('conditions' => array('Product.name LIKE' => 'a%'), 'limit' => 10 );
+		 $data = $this->Paginator->paginate('Product');
 		
+         $this->set('allProducts', $data);
+	
+		
+		
+	    }
+		
+		
+		
+		
+		
+		
+		
+		
+		//$this->Paginator->settings = $this->paginate;
+
+		// similar to findAll(), but fetches paged results
+		//$data = $this->Paginator->paginate('Product');
+		//$this->set('allProducts', $data);
+		
+		
+		//if($this->request->is('post')){
+	    
+		
+		//$designers = $this->paginate('Product',array('Product.name'=>$keyword));
+	//	$this->set('searchResult', $keyword);
+        
+  
+   
+		
+		
+		//$allproduct =$this->Product->find('all');
+		//$this->set('allProducts', $allproduct);
+		//$brand_data = $this->Product->find('all',array('fields'=>'mnf_name','recursive'=>0,'group' => 'Product.mnf_name','conditions' => array('not' => array('Product.mnf_name'))));
+		//$this->set('AllBrands',$brand_data);
+	}
 		
 	}
 	
@@ -207,6 +241,11 @@
 		
 		
 		
+		
+	}
+	
+	public function serach_product()
+	{
 		
 	}
 	

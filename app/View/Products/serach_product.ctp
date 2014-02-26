@@ -1,5 +1,3 @@
-
- 
  <div align="center">
         <div class="container">
 
@@ -11,17 +9,19 @@
 					
                      <ul>
 						<li>Categories</li>
-
+						  <?php foreach($categories as $category){ ?>
                        <li>
-                         <a href="#"><img src="../img/img13.png" width="7" height="10" /></a>
-                       
+                         <a href="#"><img src="../../img/img13.png" width="7" height="10" /></a>
+                         <a href="<?php echo $this->Html->url(array('controller'=>'products', 'action'=>'categories',$category['Category']['id'])) ?>"><?php echo  $category['Category']['name']; ?>
+						 
+						
+						 </a>
 						 
                        </li>
-					   
+					   	<?php }; ?>
                         </ul>
                    
                    </div>
-				   
 				   
 				   
 				    <div class="category_sec">
@@ -30,18 +30,19 @@
 						
                        <ul>
 						<li>Brands</li>
-						 
+						  <?php foreach($AllBrands as $brand){ ?>
                        <li>
-                         <a href="#"><img src="../img/img13.png" width="7" height="10" /></a>
+                         <a href="#"><img src="../../img/img13.png" width="7" height="10" /></a>
                     
 						
+						 <a href="<?php echo $this->Html->url(array('controller'=>'products', 'action'=>'brands',$brand['Product']['mnf_name'])) ?>"><?php echo  $brand['Product']['mnf_name']; ?>
 						
 						 
 						
 						
 						 
                        </li>
-					   
+					   	<?php }; ?>
                         </ul>
                    
                    </div>
@@ -49,19 +50,9 @@
                 </div>
                 <div class="content_rgt3">
                   <div class="div1">
-				
                     <div class="srch_div1">
-				
-  	<?php
-					echo $this->Form->create('searchProduct', array('type' => 'post'));
-					echo $this->Form->input('keywords',array('style'=>'width:150px'));
-					echo $this->Form->end('Search');
-						
-					?>
-						
-					
-					
-                         </div>
+                         <input type="text" value="Search products" class="txt_box1" />
+                         <div class="srch_img"><a href="#"><img src="../../img/img2.png" /></a></div>
                       
                       </div>
                     <div class="div_rgt1">
@@ -77,9 +68,8 @@
                   
                   </div>
                   <div class="list3">
-				  
-				  <ul>
-					  <?php foreach ($allProducts as $product): ?>
+                    <ul>
+					  <?php foreach ($products as $product): ?>
                       <li>
                         <div class="div_pic1">
 							<?php echo $this->Html->link($this->Html->image($product['Product']['image_url'], array( 'alt' => 'No Image')), array(
@@ -106,7 +96,6 @@
                       
                       
                     </ul>
-                  
                   
                   </div>
                   <div class="more1">Load More...</div>
