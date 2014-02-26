@@ -72,13 +72,19 @@ strong{
 .hidden{
 	display:none;
 }
+
+input[type=button]::-moz-focus-inner { padding:0; border:0; } /* FF Fix */
+input[type=submit]::-moz-focus-inner { padding:0; border:0; } /* FF Fix */
+input[type=button],
+input[type=submit] { -webkit-border-fit:lines; } /* <- Safari & Google Chrome Fix */
+
 input[type=button],
 input[type=submit],
 .button {
 	background-color:#ddd;
 	border-radius:4px;
 	text-indent:0;
-	border:1px solid #ccc;
+	border:0;
 	display:inline-block;
 	color:#444;
 	font-family:Arial;
@@ -87,6 +93,7 @@ input[type=submit],
 	font-style:normal;
 	height:35px;
 	line-height:35px;
+	margin:0 10px 0 0;
 	padding:0 25px;
 	cursor:pointer;
 	text-decoration:none;
@@ -94,6 +101,9 @@ input[type=submit],
 	transition: all 0.2s ease 0s;
 	-webkit-transition: all 0.2s ease 0s;
 	-moz-transition: all 0.2s ease 0s;
+	box-shadow:0 0 1px 1px #aaa inset;
+	-moz-box-shadow:0 0 1px 1px #aaa inset;
+	-webkit-box-shadow:0 0 1px 1px #aaa inset;
 }
 input[type=button]:focus,
 input[type=submit]:focus,
@@ -139,6 +149,7 @@ input[type=email],
 input[type=tel],
 input[type=number],
 input[type=password],
+select,
 textarea{
 	display:block;
 	width:100%;
@@ -150,6 +161,9 @@ textarea{
 	border-radius:3px;
 	box-shadow: 1px 1px 2px #bbb inset;
 	font-size:13px;
+}
+select{
+	padding:8px; text-indent:0px;
 }
 textarea{
 	height:75px;
@@ -191,6 +205,11 @@ label.error{
 }
 form .submit{
 }
+
+.floated .input{float:left; margin:0 15px 15px 0;}
+.floated .input input{width:320px;}
+.floated .advance {clear:both; background:#f0f0f0; border:1px solid #ddd; margin:0 0 10px; padding:10px 10px 0;}
+.floated .submit{clear:both;}
 
 header{
 	display:block;
@@ -282,10 +301,10 @@ header .logo img{
 	margin:5px 0 0;
 }
 .subtitle{
-	font-size:24px;
+	font-size:20px;
 	font-weight:normal;
-	margin:0 0 15px;
-	line-height:30px;;
+	margin:0 0 10px;
+	line-height:25px;;
 }
 .top-bar{
 	margin:-30px -30px 0;
@@ -306,6 +325,7 @@ header .logo img{
 .dtable{
 	border:1px solid #ccc;
 	width:100%;
+	margin:0 0 10px;
 }
 .dtable thead tr{
 	background:#e5e5e5;
@@ -390,7 +410,7 @@ header .logo img{
 }
 .paginate li span a{color:#000;}
 
-
+.addproduct{margin:0 0 40px;}
 
 
 
@@ -411,11 +431,11 @@ header .logo img{
   margin: 0 0 15px;
   padding: 15px 30px;
 }
-#msg-flash.flash_success{
+.flash.flash_success{
   background: none repeat scroll 0 0 #BBEEBB;
   border: 1px solid #99CC99;
 }
-#msg-flash.flash_error{
+.flash.flash_error{
   background: none repeat scroll 0 0 #EEBBBB;
   border: 1px solid #CC9999;
 }

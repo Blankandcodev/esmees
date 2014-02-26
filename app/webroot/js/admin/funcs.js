@@ -1,5 +1,12 @@
 var AjRunning = false,  ctime;
 $(document).ready(function(){
+	$.validator.addMethod('selectcheck', function (value) {
+        return (value != '0');
+    }, "This field is required.");
+	$.validator.addClassRules({
+        selchk: { selectcheck: true }
+    })
+	
 	$('.fancy').fancybox({
 		autoResize:  true,
 		autoCenter:  true,
@@ -27,66 +34,43 @@ $(document).ready(function(){
 		});
 	})
 	
-	$('body').on('click', '#paging', function(e){
+	$('body').on('click', '.toggle', function(e){
 		e.preventDefault();
-		$parent = $(this).parent();
-		$parent.html('<img src="'+BASEURL+'/images/load.gif" />');
-		$.get( $(this).attr('href'), function(data) {
-			$parent.remove();
-			$('ul.instafeed').append(data);
-		});
+		target = "#" + $(this).attr('rel');
+		$(target).fadeToggle(200);
 	})
 	
-	$('body').on('click', '.image-check', function(e){
-		$(this).toggleClass('active');
-		$(this).parent().find('input').trigger('click');
-	});
-	$('body').on('submit', '#photoForm', function(e){
+	$('body').on('click', '.prodPage', function(e){
 		e.preventDefault();
-		var frm = $(this);
-		var url = $(this).attr('action');
-		var qstr = frm.serializeObject();
-		var total = 0;
-		var cur = 0;
-		if(!AjRunning){
-			AjRunning = true;
-			var $pData = qstr.inta_image;
-			$.each( $pData , function(k,v){
-				if(v !== undefined){
-					v.eid = qstr.eid;
-					$.ajax({
-						url: url,
-						data: v,
-						type: "POST",
-						dataType : "JSON",
-						success: function( data){
-							AjRunning = false;
-							console.log(data);
-							if(data.status == "success"){
-								cur++;
-								$('#photoForm').find('.status').html(cur + " out of " + total + " completed");
-								if(cur == total){
-									location.href = data.redirect;
-								}
-							}else{
-								alert("An unexpected error occured, Please try agnail");
-							}
-						},
-						error: function(x, t, m) {
-							if(t==="timeout") {
-								alert("got timeout");
-							} else {
-								alert(t);
-							}
-						}
-					});
-					total++;
-				}
-			});
-			$('#photoForm').find('.status').html(cur + " out of " + total + " completed");
-		};
+		target = "#" + $(this).attr('rel');
+		page = $(this).data('page');
+		$(target).find('#pageNo').val(page);
+		$(target).submit();
+	})
+	
+	$('body').on('submit', 'form.addProduct', function(e){
+		e.preventDefault();
+		var $this = $(this);
+		$this.hide(0);
+		$.post($(this).attr('action'), $(this).serialize(), function(data){
+			if(data.status == "success"){
+				$this.parent().html('<div class="flash flash_success">Product saved successfully</div>')
+			}else if (data.status == "error"){
+				$this.parent().html('<div class="flash flash_error">Product Already Saved</div>')
+			};
+		}, "json")
 	})
 });
 $(window).resize(function(){
 	$.fancybox.update()
 });
+function getMerchantList(opts, url, selector){
+	$(selector).html('<option>Loading Merchants</option>');
+	$.get(url, {afl: opts}, function(data){
+		if(data == "ERROR"){
+			$(selector).html('<option>Select Affiliate Program first</option>');
+		}else{
+			$(selector).html(data);
+		}
+	})
+}
