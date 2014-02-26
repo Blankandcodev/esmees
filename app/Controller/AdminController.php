@@ -2,8 +2,10 @@
 	
 	var $uses = array('User','Adv','Category','Product','Look');
 	
-	var $helpers = array('Form', 'Country');
+	var $helpers = array('Form', 'Country','Paginator' => array('Paginator'));
+	
 	var $components = array(
+		'Paginator',
         'Session',
         'Auth' => array(
             'loginRedirect' => array('controller' => 'admin', 'action' => 'index'),
@@ -13,7 +15,12 @@
             'authorize' => array('Controller')
         )
     );
+	
 	var $layout = 'admin';
+	
+	public $paginate = array(
+		'limit' => 10
+	);
 // -------------------------------- Starts User Function ---------------------------------------------	
     public function beforeFilter() {
         //parent::beforeFilter();
@@ -65,18 +72,25 @@
 	public function ConnectToCJ($params = array()){
 		$query_string = '';
 		$params['keywords'] = $params['keywords'] .'+'. $params['category'];
+		$params['affiliate'] = '';
+		$params['category'] = '';
 		foreach($params as $param=>$val){
 			if($val){
 				if($param == 'adv_id'){
 					$query_string .= "&advertiser-ids=".$val;
+				}else if($param == 'pagenumber'){
+					$query_string .= "&page-number=".$val;					
+				}else if($param == 'record'){
+					$query_string .= "&records-per-page=".$val;					
+				}else{
+					$query_string .= "&".$param."=".$val;	
 				}
 			}
 		}
 		global $sort_order, $sort_by;
 		$URI = 'https://product-search.api.cj.com/v2/product-search?'.
 			'website-id=7352624'.	
-			$query_string.
-			'&records-per-page=20';
+			$query_string;
 		$context = stream_context_create(
 			array(
 				'http' => array(
@@ -124,15 +138,92 @@
 		if ($this->request->is('post')){
 			$data = array_shift($this->request->data);
 			
-			$advid=$data['advertiser_id'];
-			
 			if ($this->Product->save($data)){
 				$this->Session->setFlash(__('The Product has been saved.'), 'flash_success');
-				$this->redirect($this->referer(array('action' => 'add_cjproduct')));
+				if ($this->request->is('ajax')){
+					$arr = array('status'=>'success', 'msg'=>'Product has been saved');
+					echo json_encode($arr);
+					exit;
+				}else{
+					$this->redirect($this->referer(array('action' => 'add_cjproduct')));
+				}
 			}else{
-				$this->Session->setFlash(__('This product is already exist.'), 'flash_error');
-				
+				if ($this->request->is('ajax')){
+					$arr = array('status'=>'error', 'msg'=>'This product is already exist');
+					echo json_encode($arr);
+					exit;
+				}else{
+					$this->Session->setFlash(__('This product is already exist.'), 'flash_error');
+				}
 			}
+		}
+	}
+	
+	public function add_products(){
+		$advList = array('Select Affiliate Program first');
+	
+		$AllCats = $this->Category->children(1);
+		$catalist = array('Select Category');
+		foreach($AllCats as $cat){
+			$cat =$cat['Category'];
+			$catalist[$cat['id']] = $cat['name'];
+		}
+		$this->set('categoryList', $catalist);
+		
+		if ($this->request->is('post')){
+			$params = array_shift($this->request->data);
+						
+			$aflType = $params['affiliate'];
+			$advlists = $this->Adv->find('all', array('conditions' => array('Adv.afflitate_type'=>$aflType)));
+			foreach($advlists as $adv){
+				$adv = $adv['Adv'];
+				$advList[$adv['adv_id']] = $adv['adv_name'];
+			}
+			
+			$this->set('searchdata', $params);
+			
+			
+			if(!empty($params['affiliate'])){
+				$response = '';
+				if($params['affiliate'] == 'LS'){
+					$response = $this->ConnectToLN($params);
+					$response['affiliate'] = $params['affiliate'];
+					$this->set('products', $response);
+					
+				}else if($params['affiliate'] == 'CJ'){
+					$response = $this->ConnectToCJ($params);
+					$response = array_shift($response);
+					$response['affiliate'] = $params['affiliate'];
+					$this->set('products', $response);
+					//pr(array_shift($response));
+//					die;
+				}
+			}
+			
+		}
+		$this->set('advList', $advList);
+	}
+	
+	public function get_merchantlist(){
+		if ($this->request->is('ajax')){
+			$qstr = $this->request->query;
+			if(!empty($qstr['afl'])){
+				$aflType = $qstr['afl'];
+				$advlists = $this->Adv->find('all', array('conditions' => array('Adv.afflitate_type'=>$aflType)));
+				$response = '<option value="0">Select</option>';
+				foreach($advlists as $adv){
+					$adv =$adv['Adv'];
+					$response .= '<option value="'.$adv['adv_id'].'">'.$adv['adv_name'].'</option>';
+				}
+				echo $response;
+				exit;
+			}else{
+				echo "ERROR";
+				exit;
+			}
+		}
+		else{
+			$this->redirect(array('action' => 'index'));
 		}
 	}
 	
@@ -140,8 +231,7 @@
 	
 	
 	
-	
-	function edit_cjproduct($id = null) {
+	function edit_product($id = null) {
 	
 		
 		$this->Product->id = $id;
@@ -168,28 +258,37 @@
 		}
 	}
 	
-	function delete_cjproduct($id)
+	function delete_product($id)
     {
     	$this->Product->delete($id);
         $this->Session->setFlash('The Product with id: '.$id.' has been deleted.');
-        $this->redirect(array('action'=>'view_productcj'));
+        $this->redirect(array('action'=>'view_products'));
 		
     }
 	
-	public function view_productcj() {
-         $this->set('products', $this->Product->find('all'));
+	public function view_products() {
+		$this->Paginator->settings = $this->paginate;
+
+		// similar to findAll(), but fetches paged results
+		$data = $this->Paginator->paginate('Product');
+		$this->set('products', $data);
     }
 	
 	public function ConnectToLN($params = array())
 	{
 		$query_string = '';
 					
+		$params['affiliate'] = '';
 		foreach($params as $param=>$val){
 			if($val){
-				if($param == 'adv_id'){
+				if($param == 'keywords'){
+					$query_string .= "&keyword=".$val;
+				}else if($param == 'adv_id'){
 					$query_string .= "&mid=".$val;
 				}else if($param == 'category'){
 					$query_string .= "&cat=".$val;
+				}else if($param == 'record'){
+					$query_string .= "&max=".$val;
 				}else{
 					$query_string .= "&".$param."=".$val;
 				}
@@ -276,13 +375,8 @@
     {
     	$this->Product->delete($id);
         $this->Session->setFlash('The Product with id: '.$id.' has been deleted.');
-        $this->redirect(array('action'=>'view_productcj'));
+        $this->redirect(array('action'=>'view_products'));
 		
-    }
-	
-	
-	 public function view_productls() {
-        $this->set('products', $this->Product->find('all'));
     }
 	
 //----------------------------------------------------End Product Function-------------------------------

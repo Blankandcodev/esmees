@@ -19,8 +19,6 @@
 
 $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 
-			
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,67 +27,36 @@ $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 		<?php echo $cakeDescription ?>:
 		<?php echo $title_for_layout; ?>
 	</title>
-    <!--[if lt IE 9]>
-	<?php echo $this->Html->css('admin/ie.css'); ?>
-	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
 	<?php echo $this->Html->meta('icon'); ?>
 	
 	<?php echo $this->Html->css('admin/layout.css');
-		echo $this->Html->script('admin/jquery-1.5.2.min.js');
-		echo $this->Html->script('admin/hideshow.js');
-		echo $this->Html->script('admin/jquery.tablesorter.min.js');
-		echo $this->Html->script('admin/jquery.equalHeight.js');
+		echo $this->Html->css('admin/plugin.css');
+		echo $this->Html->script('admin/jquery.js');
+		echo $this->Html->script('admin/plugins.js');
+		echo $this->Html->script('admin/funcs.js');
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
 	?>
-	<script type="text/javascript">
-		$(document).ready(function() 
-			{ 
-			  $(".tablesorter").tablesorter(); 
-		 } 
-		);
-		$(document).ready(function() {
-	
-		//When page loads...
-		$(".tab_content").hide(); //Hide all content
-		$("ul.tabs li:first").addClass("active").show(); //Activate first tab
-		$(".tab_content:first").show(); //Show first tab content
-	
-		//On Click Event
-		$("ul.tabs li").click(function() {
-	
-			$("ul.tabs li").removeClass("active"); //Remove any "active" class
-			$(this).addClass("active"); //Add "active" class to selected tab
-			$(".tab_content").hide(); //Hide all tab content
-	
-			var activeTab = $(this).find("a").attr("href"); //Find the href attribute value to identify the active tab + content
-			$(activeTab).fadeIn(); //Fade in the active ID content
-			return false;
-		});
-	
-	});
-		</script>
-		<script type="text/javascript">
-		$(function(){
-			$('.column').equalHeight();
-		});
-	</script>
 </head>
 <body>
-	<header id="header">
-		<hgroup>
-			<h1 class="site_title"><a href="index.html">Website Admin</a></h1>
-		</hgroup>
-	</header> <!-- end of header bar -->
-	
-	<section id="main" class="full">
-		<?php echo $this->Session->flash(); ?>
-		<article class="module login">
-			<?php echo $this->fetch('content'); ?>
-		</article>
-	</section>
+<header class="cf" id="header">
+<div class="logo">
+	<a href="<?php echo $this->Html->url('/'); ?>"><img src="<?php echo $this->webroot; ?>img/admin/esmees.jpg" /></a>
+</div>
+<nav id="nav">
+	<ul class="menu">
+	</ul>
+</nav>
+<?php echo $this->Session->flash(); ?>
+</header>
+
+<section class="wrapper">
+	<?php echo $this->fetch('content'); ?>
+</section>
+<footer id="footer" class="cf">
+	<div class="credits"><a href="http://blankandco.com">Built by <span>Blank & Co.</span></a></div>
+</footer>
 </body>
 </html>
