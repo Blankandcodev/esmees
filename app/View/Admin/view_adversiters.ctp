@@ -1,7 +1,8 @@
-<div class="users form">
-<fieldset>
- <legend>View Adversiter</legend>
-<table class="tablesorter" cellspacing="0"> 
+<div class="title-row">
+	<a class="button primary title-btn" href="<?php echo $this->Html->url(array('action'=>'add_adversiters'), array('class'=>'add')); ?>">Add More Products</a>
+	<h1 class="title">Merchants List</h1>
+</div>
+<table class="dtable" cellspacing="0"> 
 			<thead> 
 				<tr> 
    					 
@@ -11,12 +12,10 @@
     				<th>Actions</th> 
 				</tr> 
 			</thead> 
-			<tbody> 
 				
 
 
     <?php foreach ($advs as $adv): ?>
-	<tbody> 
     <tr>
         
         <td><?php echo  $adv['Adv']['adv_id']; ?></td>
@@ -29,9 +28,6 @@
 
         </td>
     </tr>
-	</tbody>
     <?php endforeach; ?>
 
 </table>
-</fieldset>
-</div>
