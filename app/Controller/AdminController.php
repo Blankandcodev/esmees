@@ -2,8 +2,10 @@
 	
 	var $uses = array('User','Adv','Category','Product','Look');
 	
-	var $helpers = array('Form', 'Country');
+	var $helpers = array('Form', 'Country','Paginator' => array('Paginator'));
+	
 	var $components = array(
+		'Paginator',
         'Session',
         'Auth' => array(
             'loginRedirect' => array('controller' => 'admin', 'action' => 'index'),
@@ -13,7 +15,12 @@
             'authorize' => array('Controller')
         )
     );
+	
 	var $layout = 'admin';
+	
+	public $paginate = array(
+		'limit' => 10
+	);
 // -------------------------------- Starts User Function ---------------------------------------------	
     public function beforeFilter() {
         //parent::beforeFilter();
@@ -120,7 +127,20 @@
 	
 	
 	
-	public function add_product(){
+	public function add_products(){
+		$advlists=$this->Adv->find('all', array('conditions' => array()));		
+		$advlist = array('Select Merchant');
+		$advlistLs = array('Select Merchant');
+		foreach($advlists as $adv){
+			$adv =$adv['Adv'];
+			if($adv['afflitate_type'] == 1){
+				$advlistLs[$adv['adv_id']] = $adv['adv_name'];
+			}else{
+				$advlist[$adv['adv_id']] = $adv['adv_name'];
+			}
+		}
+		$this->set('advList', $advlist);
+		$this->set('advListLs', $advlistLs);
 		if ($this->request->is('post')){
 			$data = array_shift($this->request->data);
 			
@@ -141,7 +161,7 @@
 	
 	
 	
-	function edit_cjproduct($id = null) {
+	function edit_product($id = null) {
 	
 		
 		$this->Product->id = $id;
@@ -168,16 +188,20 @@
 		}
 	}
 	
-	function delete_cjproduct($id)
+	function delete_product($id)
     {
     	$this->Product->delete($id);
         $this->Session->setFlash('The Product with id: '.$id.' has been deleted.');
-        $this->redirect(array('action'=>'view_productcj'));
+        $this->redirect(array('action'=>'view_products'));
 		
     }
 	
-	public function view_productcj() {
-         $this->set('products', $this->Product->find('all'));
+	public function view_products() {
+		$this->Paginator->settings = $this->paginate;
+
+		// similar to findAll(), but fetches paged results
+		$data = $this->Paginator->paginate('Product');
+		$this->set('products', $data);
     }
 	
 	public function ConnectToLN($params = array())
@@ -276,13 +300,8 @@
     {
     	$this->Product->delete($id);
         $this->Session->setFlash('The Product with id: '.$id.' has been deleted.');
-        $this->redirect(array('action'=>'view_productcj'));
+        $this->redirect(array('action'=>'view_products'));
 		
-    }
-	
-	
-	 public function view_productls() {
-        $this->set('products', $this->Product->find('all'));
     }
 	
 //----------------------------------------------------End Product Function-------------------------------

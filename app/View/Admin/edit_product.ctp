@@ -1,5 +1,7 @@
-
-
+<div class="title-row">
+	<a class="button title-btn" href="<?php echo $this->Html->url(array('action'=>'view_products')); ?>">< Back to All Products</a>
+	<h1 class="title">Edit Products</h1>
+</div>
 
 	
 <div class="users form">
