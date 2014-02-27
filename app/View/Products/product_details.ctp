@@ -1,4 +1,4 @@
- <?php foreach ($products as $product): ?>
+ <?php foreach ($products as $product){ ?>
 
 
  <div align="center">
@@ -32,8 +32,23 @@
 						  </div>
 							  <div class="ppi_btn">
 							
+							
+								 <?php 
+						  
+
+							 if( $product['type'] == 1){
+									$trakker = "&u1=GUEST-GUEST";
+							}else if($product['type'] == 0){
+								$trakker = "&sid=GUEST-GUEST";
+							}
+							  ?>
 							  
-							 <a  target="_blank" href="<?php echo $product['buy_url'] ?>"><img src="../../img/by_now_btn.png" /></a>
+							 
+							 
+							   <a target="_blank" href="<?php echo $product['buy_url'].$trakker; ?>"><img src="../../img/by_now_btn.png" /></a>
+							
+							  
+							
 							
 							  
 							  
@@ -54,7 +69,7 @@
                                                    
                                                )); ?>
 						
-					 <?php endforeach; ?>
+					 <?php }; ?>
 					
 					
 					
