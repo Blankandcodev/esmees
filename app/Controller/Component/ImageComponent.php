@@ -106,16 +106,16 @@ class ImageComponent extends Component
 							 *	Generate the home page version of the image center cropped
 							 */
 							 
-							$this->resizeImage('resize', $tempuploaddir, $filename, $homeuploaddir, $filename,178,227, $quality);
+							$this->resizeImage('resize', $tempuploaddir, $filename, $homeuploaddir, $filename,290,370, $quality);
 							/*
 							 *	Generate the big version of the image with max of $imgscale in either directions
 							 */
-							$this->resizeImage('resize', $tempuploaddir, $filename, $biguploaddir, $filename,288,367, $quality);							
+							$this->resizeImage('resize', $tempuploaddir, $filename, $biguploaddir, $filename,800,800, $quality);
 
 							/*
 							 *	Generate the small thumbnail version of the image with scale of $thumbscalew and $thumbscaleh
 							 */
-							$this->resizeImage('resizeCrop', $tempuploaddir, $filename, $smalluploaddir, $filename,90,98, $quality);
+							$this->resizeImage('resizeCrop', $tempuploaddir, $filename, $smalluploaddir, $filename,90,100, $quality);
 													
 							// Delete the temporary image
 							unlink($tempfile);

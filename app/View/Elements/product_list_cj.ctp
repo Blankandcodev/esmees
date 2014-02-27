@@ -42,7 +42,7 @@
 			<?php echo $this->Form->input('price', array('type'=>'hidden', 'value'=>$price)); ?>
 			<?php echo $this->Form->input('retail_price', array('type'=>'hidden', 'value'=>$retailprice)); ?>
 			<?php echo $this->Form->input('sale_price', array('type'=>'hidden', 'value'=>$saleprice)); ?>
-			<?php echo $this->Form->input('mnf_sku', array('type'=>'hidden', 'value'=>$manufacturername)); ?>
+			<?php echo $this->Form->input('mnf_name', array('type'=>'hidden', 'value'=>$manufacturername)); ?>
 			<?php echo $this->Form->input('mnf_sku', array('type'=>'hidden', 'value'=>$manufacturersku)); ?>
 			<?php echo $this->Form->input('currency', array('type'=>'hidden', 'value'=>$currency)); ?>
 			<?php echo $this->Form->input('buy_url', array('type'=>'hidden', 'value'=>$buyurl)); ?>

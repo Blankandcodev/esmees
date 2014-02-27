@@ -8,18 +8,40 @@
 		parent::beforeFilter();
     }
 	
-    public function index() 
-	{
+    public function index(){
 		
-    }
-	
-	function search_esmees() {
+    }	
+	function search_esmees(){
+		
+	}
+	function detail($id=null){
+		$looks = $this->Look->find('first', array('conditions' => array('Look.id' => $id )));
+		$this->set('looks', $looks);
+		$user_id = $looks['User']['id'];
+		$product_id = $looks['Product']['id'];
+		
+
+		if(!empty($user_id)){
+			$userlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $user_id )));
+			$this->set('memberLooks',$userlooks);
+			
+			$isLike = $this->Like->find('first', array(
+				'conditions'=>array('Like.user_id'=>$this->user['id'], 'Like.product_id'=>  $looks['Look']['id']),
+				'fields' => array('Like.id'),
+			));
+			$this->set('isLiked', $isLike);
+		}
+		
+		if(!empty($product_id)){
+			$productlists = $this->Look->find('all', array('conditions' => array('Look.product_id' => $product_id ),'limit'=>3));
+			$this->set('memberImages',$productlists);
 			
 			
-	
+		}
 	}
 	
-	public function member_pictures_gallery()
+	
+	public function gallery()
 	{
 		$this->set('categories', $this->Category->find('all'));
 		$alllooks =$this->Look->find('all');
@@ -57,44 +79,44 @@
 		}
 	}
 	
-
-	
-	function memberdetails($productid=null){
-		$looks = $this->Look->find('first', array('conditions' => array('Look.product_id' => $productid )));
-		$this->set('looks', $looks);
-		$user_id = $looks['User']['id'];
-		$product_id = $looks['Product']['id'];
+	public function like($objId = null){
 		
-		$totallike = $this->Like->find('count', array('conditions'=>array('Like.user_id'=>$this->user['id'])));
-		$this->set('totalLike', $totallike);
-		
-
-		if(!empty($user_id))
-		{
-			$userlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $user_id )));
-			
-			$this->set('memberLooks',$userlooks);
-		
-			
+		if($this->user){		
+			if($objId != null){
+				$checkExist = $this->Like->find('count', array('conditions'=>array('Like.product_id'=>$objId, 'Like.user_id'=>$this->user['id'])));			
+				if(!$checkExist){
+					if (!$this->Like->save(array('product_id'=>$objId, 'user_id'=>$this->user['id']))){
+						$this->Session->setFlash('Oops an unexpected error occurred, Please try again.', 'flash_error');
+						$this->redirect(array('controller'=>'Looks', 'action' => 'detail', $objId));
+					}
+				}
+				$this->Session->setFlash('You Liked this Look.', 'flash_success');
+				$this->redirect(array('controller'=>'Looks', 'action' => 'detail', $objId));
+			}else{
+				$this->Session->setFlash('Please select a look to like.', 'flash_error');
+				$this->redirect(array('controller'=>'Looks', 'action' => 'gallery'));
+			}
+		}else{
+			return $this->redirect(array('controller'=>'Users', 'action' => 'login'));	
 		}
-		
-		if(!empty($product_id))
-		{
-			$productlists = $this->Look->find('all', array('conditions' => array('Look.product_id' => $product_id ),'limit'=>3));
-			$this->set('memberImages',$productlists);
-			
-			
-		}
-		
-		
-		
-		
 	}
 	
-	
-	
-	
-	
-	
-	
+	public function ullike($likeId = null){		
+		if($this->user){
+			if($likeId != null){
+				if (!$this->Like->delete($likeId)){
+					$this->Session->setFlash('Oops an unexpected error occurred, Please try again.', 'flash_error');
+					$this->redirect($this->referer());
+				}
+				$this->Session->setFlash('You Unliked this Look.', 'flash_success');
+				$this->redirect($this->referer());
+			}else{
+				$this->Session->setFlash('Please select a look to like.', 'flash_error');
+				$this->redirect(array('controller'=>'Looks', 'action' => 'gallery'));
+			}
+		}else{
+			return $this->redirect(array('controller'=>'Users', 'action' => 'login'));	
+		}
+	}
+
 }

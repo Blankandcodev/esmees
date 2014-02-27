@@ -68,14 +68,13 @@
                       <div class="selct">
                         <select>
                           <option>Most Recent</option>
-                          <option>Most Recent</option>
-                          <option>Most Recent</option>
+                          <option>Most Popular</option>
+                          <option>Trending</option>
                         </select>
                       </div>
                     </div>  
                   
                   </div>
-				  		<div class="div1_txt">Looks : All / Followed Users / Trending / By Location</div>
                   <div class="list3">
 				  <ul>
 					  <?php foreach ($allLooks as $look): ?>
@@ -83,7 +82,7 @@
                         <div class="div_pic1">
 							<?php echo $this->Html->link($this->Html->image('Looks/home/'.$look['Look']['image']), array(
                                                     'controller' => 'Looks',
-                                                    'action' => 'memberdetails',
+                                                    'action' => 'detail',
                                                     $look['Look']['product_id']
                                                ), array(
                                                     'escape' => false
@@ -112,7 +111,6 @@
                     
                   
                   </div>
-                  <div class="more1">Load More...</div>
                 </div>
       
             </div>

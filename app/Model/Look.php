@@ -2,11 +2,10 @@
 	class Look extends AppModel 
 	{
 	 Public $name = 'Look';
-	// var $virtualFields = array('product_count' => 'COUNT(Look.product_id)');
 	 public $hasMany = array(
-      
-        'Look' => array(
-            'className' => 'Look',
+		 'Like' => array(
+            'className' => 'Like',
+			'counterCache' => true,
             'foreignKey' => 'product_id'
         )
     );
@@ -22,13 +21,9 @@
         ),
 		 'Wishlist' => array(
             'className' => 'Wishlist',
+			'conditions' => array('Wishlist.type' => '1'),
             'foreignKey' => 'product_id'
-        )
-		
-		
-		
-		
-		
+        )		
     );
 	
 	}
