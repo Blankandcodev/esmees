@@ -13,6 +13,8 @@
     );
 	
 
+	
+
 
 	
 	
@@ -117,8 +119,22 @@
 	public function all_product_gallery()
 	{
 	
-		if($this->request->is('post')){
-	    $keyword="";
+		
+		 // $data = $this->Category->generateTreeList( null, null, null,'&nbsp;&nbsp;&nbsp;');
+		  $treelist = $this->Category->generateTreeList();
+		  $this->set('categoryLists',$treelist);
+		  debug($treelist);
+		
+		
+		
+		if($this->request->is('get')){
+		$a=$this->request->query['keywords'];
+	
+		
+	
+		
+	
+	    
 	    $keyword = $this->data['searchProduct']['keywords'];
 	
 	    if(!empty($keyword)){
@@ -128,6 +144,9 @@
 		 $data = $this->Paginator->paginate('Product');
 		
          $this->set('allProducts', $data);
+		 
+		 
+		
 	
 		
 		
@@ -135,7 +154,7 @@
 		
 		
 		
-		
+        //  debug($data); die;
 		
 		
 		

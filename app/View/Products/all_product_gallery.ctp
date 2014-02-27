@@ -8,16 +8,21 @@
                    <div class="lft_head"><b>#NewOnThe</b><i>Web</i></div>
                    <div class="category_sec">
 				   
+				 
 					
                      <ul>
 						<li>Categories</li>
-
+						  <?php foreach($categories as $category){ ?>
                        <li>
                          <a href="#"><img src="../img/img13.png" width="7" height="10" /></a>
-                       
+						 
+                       <?php echo  $category['Category']['name']; ?>
+						 
+						
+						
 						 
                        </li>
-					   
+					   	<?php }; ?>
                         </ul>
                    
                    </div>
@@ -51,10 +56,17 @@
                   <div class="div1">
 				
                     <div class="srch_div1">
+					
+						
+						
+
+				
 				
   	<?php
-					echo $this->Form->create('searchProduct', array('type' => 'post'));
+					
+					echo $this->Form->create('searchProduct', array('type' => ''));
 					echo $this->Form->input('keywords',array('style'=>'width:150px'));
+					
 					echo $this->Form->end('Search');
 						
 					?>
@@ -66,15 +78,23 @@
                       </div>
                     <div class="div_rgt1">
                       <div class="txt4">Sort by :</div>
+					  
                       <div class="selct">
-                        <select>
-                          <option>Most Recent</option>
-                          <option>Most Recent</option>
-                          <option>Most Recent</option>
-                        </select>
+					  <?php
+					
+					 echo $this->Form->create('Product');
+					
+				
+                        echo $this->Form->input('field', array(
+						'options' => array('Name','Price','Sku'),
+						'empty' => '(choose one)'
+						));
+					echo $this->Form->end();
+					?>
                       </div>
                     </div>  
-                  
+                
+					
                   </div>
                   <div class="list3">
 				  

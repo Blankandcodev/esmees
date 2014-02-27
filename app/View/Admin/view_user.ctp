@@ -1,4 +1,8 @@
-<div class="users form">
+
+<div class="title-row">
+	
+	<h1 class="title">User List</h1>
+</div>
 <table class="dtable" cellspacing="0"> 
 	<thead> 
 		<tr> 

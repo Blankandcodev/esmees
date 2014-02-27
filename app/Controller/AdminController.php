@@ -450,7 +450,8 @@
     {
 	if ($this->request->is('post')) {
             if ($this->Adv->save($this->request->data)) {
-                $this->Session->setFlash(__('The Adversiters has been saved'));
+				$this->Session->setFlash(__('The Adversiters has been saved.'), 'flash_success');
+               
                 //$this->redirect(array('action' => 'index'));
             } else 
 			{
@@ -468,10 +469,11 @@
         }
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Adv->save($this->request->data)) {
-                $this->Session->setFlash(__('The Adversiter  has been Updated'));
+                $this->Session->setFlash(__('The Merchant  has been Updated'),'flash_success');
+				
                // $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('The Adversiter could not be saved. Please, try again.'), 'flash_error');
+                $this->Session->setFlash(__('The Merchant could not be saved. Please, try again.'), 'flash_error');
             }
         } else {
             $this->request->data = $this->Adv->read(null, $id);
@@ -481,7 +483,8 @@
 	function delete_adversiters($id)
     {
     	$this->Adv->delete($id);
-        $this->Session->setFlash('The Adversiters with id: '.$id.' has been deleted.');
+      
+		$this->Session->setFlash(__('The Merchant with id: '.$id.' has been deleted.'), 'flash_success');
         $this->redirect(array('action'=>'view_adversiters'));
 		
     }
@@ -495,22 +498,26 @@
 		$this->set('categories', $this->Category->find('all'));
 	}
 	public function add_subcategory(){
-		$AllCats = $this->Category->children(1);
+		$AllCats = $this->Category->find('all');
 		$catalist = array();
 		foreach($AllCats as $cat){
 			$cat =$cat['Category'];
 			$catalist[$cat['id']] = $cat['name'];
 		}
 		$this->set('categoryList', $catalist);
+		
 		 if ($this->request->is('post')) {
             if ($this->Category->save($this->request->data)) {
-                $this->Session->setFlash(__('The Category has been saved'));
+               	$this->Session->setFlash(__('The Category has been saved.'), 'flash_success');
+				
                 //$this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('The Category could not be saved. Please, try again.', 'flash_success'));
+               
+				  $this->Session->setFlash(__('The Product could not be saved. Please, try again.'), 'flash_error');
             }
         }
 		unset($this->request->data['Category']['name']);
+		$this->set('categoryList', $catalist);
     }
 	function edit_category($id = null) {
         
@@ -521,7 +528,8 @@
         }
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Category->save($this->request->data)) {
-                $this->Session->setFlash(__('The Category Name has been Updated'));
+               
+				 	$this->Session->setFlash(__('The Category Name has been Updated.'), 'flash_success');
                // $this->redirect(array('action' => 'index'));
             } else {
                 $this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'flash_error');
@@ -534,7 +542,8 @@
 	function delete_category($id)
     {
     	$this->Category->delete($id);
-        $this->Session->setFlash('The Category with id: '.$id.' has been deleted.');
+       
+		$this->Session->setFlash(__('The Category with id: '.$id.' has been deleted.'), 'flash_success');
         $this->redirect(array('action'=>'view_category'));
     }
 	

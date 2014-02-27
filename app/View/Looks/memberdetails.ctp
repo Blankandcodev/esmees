@@ -60,8 +60,22 @@
 								
 						  </div>
 							  <div class="ppi_btn">
-						 
-							  <a target="_blank" href="<?php echo $looks['Product']['buy_url'] ?>"><img src="../../img/by_now_btn.png" /></a>
+														  <?php 
+						  
+
+							 if( $looks['Product']['type'] == 1){
+								 $referid=$looks['User']['member_id'];
+								 $cid = isset($loggeduser['member_id']) ? $loggeduser['member_id'] : 'GUEST';
+								
+								$trakker = "&u1=$referid-$cid";
+							}else if($looks['Product']['type'] == 0){
+								$trakker = "&sid=$referid-$cid";
+							}else{
+								$trakker = "";
+							}
+							  ?>
+							  <a target="_blank" href="<?php echo $looks['Product']['buy_url'].$trakker; ?>"><img src="../../img/by_now_btn.png" /></a>
+
 							 
 							  </div>
 						</div>

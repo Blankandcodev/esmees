@@ -21,15 +21,15 @@
 
 
 
-<div class="users form">
-<fieldset>
- <legend>View Looks Image</legend>
-
-<table class="tablesorter" cellspacing="0"> 
+<div class="title-row">
+	<a class="button primary title-btn" href="<?php echo $this->Html->url(array('action'=>'view_user'), array('class'=>'add')); ?>">back to User</a>
+	<h1 class="title">View Look Image</h1>
+</div>
+<table class="dtable" cellspacing="0"> 
 			<thead> 
 				<tr> 
    					 
-    				<th>Caption Name</th> 
+    				<th>Caption </th> 
     				<th>Image</th> 
     				
     				<th>Actions</th> 
