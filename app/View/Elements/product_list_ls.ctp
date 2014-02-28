@@ -20,11 +20,13 @@
 	$saleprice= (!empty($_product['saleprice'])) ? $_product['saleprice'] : '';
 	$linkurl= (!empty($_product['linkurl'])) ? $_product['linkurl'] : '';
 	$imageurl= (!empty($_product['imageurl'])) ? $_product['imageurl'] : '';
-	$long= (!empty($_product['description']['long'])) ? $_product['description']['long'] : '';
-	$short= (!empty($_product['description']['short'])) ? $_product['description']['short'] : '';
+	$long = (!empty($_product['description']['long'])) ? $_product['description']['long'] : '';
+	$short = (!empty($_product['description']['short'])) ? $_product['description']['short'] : '';
 	$keywords= (!empty($_product['keywords'])) ? $_product['keywords'] : '';
 	$primary= (!empty($_product['category']['primary'])) ? $_product['category']['primary'] : '';
-	$secondary= (!empty($_product['category']['secondary'])) ? $_product['category']['secondary'] : ''; ?>
+	$secondary= (!empty($_product['category']['secondary'])) ? $_product['category']['secondary'] : '';
+	$desc = ($long != '') ? $long : $short;
+	?>
 	<tr>
 		<td><img width="100" src="<?php echo $imageurl; ?>"  /></td>
 		<td><?php echo $productname ;?></td>
@@ -34,12 +36,13 @@
 			
 			<?php echo $this->Form->input('name', array('type'=>'hidden', 'value'=> $productname )); ?>
 			<?php echo $this->Form->input('image_url', array('type'=>'hidden', 'value'=>  $imageurl )); ?>
-			<?php echo $this->Form->input('descrition', array('type'=>'hidden', 'value'=> $short)); ?>
+			<?php echo $this->Form->input('descrition', array('type'=>'hidden', 'value'=> $desc)); ?>
 			<?php echo $this->Form->input('sku', array('type'=>'hidden', 'value'=>$sku)); ?>
 			<?php echo $this->Form->input('upc', array('type'=>'hidden', 'value'=>$upccode)); ?>
 			<?php echo $this->Form->input('price', array('type'=>'hidden', 'value'=>$price)); ?>
 			<?php echo $this->Form->input('sale_price', array('type'=>'hidden', 'value'=>$saleprice)); ?>
 			<?php echo $this->Form->input('buy_url', array('type'=>'hidden', 'value'=>$linkurl)); ?>
+			<?php echo $this->Form->input('mnf_name', array('type'=>'hidden', 'value'=>$merchantname)); ?>
 			<?php echo $this->Form->input('advetiser_name', array('type'=>'hidden', 'value'=>$merchantname)); ?>
 			<?php echo $this->Form->input('category', array('type'=>'hidden', 'value'=>$primary)); ?>
 			<?php echo $this->Form->input('advertiser_id', array('type'=>'hidden', 'value'=>$mid)); ?>
