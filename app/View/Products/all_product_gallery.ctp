@@ -10,23 +10,37 @@
 				   
 				 
 					
-                     <ul>
-						<li>Categories</li>
-						  <?php foreach($categoryLists as $category){
-							
-						  ?>
-                       <li>
-                         <a href="#"><img src="../img/img13.png" width="7" height="10" /></a>
-						 
-                       <?php echo  $category['Category']['name']; ?>
-					   
-						 
 						
 						
-						 
-                       </li>
-					   	<?php }; ?>
-                        </ul>
+	<ul><?php foreach($categories['0']['children'] as $category){ ?>
+	<li>
+	
+	<?php echo $category['Category']['name']; ?>
+		<?php if($category['children']){ ?>
+			<ul>
+				<?php foreach($category['children'] as $category){ ?>
+					<li>
+					 
+					<?php echo $category['Category']['name']; ?>			
+						<?php if($category['children']){ ?>
+							<ul>
+							<?php foreach($category['children'] as $category){ ?>
+								<li><?php echo $category['Category']['name']; ?></li>
+							<?php } ?>
+							</ul>
+						<?php } ?>
+					</li>
+				<?php } ?>
+			</ul>
+		<?php } ?>
+	</li>
+<?php }; ?>
+</ul>
+						
+						
+						
+						
+						
                    
                    </div>
 				   
@@ -68,14 +82,16 @@
 				
 		<?php
 					
-					echo $this->Form->create('Product',array('type'=>'get'));
 					
+					
+					echo $this->Form->create('Search', array('type' => 'get'));
 					echo $this->Form->input('Search.keywords');
-					echo $this->Form->input('sort', array('type'=>'select', 'options' => array('Order By' => 'Name', 'Price' => 'ASC'
-        )));
-					 
 					
-					echo $this->Form->end('Search');
+					echo $this->Form->end('submit',array('name' => 'Update','label' => 'Update!','div' => array( 'class' => 'srch_img',);
+					
+					
+					
+					
 						
 					?>
 						
@@ -85,7 +101,10 @@
                       
                       </div>
                     <div class="div_rgt1">
-                      <div class="txt4">Sort by :</div>
+                      <div class="txt4">Sort by :
+					  <?php echo $this->Paginator->sort('Name', 'name'); ?>
+					    <?php echo $this->Paginator->sort('Price', 'price'); ?>
+					  </div>
 					  
                       <div class="selct">
 					  <?php
@@ -134,10 +153,18 @@
                       
                       
                     </ul>
+					
+		
                   
                   
                   </div>
-                  <div class="more1">Load More...</div>
+                  <div class="more1">
+				  <?php echo $this->Paginator->numbers(); ?>
+					
+		<?php echo $this->Paginator->prev('« Previous', null, null, array('class' => 'disabled')); ?>
+		<?php echo $this->Paginator->next('Next »', null, null, array('class' => 'disabled')); ?>
+
+			<?php echo $this->Paginator->counter(); ?></div>
                 </div>
                 
                 

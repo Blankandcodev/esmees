@@ -123,8 +123,8 @@
 		 // $data = $this->Category->generateTreeList( null, null, null,'&nbsp;&nbsp;&nbsp;');
 		   //$allChildren = $this->Category->children(0);
 		   $allCategories = $this->Category->find('threaded');
-		   debug($allCategories);
-		   $this->set('categoryLists',$allCategories);
+		  // debug($allCategories);
+		   $this->set('categories',$allCategories);
 		 // debug($allChildren);
 		 
 		 
@@ -165,11 +165,11 @@
 		
 		
 		
-		$this->Paginator->settings = $this->paginate;
+		//$this->Paginator->settings = $this->paginate;
 
 		// similar to findAll(), but fetches paged results
-		$data = $this->Paginator->paginate('Product');
-		$this->set('allProducts', $data);
+		//$productlist = $this->Paginator->paginate('Product');
+		//$this->set('allProducts', $productlist);
 		
 		
 		
@@ -179,11 +179,26 @@
 		
 		
 		
-		//if($this->request->is('post')){
-	    
+		if (!empty($this->request->query['keywords'])) {
+			$keywords=$this->request->query['keywords'];
+			
+			
+			
+		// $data=	$this->paginate = array('conditions' => array('Product.name LIKE' => '%'.$p.'%'), 'limit' => 10);
+			//$data = $this->paginate('Product',array('Product.name' => array('Product.name LIKE' => '%'.$p.'%')));
+			//$this->set('allProducts', $data);
+			//debug($data);
+			
+	$data=	$this->paginate('Product', array('OR' => array('Product.name LIKE' => "%$keywords%",'Product.price LIKE' => "%$keywords%",'Product.descrition LIKE' => "%$keywords%")));
+
+	$this->set('allProducts', $data);
+			
+			
+			
+			
+			
 		
-		//$designers = $this->paginate('Product',array('Product.name'=>$keyword));
-	//	$this->set('searchResult', $keyword);
+		}
         
   
    
