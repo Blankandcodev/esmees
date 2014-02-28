@@ -99,26 +99,12 @@
 		
 	}
 	
-	public function portfolio()
-	{
-			
-			
-		if(!empty($this->user['id']))
-			{
-		
-			$orders = $this->Order->find('all', array('conditions' => array('Order.user_id' => $this->user['id'])));
-			$this->set('orderLists',$orders);
-			
-			
-			$productid = $this->Order->find('all', array('conditions' => array('Order.user_id' => $this->user['id'])));
-			
-			$productlists = $this->Look->find('all', array('conditions' => array('Look.user_id' => $this->user['id'] )));
-			$this->set('memberImages',$productlists);
-			
-			
-		
-			
-			}
+	public function portfolio(){
+		$orders = $this->Order->find('all', array(
+			'conditions' => array('Order.user_id' => $this->user['id']),
+			'group' => array('Order.product_id')
+		));
+		$this->set('orderLists',$orders);
 	}
 	
 	public function view_newlooks($orderid=null)
@@ -544,42 +530,35 @@
 	
 	
 	public function upload_lookimage($orderid=null) {
+		$order = $this->Order->find('first', array('conditions'=>array('Order.id'=>$orderid)));
+		if(!empty($order)){
+			$countLooks = count($order['Look']);
+			$this->set('order',$order);
 			
-	if(!empty($this->user['id']))
-	{
-		$orders = $this->Order->find('all', array('conditions'=>array('Order.order_id'=>$orderid)));
-		$this->set('orderDetail',$orders);
-	
-		
-	 if ($this->request->is('post') || $this->request->is('put')) {
-		 
-		 
-		 $userId=$this->request->data['User']['user_id'];
-		 $name=$this->request->data['User']['caption_name'];
-		 $orderid=$this->request->data['User']['order_id'];
-		 $productid=$this->request->data['User']['product_id'];
-		 
-		
-		 $count = $this->Look->find('count', array('conditions'=>array('Look.order_id'=>$orderid, 'Look.user_id'=>$this->user['id'])));
-		 if($count !='3')
-		  {
-			$image_path = $this->Image->upload_image_and_thumbnail($this->request->data['User']['image'], "Looks");
-		
-		if ($this->Look->save(array('order_id'=>$orderid,'product_id'=>$productid,'caption_name'=>$name,'image'=>$image_path, 'user_id'=>$this->user['id'])))
-			{
-				$this->Session->setFlash('The Looks Image has saved .', 'flash_success');
-				$this->redirect(array('controller'=>'Users', 'action' => 'view_newlooks',$orderid));
-	     	}
-
+			if($countLooks < 3){
+				if ($this->request->is('post') || $this->request->is('put')) {
+					$userId=$this->request->data['lookupload']['user_id'];
+					$name=$this->request->data['lookupload']['caption_name'];
+					$orderid=$this->request->data['lookupload']['order_id'];
+					$productid=$this->request->data['lookupload']['product_id'];
+					
+					$image_path = $this->Image->upload_image_and_thumbnail($this->request->data['lookupload']['image'], "Looks");
+					if($image_path){
+						if ($this->Look->save(array('order_id'=>$orderid,'product_id'=>$productid,'caption_name'=>$name,'image'=>$image_path, 'user_id'=>$this->user['id']))){
+							$this->Session->setFlash('The Looks Image has saved .', 'flash_success');
+						}else{
+							$this->Session->setFlash('Look could not saved .', 'flash_error');
+						}
+					}
+					$this->redirect(array('controller'=>'Users', 'action' => 'portfolio'));
+				}
+			}else{
+				$this->Session->setFlash('Upload limit finished for this product. Upload Look for another product');
+				$this->redirect(array('controller'=>'Users', 'action' => 'portfolio'));
+			}
+		}else{
+			throw new NotFoundException(__('Not Found'));
 		}
-		else
-		{
-			$this->Session->setFlash('The three Looks Image already Uploaded in Purchase Items.', 'flash_error');
-			$this->redirect(array('controller'=>'Users', 'action' => 'view_newlooks',$orderid));
-		}
-	}
-	}
-
 	}
 	
 

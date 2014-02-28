@@ -104,35 +104,7 @@
 		$querryResult = file_get_contents($URI, false, $context);
 		$response = json_decode(json_encode((array) simplexml_load_string($querryResult)), 1);
 		return $response;
-		
 	}
-	
-	public function add_cjproduct(){
-		$AllCats = $this->Category->children(1);
-		$catalist = array();
-		foreach($AllCats as $cat){
-			$cat =$cat['Category'];
-			$catalist[$cat['id']] = $cat['name'];
-		}
-		$this->set('categoryList', $catalist);
-		
-		$advlists=$this->Adv->find('all', array('conditions' => array('Adv.afflitate_type' => '0' )));
-		
-		$advlist = array();
-		foreach($advlists as $adv){
-			$adv =$adv['Adv'];
-			$advlist[$adv['adv_id']] = $adv['adv_name'];
-		}
-		$this->set('advList', $advlist);
-		
-		if ($this->request->is('post')){
-		
-			$params = $this->request->data['product_fetch'];
-			$this->set('products', $this->ConnectToCJ($params));
-	}
-	}
-	
-	
 	
 	public function add_product(){
 		if ($this->request->is('post')){
@@ -226,11 +198,7 @@
 			$this->redirect(array('action' => 'index'));
 		}
 	}
-	
-	
-	
-	
-	
+		
 	function edit_product($id = null) {
 	
 		
@@ -266,7 +234,7 @@
 		
     }
 	
-	public function view_products() {
+	public function view_products(){
 		$this->Paginator->settings = $this->paginate;
 
 		// similar to findAll(), but fetches paged results
@@ -274,8 +242,7 @@
 		$this->set('products', $data);
     }
 	
-	public function ConnectToLN($params = array())
-	{
+	public function ConnectToLN($params = array()){
 		$query_string = '';
 					
 		$params['affiliate'] = '';
@@ -310,75 +277,7 @@
 		$querryResult = file_get_contents($URI, false, $context);
 		$response = json_decode(json_encode((array) simplexml_load_string($querryResult)), 1);
 		return $response;
-			
    }
-	
-	public function add_linkshareproduct()
-	{
-		
-		$AllCats = $this->Category->children(1);
-		$catalist = array();
-		foreach($AllCats as $cat){
-			$cat =$cat['Category'];
-			$catalist[$cat['id']] = $cat['name'];
-		}
-		$this->set('categoryList', $catalist);
-		
-		$advlists=$this->Adv->find('all', array('conditions' => array('Adv.afflitate_type' => '1' )));
-		
-		
-		$advlist = array();
-		foreach($advlists as $adv){
-			$adv =$adv['Adv'];
-			$advlist[$adv['adv_id']] = $adv['adv_name'];
-		}
-		$this->set('advList', $advlist);
-		if ($this->request->is('post'))
-			{
-			$params = $this->request->data['product_fetch'];
-			$this->set('products', $this->ConnectToLN($params));
-			}
-			else
-			{
-			
-			}
-		}
-		
-		
-		
-	
-		
-	
-		
-	
-	
-	function edit_linkshareproduct($id = null) {
-		
-		 $this->Product->id = $id;
-        if (empty($this->data))
-        {
-            $this->data = $this->Product->read();
-        }
-        if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->Product->save($this->request->data)) {
-                $this->Session->setFlash(__('The Product  has been Updated'));
-               // $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'flash_error');
-            }
-        } else {
-            $this->request->data = $this->Product->read(null, $id);
-		}
-	}
-	
-	function delete_linkshareproduct($id)
-    {
-    	$this->Product->delete($id);
-        $this->Session->setFlash('The Product with id: '.$id.' has been deleted.');
-        $this->redirect(array('action'=>'view_products'));
-		
-    }
-	
 //----------------------------------------------------End Product Function-------------------------------
 
 	/*  MANAGE ADMIN */
@@ -390,7 +289,7 @@
         $this->set('user', $this->User->read(null, $id));
     }
 
-    public function add() {
+    public function add(){
         if ($this->request->is('post')) {
             $this->User->create();
             if ($this->User->save($this->request->data)) {
@@ -440,15 +339,11 @@
 	
 	
 
-	function view_adversiters()
-    {
+	function view_adversiters(){
 		$this->set('advs', $this->Adv->find('all'));
-		
-		
 	}
-	function add_adversiters()
-    {
-	if ($this->request->is('post')) {
+	function add_adversiters(){
+		if ($this->request->is('post')) {
             if ($this->Adv->save($this->request->data)) {
 				$this->Session->setFlash(__('The Adversiters has been saved.'), 'flash_success');
                
@@ -461,7 +356,7 @@
 			 unset($this->request->data['Adv']['adv_name']);
         }
     }
-   function edit_adversiters($id = null) {
+	function edit_adversiters($id = null) {
        $this->Adv->id = $id;
         if (empty($this->data))
         {
@@ -493,11 +388,11 @@
 //--------------------------------------------- Start Category Function----------------------	
 	
    
-	public function view_category()
-	{
-		$this->set('categories', $this->Category->find('all'));
+	public function view_category(){
+		$this->set('categories', $this->Category->generateTreeList(null, null, null, '&ndash;&ndash;&nbsp;&nbsp;'
+        ));
 	}
-	public function add_subcategory(){
+	public function add_category(){
 		$AllCats = $this->Category->find('all');
 		$catalist = array();
 		foreach($AllCats as $cat){
@@ -506,18 +401,13 @@
 		}
 		$this->set('categoryList', $catalist);
 		
-		 if ($this->request->is('post')) {
-            if ($this->Category->save($this->request->data)) {
-               	$this->Session->setFlash(__('The Category has been saved.'), 'flash_success');
-				
-                //$this->redirect(array('action' => 'index'));
-            } else {
-               
-				  $this->Session->setFlash(__('The Product could not be saved. Please, try again.'), 'flash_error');
+		if ($this->request->is('post')) {
+            if (!$this->Category->save($this->request->data)){               
+				$this->Session->setFlash(__('The category could not be created. Please, try again.'), 'flash_error');
             }
+			$this->Session->setFlash(__('The Category has been saved.'), 'flash_success');				
+            $this->redirect($this->referer());
         }
-		unset($this->request->data['Category']['name']);
-		$this->set('categoryList', $catalist);
     }
 	function edit_category($id = null) {
         

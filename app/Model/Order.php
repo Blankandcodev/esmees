@@ -5,13 +5,11 @@ class Order extends AppModel {
     public $name = 'Order';
 
 	
-	
 	public $hasMany = array(
-      
-        'Order' => array(
-            'className' => 'Order',
-            'foreignKey' => 'product_id'
-        )
+		'Look' => array(
+            'className' => 'Look',
+            'foreignKey' => 'order_id'
+		)
     );
 	
     public $belongsTo = array(
