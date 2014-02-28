@@ -54,7 +54,7 @@ for Dummy Text.</div>
 												
  echo $this->Html->link($this->Html->image('Looks/big/'.$look['Look']['image']), array(
                                                     'controller' => 'Looks',
-                                                    'action' => 'memberdetails',
+                                                    'action' => 'detail',
                                                     $look['Look']['product_id']
                                                ), array(
                                                     'escape' => false

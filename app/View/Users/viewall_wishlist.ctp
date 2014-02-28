@@ -96,7 +96,7 @@
 						
 						<?php echo $this->Html->link($this->Html->image('Looks/big/'.$look['Look']['image'], array( 'alt' => 'No Image')), array(
                                                     'controller' => 'Looks',
-                                                    'action' => 'memberdetails',
+                                                    'action' => 'detail',
                                                     $look['Product']['id']
                                                ), array(
                                                     'escape' => false

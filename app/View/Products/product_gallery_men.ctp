@@ -15,7 +15,7 @@
 			   		<div class="pgm_cntnt2">
 						<div class="trnd_hd">
 						    <div class="txt_lft">#TREND<span class="span2">Setters</span></div>
-									<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'member_pictures_gallery'),true) ?>"><div class="trnd_txt_rt"><i>View all</i></div></a>
+									<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'gallery'),true) ?>"><div class="trnd_txt_rt"><i>View all</i></div></a>
 						</div>
 								<div class="list5">
 									<ul>
@@ -27,7 +27,7 @@
 												
  echo $this->Html->link($this->Html->image('Looks/big/'.$look['Look']['image']), array(
                                                     'controller' => 'Looks',
-                                                    'action' => 'memberdetails',
+                                                    'action' => 'detail',
                                                     $look['Look']['product_id']
                                                ), array(
                                                     'escape' => false

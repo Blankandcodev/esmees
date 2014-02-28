@@ -242,7 +242,7 @@
 			}
 			if($type == 1)
 			{
-				$this->redirect(array('controller'=>'Looks', 'action' => 'memberdetails', $objId));
+				$this->redirect(array('controller'=>'Looks', 'action' => 'detail', $objId));
 			}
 			else
 			{
@@ -270,11 +270,11 @@
 			}
 			if($type == 1)
 			{
-				$this->redirect(array('controller'=>'Looks', 'action' => 'memberdetails', $objId));
+				$this->redirect(array('controller'=>'Looks', 'action' => 'detail', $objId));
 			}
 			else
 			{
-				$this->redirect(array('controller'=>'Looks', 'action' => 'memberdetails', $objId));
+				$this->redirect(array('controller'=>'Looks', 'action' => 'detail', $objId));
 			}
 		}else{
 			return $this->redirect(array('action' => 'login'));	
@@ -302,11 +302,11 @@
 			}
 			if($type == 1)
 			{
-				$this->redirect(array('controller'=>'Looks', 'action' => 'memberdetails', $objId));
+				$this->redirect(array('controller'=>'Looks', 'action' => 'detail', $objId));
 			}
 			else
 			{
-				$this->redirect(array('controller'=>'Looks', 'action' => 'memberdetails', $objId));
+				$this->redirect(array('controller'=>'Looks', 'action' => 'detail', $objId));
 			}
 		}else{
 			return $this->redirect(array('action' => 'login'));	
