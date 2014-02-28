@@ -12,11 +12,14 @@
 					
                      <ul>
 						<li>Categories</li>
-						  <?php foreach($categories as $category){ ?>
+						  <?php foreach($categoryLists as $category){
+							
+						  ?>
                        <li>
                          <a href="#"><img src="../img/img13.png" width="7" height="10" /></a>
 						 
                        <?php echo  $category['Category']['name']; ?>
+					   
 						 
 						
 						
@@ -57,15 +60,20 @@
 				
                     <div class="srch_div1">
 					
-						
+						  <input type="text" value="serach product" class="txt_box1" />
+                         <div class="srch_img"><a href="#"><img src="../img/img2.png" /></a></div>
 						
 
 				
 				
-  	<?php
+		<?php
 					
-					echo $this->Form->create('searchProduct', array('type' => ''));
-					echo $this->Form->input('keywords',array('style'=>'width:150px'));
+					echo $this->Form->create('Product',array('type'=>'get'));
+					
+					echo $this->Form->input('Search.keywords');
+					echo $this->Form->input('sort', array('type'=>'select', 'options' => array('Order By' => 'Name', 'Price' => 'ASC'
+        )));
+					 
 					
 					echo $this->Form->end('Search');
 						

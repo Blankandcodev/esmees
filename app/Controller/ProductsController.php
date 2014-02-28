@@ -3,14 +3,14 @@
 	var $helpers = array('Form', 'Country');
 	var $components = array('Session','Paginator');
 	var $layout = 'default';
-    public $paginate = array('Product' => array(
-            'limit' => 25,
+	
+	 public $paginate = array('Product' => array(
+            'limit' =>10,
             'order' => array(
-		    'Product.name' => 'asc',
-		    )
-			),
-            
-    );
+		    'Product.name' => 'asc'
+		    ))
+			);
+   
 	
 
 	
@@ -121,36 +121,42 @@
 	
 		
 		 // $data = $this->Category->generateTreeList( null, null, null,'&nbsp;&nbsp;&nbsp;');
-		  $treelist = $this->Category->generateTreeList();
-		  $this->set('categoryLists',$treelist);
-		  debug($treelist);
+		   //$allChildren = $this->Category->children(0);
+		   $allCategories = $this->Category->find('threaded');
+		   debug($allCategories);
+		   $this->set('categoryLists',$allCategories);
+		 // debug($allChildren);
+		 
+		 
+		//  $allCategories = $this->Category->find('threaded');
+		  //$comments = $this->Comment->find('threaded', array('conditions' => array('article_id' => 50)  ));
 		
 		
 		
-		if($this->request->is('get')){
-		$a=$this->request->query['keywords'];
+	//	if($this->request->is('get'))
+	//	{
+	//	$a=$this->request->query['keywords'];
 	
 		
 	
 		
 	
 	    
-	    $keyword = $this->data['searchProduct']['keywords'];
+	    
 	
-	    if(!empty($keyword)){
+	  
+	//	 $data=$this->Product->find('all',array('conditions' => array('Product.name LIKE' => "%$a%", 'Product.price LIKE' => "%$a%"), 'limit' => 10 ));
+		// debug($data);
+		 
 		
-		 echo $keyword;
-		 $this->Paginator->settings = array('conditions' => array('Product.name LIKE' => 'a%'), 'limit' => 10 );
-		 $data = $this->Paginator->paginate('Product');
-		
-         $this->set('allProducts', $data);
+    //    $this->set('allProducts', $data);
 		 
 		 
 		
 	
 		
 		
-	    }
+	  //  }
 		
 		
 		
@@ -159,11 +165,18 @@
 		
 		
 		
-		//$this->Paginator->settings = $this->paginate;
+		$this->Paginator->settings = $this->paginate;
 
 		// similar to findAll(), but fetches paged results
-		//$data = $this->Paginator->paginate('Product');
-		//$this->set('allProducts', $data);
+		$data = $this->Paginator->paginate('Product');
+		$this->set('allProducts', $data);
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		//if($this->request->is('post')){
@@ -182,7 +195,7 @@
 		//$this->set('AllBrands',$brand_data);
 	}
 		
-	}
+	
 	
 	public function brands($brands = null)
 	{
