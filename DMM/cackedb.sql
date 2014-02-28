@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 21, 2014 at 06:23 AM
+-- Generation Time: Feb 28, 2014 at 06:55 AM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.16
 
@@ -32,28 +32,30 @@ CREATE TABLE IF NOT EXISTS `advs` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `adv_id` int(25) NOT NULL,
   `adv_name` varchar(500) NOT NULL,
-  `afflitate_type` int(1) NOT NULL,
+  `afflitate_type` varchar(2) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `advs`
 --
 
 INSERT INTO `advs` (`id`, `adv_id`, `adv_name`, `afflitate_type`, `created`) VALUES
-(1, 38010, 'SheInside', 1, '2014-02-10 03:22:11'),
-(8, 857900, 'CJ Adversiter', 0, '2014-02-17 04:21:05'),
-(3, 36228, 'WowMyUniverse', 1, '2014-02-10 03:23:12'),
-(4, 560, 'Rakuten LinkShare', 1, '2014-02-10 03:31:19'),
-(5, 37461, 'SmartBargains', 1, '2014-02-10 03:32:12'),
-(6, 37453, 'Joie', 1, '2014-02-10 03:32:55'),
-(7, 36804, 'Rakuten LinkShare EURO', 1, '2014-02-10 03:33:47'),
-(9, 3049768, 'Cafepress UK', 0, '2014-02-17 04:25:44'),
-(10, 3698863, 'ActivewearUSA.com', 0, '2014-02-17 04:53:36'),
-(11, 2606886, '6DollarShirts.com', 0, '2014-02-17 05:07:56'),
-(12, 4027838, 'Paul Fredrick	', 0, '2014-02-19 21:49:43'),
-(13, 39030, 'Photobook Canada ', 1, '2014-02-19 22:01:20');
+(8, 857900, 'CJ Adversiter', 'CJ', '2014-02-17 04:21:05'),
+(3, 36228, 'WowMyUniverse', 'LS', '2014-02-10 03:23:12'),
+(4, 560, 'Rakuten LinkShare', 'LS', '2014-02-10 03:31:19'),
+(5, 37461, 'SmartBargains', 'LS', '2014-02-10 03:32:12'),
+(6, 37453, 'Joie', 'LS', '2014-02-10 03:32:55'),
+(7, 36804, 'Rakuten LinkShare EURO', 'LS', '2014-02-10 03:33:47'),
+(9, 3049768, 'Cafepress UK', 'CJ', '2014-02-17 04:25:44'),
+(10, 3698863, 'ActivewearUSA.com', 'CJ', '2014-02-17 04:53:36'),
+(11, 2606886, '6DollarShirts.com', 'CJ', '2014-02-17 05:07:56'),
+(12, 4027838, 'Paul Fredrick	', 'CJ', '2014-02-19 21:49:43'),
+(13, 39030, 'Photobook Canada ', 'LS', '2014-02-19 22:01:20'),
+(14, 28248, 'Testing', 'LS', '2014-02-26 12:21:49'),
+(15, 0, 'ssss', 'LS', '2014-02-26 12:30:14'),
+(17, 0, 'sfsfsfs', 'CJ', '2014-02-26 12:48:17');
 
 -- --------------------------------------------------------
 
@@ -68,16 +70,17 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `rght` int(10) DEFAULT NULL,
   `name` varchar(255) DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `categories`
 --
 
 INSERT INTO `categories` (`id`, `parent_id`, `lft`, `rght`, `name`) VALUES
-(1, NULL, 1, 6, 'Product Category'),
-(2, 1, 2, 3, 'Man'),
-(3, 2, 4, 5, 'Women');
+(1, 0, 1, 2, 'Category'),
+(2, 1, 3, 8, 'Men'),
+(3, 2, 4, 5, 'Testing'),
+(4, 3, 6, 7, 'rrrrrr');
 
 -- --------------------------------------------------------
 
@@ -91,14 +94,15 @@ CREATE TABLE IF NOT EXISTS `followers` (
   `follow_id` int(10) NOT NULL,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `followers`
 --
 
 INSERT INTO `followers` (`id`, `user_id`, `follow_id`, `create_date`) VALUES
-(1, 2, 2, '0000-00-00 00:00:00');
+(1, 2, 2, '0000-00-00 00:00:00'),
+(2, 7, 7, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -111,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `likes` (
   `user_id` int(10) NOT NULL,
   `product_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `likes`
@@ -121,7 +125,8 @@ INSERT INTO `likes` (`id`, `user_id`, `product_id`) VALUES
 (1, 2, 2),
 (2, 2, 24),
 (3, 5, 2),
-(4, 5, 24);
+(4, 5, 24),
+(5, 7, 2);
 
 -- --------------------------------------------------------
 
@@ -137,25 +142,17 @@ CREATE TABLE IF NOT EXISTS `looks` (
   `product_id` int(10) NOT NULL,
   `image` varchar(500) DEFAULT NULL,
   `status` int(1) NOT NULL DEFAULT '0',
+  `created` datetime NOT NULL,
+  `category_id` int(10) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
 
 --
 -- Dumping data for table `looks`
 --
 
-INSERT INTO `looks` (`Id`, `caption_name`, `order_id`, `user_id`, `product_id`, `image`, `status`) VALUES
-(23, 'My Piv', 10008, 2, 24, '530211bc-ea8c-488b-b7e3-535c4293f485.jpg', 0),
-(22, 'My -pic', 10008, 2, 24, '530210d9-dcd8-48af-9221-703c4293f485.jpg', 0),
-(19, 'T-Shrit', 10005, 2, 10, '53020fc7-5cc0-44b4-bdae-79294293f485.jpg', 0),
-(20, 'T-shirt', 10005, 2, 10, '53021021-0e18-4032-9fb6-22d94293f485.jpg', 0),
-(21, 'T-shirt', 10005, 2, 10, '53021045-3134-43b1-91ba-31934293f485.jpg', 0),
-(24, 'pic', 10008, 2, 24, '5302117e-6ec0-4560-8050-3b524293f485.jpg', 0),
-(25, 'TEsting', 10005, 3, 10, '53045c67-1ebc-41fb-b054-4d114293f485.png', 0),
-(26, 'hello', 10001, 2, 2, '5305bf70-4900-41e5-b3fa-053c408d8133.jpg', 0),
-(27, 'Demo Testing', 10001, 2, 2, '5305bec9-b974-4283-907d-053c408d8133.jpg', 0),
-(28, 'fffff', 10001, 2, 2, '5305bf1b-8e14-46fa-b439-053c408d8133.png', 0),
-(29, 'pic', 10001, 7, 2, '5306e4a1-db28-4182-ba5a-053c408d8133.jpg', 0);
+INSERT INTO `looks` (`Id`, `caption_name`, `order_id`, `user_id`, `product_id`, `image`, `status`, `created`, `category_id`) VALUES
+(51, 'demo Testing', 10001, 7, 2, '530c61fa-2314-4005-b1b9-0484408d8133.png', 0, '2014-02-25 09:27:22', NULL);
 
 -- --------------------------------------------------------
 
@@ -178,9 +175,9 @@ CREATE TABLE IF NOT EXISTS `orders` (
 
 INSERT INTO `orders` (`id`, `order_id`, `product_id`, `user_id`, `order_date`) VALUES
 (1, 10001, 2, 7, '2014-02-06 00:00:00'),
-(2, 1002, 10, 7, '2014-02-20 00:00:00'),
-(4, 10004, 10, 2, '2014-02-19 00:00:00'),
-(5, 1006, 24, 4, '2014-02-12 00:00:00');
+(2, 1002, 90, 7, '2014-02-20 00:00:00'),
+(4, 10004, 90, 2, '2014-02-19 00:00:00'),
+(5, 1006, 40, 7, '2014-02-12 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -213,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=95 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=99 ;
 
 --
 -- Dumping data for table `products`
@@ -253,7 +250,11 @@ INSERT INTO `products` (`id`, `name`, `descrition`, `short_descrition`, `image_u
 (77, ' Men''s Black ', ' short="Stay in style with shirts by Enrico Coveri." long="Stay in style with shirts by Enrico Coveri."', NULL, 'http://www.smartbargains.com/images/S/ECOVERIAA-MTP-ELASTIC-BLK.jpg', 1, NULL, NULL, 'MTP-ELASTIC-BLK-XXL', 21.99, NULL, 21.99, NULL, NULL, NULL, 'http://click.linksynergy.com/link?id=ric4naJVaQQ&offerid=317760.136573&type=15&murl=http%3A%2F%2Fwww.smartbargains.com%2Fdetail.asp%3Fbo_products_variance_id%3D136573%26utm_source%3DLinkShare', 2, 'SmartBargains.com', 37461, 136573, NULL, '2014-02-17 05:46:04', '2014-02-17 05:49:51'),
 (79, 'Fit Shirt ', ' short="Slim fit woven shirt from ONE90ONE. Lighweight and Comfortable. Contrast Print Inside Cuffs and Collar. Square Buttons" long="Slim fit woven shirt from ONE90ONE. Lighweight and Comfortable. Contrast Print Inside Cuffs and Collar. Square Buttons"', NULL, 'http://www.smartbargains.com/images/S/191AA-MTP-GR200.jpg', 1, NULL, NULL, 'GR200', 38.99, NULL, 38.99, NULL, NULL, NULL, 'http://click.linksynergy.com/link?id=ric4naJVaQQ&offerid=317760.145573&type=15&murl=http%3A%2F%2Fwww.smartbargains.com%2Fdetail.asp%3Fbo_products_variance_id%3D145573%26utm_source%3DLinkShare', 2, 'SmartBargains.com', 37461, 145573, NULL, '2014-02-17 05:46:23', '2014-02-17 05:51:32'),
 (81, ' Alberta', ' short="Look incredibly gorgeous in pieces by Alberta Ferretti. PLEASE BE AWARE THAT THIS ITEM IS NOT PRE-OWNED, BUT IT IS SUBJECT TO MINOR SCUFFS, SCRATCHES AND CREASES THAT MAY NOT BE SHOWN IN THE PICTURE. RETURNS FOR THESE ITEMS ARE ACCEPTED FOR STORE CREDIT O" long="Look incredibly gorgeous in pieces by Alberta Ferretti. PLEASE BE AWARE THAT THIS ITEM IS NOT PRE-OWNED, BUT IT IS SUBJECT TO MINOR SCUFFS, SCRATCHES AND CREASES THAT MAY NOT BE SHOWN IN THE PICTURE. RETURNS FOR THESE ITEMS ARE ACCEPTED FOR STORE CREDIT O"', NULL, 'http://www.smartbargains.com/images/S/WTP-A12040-WH.jpg', 1, NULL, NULL, 'WTP-A12040-WH42', 94.5, NULL, 94.5, NULL, NULL, NULL, 'http://click.linksynergy.com/link?id=ric4naJVaQQ&offerid=317760.135341&type=15&murl=http%3A%2F%2Fwww.smartbargains.com%2Fdetail.asp%3Fbo_products_variance_id%3D135341%26utm_source%3DLinkShare', 2, 'SmartBargains.com', 37461, 135341, NULL, '2014-02-17 05:47:23', '2014-02-17 05:51:48'),
-(93, 'Pet Tech   Dog T-Shirt by CafePress', 'Let your pet show how much you care  Dog T-Shirt   Tee, TShirt, Shirt Put your pooch in his own cool doggie t-shirt from American Apparel. Hersquo;ll be the envy of all the pups in the park. Let him wear a doggie-cool design so he can express what hersquo;d like to bark out loud. Do it up in doggie style Made of', NULL, 'http://images.cafepress.com/product/12001545_480x480_f.jpg', 0, '', '', '12001545', 15, 15, 15, NULL, '12001545', 'GBP', 'http://www.dpbolvw.net/click-7352624-10798686?url=http%3A%2F%2Fwww.cafepress.co.uk%2F%2Bpet_tech_dog_tshirt%2C12001545&cjsku=12001545', 2, 'Cafepress UK', 3049768, NULL, 0, '2014-02-19 02:45:34', '2014-02-19 02:45:34');
+(93, 'Pet Tech   Dog T-Shirt by CafePress', 'Let your pet show how much you care  Dog T-Shirt   Tee, TShirt, Shirt Put your pooch in his own cool doggie t-shirt from American Apparel. Hersquo;ll be the envy of all the pups in the park. Let him wear a doggie-cool design so he can express what hersquo;d like to bark out loud. Do it up in doggie style Made of', NULL, 'http://images.cafepress.com/product/12001545_480x480_f.jpg', 0, '', '', '12001545', 15, 15, 15, NULL, '12001545', 'GBP', 'http://www.dpbolvw.net/click-7352624-10798686?url=http%3A%2F%2Fwww.cafepress.co.uk%2F%2Bpet_tech_dog_tshirt%2C12001545&cjsku=12001545', 2, 'Cafepress UK', 3049768, NULL, 0, '2014-02-19 02:45:34', '2014-02-19 02:45:34'),
+(95, ' S.T. Dupont Black Textured Leather Business Card Holder (2 CC/Large Business Card Pocket) ', 'Drawing inspiration from its beginnings S.T.Dupont rediscovers its roots in producing top-quality leather goods.Calfskin full-grain lambskin and buffalo hide - natural supple skins that gain in beauty over time - are chosen exclusively in France Italy and Spain and must meet the quality standards required for traditional production.Several operations including cutting stitching and assembling are performed manually in accordance with long-established criteria. Quality control tests are systemati', NULL, 'http://www.smartbargains.com/images/H/STDUPONTW-074102.JPG', 1, NULL, '3597390067937', 'STDUPONTW-074102', 270, NULL, 110, NULL, NULL, NULL, 'http://click.linksynergy.com/link?id=ric4naJVaQQ&offerid=317760.140998&type=15&murl=http%3A%2F%2Fwww.smartbargains.com%2Fdetail.asp%3Fiq%3D1%26bo_products_variance_id%3D140998%26RID%3D%5BENGINENAME%5D%26utm_medium%3DCSE%26utm_source%3D%5BENGINENAME%5D', 2, 'SmartBargains.com', 37461, 140998, 1, '2014-02-26 11:48:21', '2014-02-26 11:48:21'),
+(96, ' Mundi Women''s Croc Print Checkbook Clutch Wallet ', 'Hit the town in style while you stay organized with this Mundi croc print clutch wallet. This stylish clutch features multiple credit card slots six ID windows and a convenient checkbook holder to keep your most important stuff ready to go.', NULL, 'http://www.smartbargains.com/images/H/MUNDI-L30475-IVY.jpg', 1, NULL, '870191091923', 'MUNDI-L30475-IVY', 54.99, NULL, 34.99, NULL, NULL, NULL, 'http://click.linksynergy.com/link?id=ric4naJVaQQ&offerid=317760.172830&type=15&murl=http%3A%2F%2Fwww.smartbargains.com%2Fdetail.asp%3Fiq%3D1%26bo_products_variance_id%3D172830%26RID%3D%5BENGINENAME%5D%26utm_medium%3DCSE%26utm_source%3D%5BENGINENAME%5D', 2, 'SmartBargains.com', 37461, 172830, 1, '2014-02-26 11:48:32', '2014-02-26 11:48:32'),
+(97, ' Picnic Time Picnic Table ', 'Picnic Time''s portable Picnic Table is a compact fold-out table with bench seats for four that you can take anywhere. The legs and seats fold into the table when collapsed so the item is easy to store and transport. It has a maximum weight capacity of 250 lbs. per seat and 20 lbs. for the table. The seats are molded polypropylene with a basket weave pattern in the same color as the ABS plastic table top. The frame is aluminum alloy for durability. The Picnic Table is ideal for outdoor or indoor', NULL, 'http://www.smartbargains.com/images/H/PICNICTIME-811-00-139-000-0.JPG', 1, NULL, '099967082006', 'PICNICTIME-811-00-139-000', 160.99, NULL, 102.99, NULL, NULL, NULL, 'http://click.linksynergy.com/link?id=ric4naJVaQQ&offerid=317760.183498&type=15&murl=http%3A%2F%2Fwww.smartbargains.com%2Fdetail.asp%3Fiq%3D1%26bo_products_variance_id%3D183498%26RID%3D%5BENGINENAME%5D%26utm_medium%3DCSE%26utm_source%3D%5BENGINENAME%5D', 2, 'SmartBargains.com', 37461, 183498, 1, '2014-02-26 11:48:38', '2014-02-26 11:48:38'),
+(98, ' LCM HOME FASHIONS White Waterproof Mattress Pad ', 'Keep spills and other accidents at bay with this microfiber waterproof mattress pad. Made with a polyurethane coating it features a brushed top that dries quickly and fits mattresses up to 19 inches deep. It is machine washable for your convenience..', NULL, 'http://www.smartbargains.com/images/H/LCMHOME-L061.JPG', 1, NULL, '837304008582', 'LCMHOME-L061', 44.99, NULL, 33.99, NULL, NULL, NULL, 'http://click.linksynergy.com/link?id=ric4naJVaQQ&offerid=317760.181237&type=15&murl=http%3A%2F%2Fwww.smartbargains.com%2Fdetail.asp%3Fiq%3D1%26bo_products_variance_id%3D181237%26RID%3D%5BENGINENAME%5D%26utm_medium%3DCSE%26utm_source%3D%5BENGINENAME%5D', 2, 'SmartBargains.com', 37461, 181237, 1, '2014-02-26 11:48:46', '2014-02-26 11:48:46');
 
 -- --------------------------------------------------------
 
@@ -283,7 +284,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
 
 --
 -- Dumping data for table `users`
@@ -291,12 +292,25 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id`, `member_id`, `username`, `password`, `role`, `name`, `address`, `state`, `city`, `zip`, `country`, `gender`, `status`, `image`, `ss_number`, `bankname`, `bankaccount_no`, `bankrouting_no`, `created`, `modified`) VALUES
 (1, 'ES000001', 'adminesmees@blankco.com', '9a5d716a6be58acec023d33587e170ed09edb191', 1, 'adminesmees', 'Delhi', 'New Delhi', 'Delhi', '110088', 'IN', '0', 0, NULL, NULL, NULL, NULL, NULL, '2014-02-16 23:12:24', '2014-02-16 23:12:24'),
-(2, 'ES000002', 'demo@blankandco.com', '9a5d716a6be58acec023d33587e170ed09edb191', 0, 'blankandco.com', 'Delhi', 'Delhi', 'Delhi', '110033', 'IN', '', 0, '53059774-4280-458c-84e1-79bd4293f485.jpg', '1002112', 'ICICI', '865623231', '233333', '2014-02-16 23:14:43', '2014-02-19 22:49:40'),
+(2, 'ES000002', 'demo@blankandco.com', '9a5d716a6be58acec023d33587e170ed09edb191', 0, 'blankandco.com', 'Delhi', 'Delhi', 'Delhi', '110033', 'IN', '', 0, '', '1002112', 'ICICI', '865623231', '233333', '2014-02-16 23:14:43', '2014-02-19 22:49:40'),
 (3, 'ES000003', 'demo@gmail.com', '9a5d716a6be58acec023d33587e170ed09edb191', 0, 'xyz', 'Delhi', 'Delhi', 'Delhi', '110099', 'IN', '0', 0, '53045c14-de64-44fb-aa50-24254293f485.jpg', '4525566', 'SBI', '2373273288', '8283283', '2014-02-19 00:12:14', '2014-02-19 00:24:04'),
 (4, 'ES000004', 'testing@gmail.com', '9a5d716a6be58acec023d33587e170ed09edb191', 0, 'testing@gmail.com', 'Delhi', 'Delhi', 'new Delhi', '110099', 'IN', '', 0, NULL, NULL, NULL, NULL, NULL, '2014-02-19 00:15:25', '2014-02-19 00:15:25'),
 (5, 'ES000005', 'blankandco@gmail.com', '9a5d716a6be58acec023d33587e170ed09edb191', 0, 'blankandco.com', 'Delhi', 'Delhi', 'Delhi', '110099', 'IN', '0', 0, NULL, NULL, NULL, NULL, NULL, '2014-02-19 00:19:26', '2014-02-19 00:19:26'),
 (6, 'ES000006', 'demo12@gmail.com', 'a52423695b85fab581da90fab73dd2ecae963b05', 0, 'demotesting', 'delhi', 'Delhi', 'Delhi', '110099', 'IN', '0', 0, NULL, NULL, NULL, NULL, NULL, '2014-02-19 02:33:59', '2014-02-19 02:33:59'),
-(7, 'ES000007', 'shivam5105@gmail.com', '9a5d716a6be58acec023d33587e170ed09edb191', 0, 'shivam goyal', 'sajhvadvadsvd', 'dfdsfsf', 'dsfsfsdf', '5435435', 'IN', '0', 0, '53058e35-1674-48f0-ae1f-653d4293f485.jpg', 'sxsaxasxas', 'saxaxa', '4444', '23424', '2014-02-19 22:08:06', '2014-02-19 22:10:14');
+(7, 'ES000007', 'shivam5105@gmail.com', '581a2c3c4555d7ae5f0a70324672dd538bb0f546', 0, 'shivam goyal', 'sajhvadvadsvd', 'dfdsfsf', 'dsfsfsdf', '5435435', 'IN', '0', 0, '530c2f20-2d5c-437f-a9a2-0484408d8133.jpg', 'sxsaxasxas', 'saxaxa', '4444', '23424', '2014-02-19 22:08:06', '2014-02-25 05:50:25'),
+(8, 'ES000008', 'raja@gmai.com', '9a5d716a6be58acec023d33587e170ed09edb191', 0, 'aman', 'Delhi', 'Delgi', 'Delhi', '842429', 'AW', '1', 0, NULL, '8272827', 'SBI', '249242929', '23429428', '2014-02-24 05:37:51', '2014-02-24 05:37:52'),
+(21, 'ES000021', 'testing1@gmail.com', 'b3047618eebaad4da378a55793fbbbfc15d5d248', 0, 'testing', 'test', 'test', 'test', 'testq', 'TW', '0', 0, NULL, 'test', 'test', 'test', 'test', '2014-02-24 12:40:41', '2014-02-24 12:40:41'),
+(20, NULL, 'sbdh.singh@gmail.com', '9a5d716a6be58acec023d33587e170ed09edb191', 0, 'subodh', 'dsfsdf', 'sdfsfs', 'sdfsdfs', '345353', 'AZ', '', 0, NULL, 'sdfs', 'sdfsfs', 'sdfsdfs', 'sdfs', '2014-02-24 07:36:26', '2014-02-24 07:36:26'),
+(22, 'ES000022', 'testing2@gmail.com', 'b3047618eebaad4da378a55793fbbbfc15d5d248', 0, 'testing', 'test', 'test', 'test', 'testq', 'TW', '0', 0, NULL, 'test', 'test', 'test', 'test', '2014-02-24 12:52:04', '2014-02-24 12:52:04'),
+(23, 'ES000023', 'testing3@gmail.com', 'b3047618eebaad4da378a55793fbbbfc15d5d248', 0, 'testing', 'test', 'test', 'test', 'testq', 'TW', '0', 0, NULL, 'test', 'test', 'test', 'test', '2014-02-24 12:52:53', '2014-02-24 12:52:53'),
+(24, 'ES000024', 'testing4@gmail.com', 'b3047618eebaad4da378a55793fbbbfc15d5d248', 0, 'testing', 'test', 'test', 'test', 'testq', 'TW', '0', 0, NULL, 'test', 'test', 'test', 'test', '2014-02-24 12:53:45', '2014-02-24 12:53:45'),
+(25, NULL, '', '47f1c5daa8dabb3fdd43ab750045b062b3f128a8', 0, '', '', '', '', '', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, '2014-02-25 04:53:15', '2014-02-25 04:53:15'),
+(26, 'ES000026', 'fsfsdfsf@pgmai.com', '9d97d3d7fd8c40c4203b56def9d93245f734a9f1', 0, 'sfdfdfs', 'gdfg', 'dgddgd', 'dgdd', 'dgd', 'BD', '', 0, NULL, 'dgdgd', 'dfgd', 'dgdd', 'd', '2014-02-25 10:12:21', '2014-02-25 10:12:21'),
+(27, 'ES000027', 'aaa@gmail.com', '9f71509712a8b9bf6fa457af67fc0f10e246f83a', 0, 'sfdfdfs', 'gdfg', 'dgddgd', 'dgdd', 'dgd', 'BD', '', 0, NULL, 'dgdgd', 'dfgd', 'dgdd', 'd', '2014-02-25 10:12:48', '2014-02-25 10:12:48'),
+(28, 'ES000028', 'aman@gmail.com', '9aff242c93d89c93c368bccf73bd7948e745ef9a', 0, 'sssss', 'ee', 'ererer', 'rerere', 'rerere', 'AZ', '', 0, NULL, 'reerr', 'errr', 'rere', 'reerr', '2014-02-25 11:16:12', '2014-02-25 11:16:12'),
+(29, 'ES000029', 'aman222@gmail.com', '2e0cad153b68f42c3e5f896000aeaa2606a368b0', 0, 'sssss', 'ee', 'ererer', 'rerere', 'rerere', 'AZ', '', 0, NULL, 'reerr', 'errr', 'rere', 'reerr', '2014-02-25 11:16:30', '2014-02-25 11:16:30'),
+(30, NULL, 'rakesh@gmail.com', '9a5d716a6be58acec023d33587e170ed09edb191', 0, 'sssss', 'fffff', 'dfgdg', 'dggd', '355345', 'AU', '', 0, NULL, 'ffff', '35353', 'dgdg53', 'eetete', '2014-02-25 12:47:07', '2014-02-25 12:47:07'),
+(31, NULL, 'rakesh222@gmail.com', '9bc536f54e9170ae3c4b167a3b68e55aab54b431', 0, 'sssss', 'fffff', 'dfgdg', 'dggd', '355345', 'AU', '', 0, NULL, 'ffff', '35353', 'dgdg53', 'eetete', '2014-02-25 12:47:29', '2014-02-25 12:47:29');
 
 -- --------------------------------------------------------
 
@@ -310,19 +324,15 @@ CREATE TABLE IF NOT EXISTS `wishlists` (
   `product_id` int(10) NOT NULL,
   `type` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `wishlists`
 --
 
 INSERT INTO `wishlists` (`id`, `user_id`, `product_id`, `type`) VALUES
-(3, 2, 2, 1),
-(2, 2, 4, 0),
-(4, 2, 8, 0),
-(5, 3, 30, 0),
-(6, 5, 69, 0),
-(7, 5, 2, 1);
+(20, 7, 65, 0),
+(19, 7, 2, 1);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
