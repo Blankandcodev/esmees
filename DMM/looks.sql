@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 25, 2014 at 07:44 AM
+-- Generation Time: Mar 01, 2014 at 07:22 AM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.16
 
@@ -34,21 +34,17 @@ CREATE TABLE IF NOT EXISTS `looks` (
   `product_id` int(10) NOT NULL,
   `image` varchar(500) DEFAULT NULL,
   `status` int(1) NOT NULL DEFAULT '0',
-  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created` datetime NOT NULL,
+  `category_id` int(10) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
 
 --
 -- Dumping data for table `looks`
 --
 
-INSERT INTO `looks` (`Id`, `caption_name`, `order_id`, `user_id`, `product_id`, `image`, `status`, `created`) VALUES
-(45, 'Demo', 10001, 7, 2, '530c3a72-32ec-41f0-b674-0484408d8133.jpg', 0, '2014-02-25 06:38:42'),
-(46, 'demo2', 10001, 7, 2, '530c3aa7-d2fc-40b1-8958-0484408d8133.jpg', 0, '2014-02-25 06:39:35'),
-(47, 'My Pic', 10004, 2, 90, '530c3e9f-cef0-42fc-91f1-0484408d8133.jpg', 0, '2014-02-25 06:56:31'),
-(48, 'ddddd', 10001, 7, 2, '530c3f74-af4c-4251-a598-0484408d8133.png', 0, '2014-02-25 07:00:04'),
-(49, 'ddddd', 1006, 7, 40, '530c3f87-2408-4ea3-bc4e-0484408d8133.png', 0, '2014-02-25 07:00:23'),
-(50, 'sssss', 1006, 7, 40, '530c3fca-9ad8-4cd8-aa98-0484408d8133.jpg', 0, '2014-02-25 07:01:30');
+INSERT INTO `looks` (`Id`, `caption_name`, `order_id`, `user_id`, `product_id`, `image`, `status`, `created`, `category_id`) VALUES
+(52, 'Testing', 1, 2, 90, '53103483-d5f8-4e37-8ef8-052c408d8133.jpg', 0, '2014-02-28 07:02:27', NULL);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

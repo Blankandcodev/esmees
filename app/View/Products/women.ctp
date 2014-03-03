@@ -1,61 +1,66 @@
 
- <div align="center">
+   <div align="center">
         <div class="container">
-         
-            <div class="content">
-                <div class="content_div1">
-                    <div class="div_lft">
-                       <div class="div_txt">
-                          <div class="titl">Shop by Hot Products</div>
-                          <div class="txt1">Lorem Ipsum Standard text Portion for
-Dummy Text Area Lorem Ipsum<br />
-Standard text Portion<br />
-for Dummy Text.</div>
-                       
-                       </div>
-                       <div class="div_btn">
-                          <input type="button" value="Buy Now!" class="btnn1" />
-                       </div>
-                    
-                    </div>
-                    <div class="div_rgt">
-                       <div class="div_txt">
-                          <div class="titl">Shop by Member Looks</div>
-                          <div class="txt1">Lorem Ipsum Standard text Portion for
-Dummy Text Area Lorem Ipsum<br />
-Standard text Portion<br />
-for Dummy Text.</div>
-                       
-                       </div>
-                       <div class="div_btn">
-                          <input type="button" value="Buy Now!" class="btnn1" />
-                       </div>
-                    
-                    </div>
-                
-                </div>
-                <div class="banr"></div>
-
-                <div class="content_div2">
-                  <div class="div_head">
-                     <div class="txt_lft">#NewOnThe<span class="span2">Web</span></div>
-                     <div class="txt_rgt"><a href="#">Women</a></div>
-                  </div>
-				  
-				
-                  <div class="list2">
-				  
-                    <ul>
-					  <?php foreach ($products as $product): ?>
-                      <li>
+        
+            <div class="content_fwd">
+               <div class="pgm_bnr">
+			   	<div class="pgm_bnr2"> <img src="../img/pgm_bnr.png" /></div>
+					<div class="bnr_rt">
+						<div class="bnr_hd">Shop by Hot Products</div>
+							<div class="bnr_p">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are , you need to be sure there isn't anything embarrassing hidden in the middle of text.</div>
+						<div class="brnd"><img src="../img/ht_bnr.png" /></div>
+							<div class="by_nw_btn"><a href="#"><img src="../img/by_nw_btn.png" /></a></div>
+						</div>
+			   </div>
+			   		<div class="pgm_cntnt2">
+						<div class="trnd_hd">
+						    <div class="txt_lft">#TREND<span class="span2">Setters</span></div>
+								
+								
+								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'women_gallery'),true) ?>"><div class="trnd_txt_rt"><i>View all</i></div></a>
+						</div>
+								<div class="list5">
+									<ul>
+								<?php foreach ($looks as $look): ?>
+									  <li>
+										<div class="div_pic1">
+												<?php
 						
-						          <div class="div_pic">
+												
+ echo $this->Html->link($this->Html->image('Looks/big/'.$look['Look']['image']), array(
+                                                    'controller' => 'Looks',
+                                                    'action' => 'detail',
+                                                    $look['Look']['product_id']
+                                               ), array(
+                                                    'escape' => false
+                                                   
+                                               )); ?>
 						
 						
-						
-						
-						
-<?php echo $this->Html->link($this->Html->image($product['Product']['image_url'], array( 'alt' => 'Clear list')), array(
+										<div class="list_txt">
+										   
+										</div>
+									  </li>
+							<?php endforeach; ?>
+									  <li>
+										
+									</ul>
+                          </div>
+						  		<div class="trnd_hd">
+						    <div class="txt_lft">#NewOnThe<span class="span2">Web</span></div>
+								
+								
+								
+								
+								
+								<a href="<?php echo $this->Html->url(array('controller'=>'products', 'action'=>'women_gallery',3),true) ?>"><div class="trnd_txt_rt"><i>View all</i></div></a>
+						</div>
+								<div class="list5">
+									<ul>
+										<?php foreach ($products as $product): ?>
+									  <li>
+										<div class="div_pic1">
+										<?php echo $this->Html->link($this->Html->image($product['Product']['image_url'], array( 'alt' => 'Clear list')), array(
                                                     'controller' => 'Products',
                                                     'action' => 'product_details',
                                                     $product['Product']['id']
@@ -63,35 +68,36 @@ for Dummy Text.</div>
                                                     'escape' => false
                                                    
                                                )); ?>
+										</div>
+										  <div class="list_txt">
+										   <div class="txt5">
+													
+										    <?php echo $this->Text->truncate($product['Product']['name'],10,	array('ellipsis' => '...','exact' => 'false')); ?>
+										   </div>
+										    
+										     <div class="txtt5">$<?php echo  $product['Product']['price']; ?></div>
+										</div>
+									  </li>
+									  <?php endforeach; ?>
+									  
+									</ul>
+                          </div>
+					</div>	 
 						
-						
-						</div>
-                       
-					
-						
-						
-					
-                        <div class="list_txt">
-                           <div class="txt3"><?php echo  $product['Product']['name']; ?></div>
-                           <div class="txtt3">$<?php echo  $product['Product']['price']; ?></div>
-                        
-                        </div>
-							  
-                      </li>
-					    <?php endforeach; ?>
-                     </ul>
-                   
-                  </div>
-				
-                </div>
-                <div class="add_sec">Space for ADS</div>
+					</div>
+                
+                
+                
+                
+                
             
             
-            </div>
             
+          
         
         <div class="clear"></div>
         </div>
    
    </div>
-  
+
+

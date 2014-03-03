@@ -70,16 +70,31 @@ $cakeDescription = __d('cake_dev', 'Esmees');
                       </div>
                       <div class="srch_div">
 						
-                         <input type="text" value="Search Esmees" class="txt_box" />
-                         <div class="srch_img"><a href="#"><img src="<?php echo $this->webroot; ?>img/img2.png" /></a></div>
-                      
+                         <?PHP
+					
+					
+			echo $this->Form->Create('Search',array('url'=>array('controller'=>'Products','action'=>'serach'),'type'=>'get'));
+					echo $this->Form->input('keyword');
+					
+					echo $this->Form->end('Serach')
+					
+					
+					
+					
+						
+					?>
+                        
+					
+					  
+					  
+					  
                       </div>
                    </div>
                 </div>
                 <div class="nav">
                    <ul>
-                     <li><a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_gallery_men'),true) ?>">Men</a></li>
-                     <li><a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_gallery_women'),true) ?>">Women</a></li>
+                     <li><a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'men'),true) ?>">Men</a></li>
+                     <li><a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'women'),true) ?>">Women</a></li>
 					    <li>
 					
 						<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'index'),true) ?>">DASHBOARD</a>

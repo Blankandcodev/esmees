@@ -9,64 +9,41 @@
                    <div class="category_sec">
 				   
 				 
+					<ul>
+					<li>Categories</li>	
 					
-						
-						
-	<ul><?php foreach($categories['0']['children'] as $category){ ?>
-	<li>
-	
-	<?php echo $category['Category']['name']; ?>
-		<?php if($category['children']){ ?>
-			<ul>
-				<?php foreach($category['children'] as $category){ ?>
-					<li>
-					 
-					<?php echo $category['Category']['name']; ?>			
-						<?php if($category['children']){ ?>
-							<ul>
-							<?php foreach($category['children'] as $category){ ?>
-								<li><?php echo $category['Category']['name']; ?></li>
-							<?php } ?>
-							</ul>
-						<?php } ?>
-					</li>
-				<?php } ?>
-			</ul>
-		<?php } ?>
-	</li>
-<?php }; ?>
-</ul>
-						
-						
-						
-						
-						
-                   
-                   </div>
-				   
-				   
-				   
-				    <div class="category_sec">
-				   
-					 
-						
-                       <ul>
-						<li>Brands</li>
-						 
+					<?php	 foreach($categories as $category){ ;?>
                        <li>
-                         <a href="#"><img src="../img/img13.png" width="7" height="10" /></a>
+                      
                     
 						
+						<a href="#"><img src="<?php echo $this->webroot; ?>/img/img13.png" width="7" height="10" /></a>
+						
+						 <a href="<?php echo $this->Html->url(array('controller'=>'products', 'action'=>'men_gallery',$category['Category']['id'])) ?>">
+                        <?php echo  $category['Category']['name']; ?>
+						 
+						</a>
 						
 						 
 						
 						
 						 
                        </li>
+					   <?php }?>
 					   
                         </ul>
+						
+						
+	
+						
+						
+						
                    
                    </div>
+				   
+				   
+				   
+				  
                 
                 </div>
                 <div class="content_rgt3">
@@ -85,9 +62,9 @@
 					
 					
 					echo $this->Form->create('Search', array('type' => 'get'));
-					echo $this->Form->input('Search.keywords');
+					echo $this->Form->input('keyword');
 					
-					echo $this->Form->end('submit',array('name' => 'Update','label' => 'Update!','div' => array( 'class' => 'srch_img',);
+					echo $this->Form->end('Serach')
 					
 					
 					

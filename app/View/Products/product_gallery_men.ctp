@@ -46,7 +46,7 @@
                           </div>
 						  		<div class="trnd_hd">
 						    <div class="txt_lft">#NewOnThe<span class="span2">Web</span></div>
-									<a href="<?php echo $this->Html->url(array('controller'=>'products', 'action'=>'all_product_gallery'),true) ?>"><div class="trnd_txt_rt"><i>View all</i></div></a>
+									<a href="<?php echo $this->Html->url(array('controller'=>'products', 'action'=>'men_gallery'),true) ?>"><div class="trnd_txt_rt"><i>View all</i></div></a>
 						</div>
 								<div class="list5">
 									<ul>
