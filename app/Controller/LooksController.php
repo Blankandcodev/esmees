@@ -1,5 +1,5 @@
 <?php class LooksController extends AppController {
-	var $uses = array('Look','Order','Product','Category','Like');
+	var $uses = array('Look','Order','User','Product','Category','Like');
 	var $helpers = array('Form', 'Country');
 	var $components = array('Session','Image');
 	var $layout = 'default';
@@ -89,6 +89,10 @@
 						$this->Session->setFlash('Oops an unexpected error occurred, Please try again.', 'flash_error');
 						$this->redirect(array('controller'=>'Looks', 'action' => 'detail', $objId));
 					}
+					$this->User->updateAll(
+						array('User.likes' => 'User.likes + 1'),
+						array('User.id' => $this->user['id'])
+					);
 				}
 				$this->Session->setFlash('You Liked this Look.', 'flash_success');
 				$this->redirect(array('controller'=>'Looks', 'action' => 'detail', $objId));
@@ -101,13 +105,17 @@
 		}
 	}
 	
-	public function ullike($likeId = null){		
+	public function ullike($likeId = null){
 		if($this->user){
 			if($likeId != null){
 				if (!$this->Like->delete($likeId)){
 					$this->Session->setFlash('Oops an unexpected error occurred, Please try again.', 'flash_error');
 					$this->redirect($this->referer());
 				}
+				$this->User->updateAll(
+					array('User.likes' => 'User.likes - 1'),
+					array('User.id' => $this->user['id'])
+				);
 				$this->Session->setFlash('You Unliked this Look.', 'flash_success');
 				$this->redirect($this->referer());
 			}else{

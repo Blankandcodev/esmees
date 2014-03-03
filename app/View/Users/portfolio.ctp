@@ -20,9 +20,11 @@
 			<?php $i=0; 
 			foreach($looks as $look){ ;?>
 				<div class="look-info pbox">
-					<a href="<?php $this->Html->url(array('controller'=>'looks', 'action'=>'detail', $look['Id'])); ?>"><img  src="<?php echo $this->webroot. 'img/Looks/home/' .$look['image']; ?>"></a>
+					<a class="img" href="<?php $this->Html->url(array('controller'=>'looks', 'action'=>'detail', $look['Id'])); ?>"><img  src="<?php echo $this->webroot. 'img/Looks/home/' .$look['image']; ?>"></a>
 					<div class="sinfo">
 						<?php echo $look['caption_name']; ?>
+						<span class="delete-icn"><?php echo $this->Html->link('Delete', array('action' => 'delete_potfolio', $look['Id']), null, 'Are you sure?' )?> </span>
+						<span class="edit-icn"><?php echo $this->Html->link('Edit', array('controller' => 'Users', 'action' => 'edit_lookimage',  $look['Id']));?></span>
 					</div>
 				</div>
 			<?php $i++;

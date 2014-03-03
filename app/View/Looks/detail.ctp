@@ -34,9 +34,9 @@ $_product = $looks['Product'];
 			</div>
 			<div class="buy-button">
 				<?php $trakker = "";				
-				if( $_product['type'] == 1){
 					$referid=$_user['member_id'];
 					$cid = isset($loggeduser['member_id']) ? $loggeduser['member_id'] : 'GUEST';
+				if( $_product['type'] == 1){
 					$trakker = "&u1=$referid-$cid";
 				}else if($_product['type'] == 0){
 					$trakker = "&sid=$referid-$cid";

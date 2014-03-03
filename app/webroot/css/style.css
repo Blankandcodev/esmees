@@ -545,8 +545,8 @@ form .submit{
 .floated .input input{width:320px;}
 .floated .advance {clear:both; background:#f0f0f0; border:1px solid #ddd; margin:0 0 10px; padding:10px 10px 0;}
 .floated .submit{clear:both;}
-
-
+.sec-title span{font-style:italic; color:#666;}
+img{max-width:100%;}
 /* Detail Page Style **/
 .item-detail{padding-bottom:30px; border-bottom:1px solid #ddd; margin-bottom:30px;}
 .image-box img{max-width:100%; max-height:100%;}
@@ -582,15 +582,16 @@ h3.subtitle{border-bottom: 1px solid #000000; color: #6C6C6C; font-size: 16px; f
 
 .listing{margin:10px 0;}
 .listing ul{display:block; margin:0 -10px;}
-.listing ul li{position:relative; float:left; margin:0 10px; display:block; width:150px;}
-.listing ul li .image{display:block; height:190px; border:1px solid #ddd; margin:0 0 10px;}
-.listing ul li .image a{display:block; line-height:190px; height:100%; width:100%; text-align:center;}
+.listing ul li{position:relative; float:left; margin:0 10px; display:block; width:184px;}
+.listing ul li .image{display:block; height:232px; border:1px solid #ddd; margin:0 0 10px;}
+.listing ul li .image a{display:block; line-height:232px; height:100%; width:100%; text-align:center;}
 .listing ul li .image img{max-height:100%; max-width:100%; vertical-align:middle;}
 .listing .info{color: #444444; font-size: 14px; font-weight: bold; line-height:18px;}
 .listing .info .i-title{color: #444444; font-size: 14px; font-weight: bold; margin-bottom: 5px;}
 .listing .info .user-name{}
 
 /* USER PAGE STYLE */
+.title-btn{margin-top:8px; font-weight:bold; }
 .title h1{font-size:24px; clear:both;}
 .page-container{}
 .colset{}
@@ -616,7 +617,7 @@ h3.subtitle{border-bottom: 1px solid #000000; color: #6C6C6C; font-size: 16px; f
 .profile-picture .delete img{float:left; margin:2px 5px 0 0;}
 
 h2.sub-title{color: #444444; font-size: 20px; font-weight: bold; line-height:1; padding-bottom:4px;}
-h2.sub-title.bordered{border:1px solid #E2E2E2;}
+.bordered{border-bottom:1px solid #E2E2E2;}
 .user-profile .tbtn{margin-top:6px;}
 ul.info-list li{margin:0 0 8px; color: #4D4D4D; font-size: 14px;}
 ul.info-list li span{display:block; color:#000; font-weight:bold;}
@@ -624,7 +625,7 @@ ul.info-list li span{display:block; color:#000; font-weight:bold;}
 .pop-box{color: #000000; font-size: 16px; font-weight: bold; margin:0 0 5px;}
 .pop-box .num{float:right; color:#4d4d4d;}
 .back-link{line-height:26px; font-size:14px; float:left; margin:0 0 15px; display:block;}
-
+.look-listing{margin:0 0 40px;}
 .portfolio 
 .portfolio-row{
 	height:295px;
@@ -646,10 +647,37 @@ ul.info-list li span{display:block; color:#000; font-weight:bold;}
 	margin-left:20px;
 	margin-right:0;
 }
-.portfolio-row  .pbox  a{display:block; line-height:290px; height:100%; width:100%; text-align:center;}
+.portfolio-row  .pbox  a.img{display:block; line-height:290px; height:100%; width:100%; text-align:center;}
 .portfolio-row  .pbox  img{max-height:100%; max-width:100%; vertical-align:middle;}
-.portfolio-row  .pbox .sinfo {background:rgba(0,0,0,0.7); color:#fff; position:absolute; bottom:-170px; left:0; right:0; padding:10px; font-size:14px; font-weight:normal; text-align:left; min-height:40%;  box-shadow:0 0 10px rgba(0,0,0,0.5); -moz-box-shadow:0 0 10px rgba(0,0,0,0.5); -webkit-box-shadow:0 0 10px rgba(0,0,0,0.5); transition: bottom 0.5s ease 0s; -moz-transition: bottom 0.5s ease 0s; -webkit-transition: bottom 0.5s ease 0s;}
-.portfolio-row  .pbox:hover .sinfo{bottom:0;}
+.portfolio-row  .pbox .sinfo {background:rgba(0,0,0,0.6); color:#fff; position:absolute; bottom:0; opacity:0; left:0; right:0; padding:10px; font-size:14px; font-weight:normal; text-align:left;  box-shadow:0 0 10px rgba(0,0,0,0.5); -moz-box-shadow:0 0 10px rgba(0,0,0,0.5); -webkit-box-shadow:0 0 10px rgba(0,0,0,0.5); transition: all 0.5s ease 0s; -moz-transition: all 0.5s ease 0s; -webkit-transition: all 0.5s ease 0s;}
+.look-info.pbox .sinfo{ padding-bottom:35px;}
+.portfolio-row  .pbox:hover .sinfo{opacity:1;}
+.sinfo .edit-icn,
+.sinfo .delete-icn{display:block; position:absolute; bottom:0;}
+.sinfo .edit-icn{ left:0; right:50%;}
+.sinfo .delete-icn{right:0; left:50%; text-align:right;}
+.look-info.pbox .sinfo a{color:#fff; font-weight:bold; display:block; padding:5px 10px; background:rgba(0,0,0,0.5);}
+.top-part{margin:0 0 15px;}
+.look-info.pbox .sinfo a:hover{color:#eee;  background:rgba(255,255,255,0.5);}
+.profile-picture {border:1px solid #ddd;}
+.account-info .info{font-size:18px; font-weight:bold; color:#000;}
+.account-info .info span{ font-style:italic; color:#666; width:140px; float:left; display:block;}
+
+.paginate { text-align:center; display:block; padding:10px; height:25px;}
+.paginate ul{list-style:none;margin:5px 0;}
+.paginate li{ display:inline-block;}
+.paginate li span {
+  background: none repeat scroll 0 0 #F4F4F4;
+  border: 1px solid #CCCCCC;
+  color: #AAAAAA;
+  font-weight: bold;
+  margin: 0 3px;
+  padding: 4px 10px;
+}
+.paginate li span a{color:#000;}
+
+
+
 
 
 

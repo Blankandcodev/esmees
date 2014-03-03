@@ -2,12 +2,12 @@
 	<div class="title">
 		<h1>My Dashboard</h1>
 	</div>
-	<div class="colset col2 cf">
+	<div class="colset col2 cf top-part">
 		<div class="left">
 			<div class="nav-box">
 				<ul class="left-nav">
 					<li> <a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'portfolio'),true) ?>">PORTFOLIO</a></li>
-					<li> <a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'my_account'),true) ?>">MY PROFILE</a></li>
+					<li> <a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'profile', $user['id']),true) ?>">MY PROFILE</a></li>
 					<li> <a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'order_details'),true) ?>">MANAGE LOOKS</a></li>
 					
 					<li><a href="#">MY OFFER</a></li>
@@ -56,7 +56,7 @@
 						<span>Followers :</span> <span class="num"><?php echo $flowCounts ?></span>
 					</div>
 					<div class="pop-box">
-						<span>Likes :</span> <span class="num"><?php echo $likeCounts ?></span>
+						<span>Likes :</span> <span class="num"><?php echo $user['likes'] ?></span>
 					</div>
 					<div class="pop-box">
 						<span>Commission :</span> <span class="num">999</span>
