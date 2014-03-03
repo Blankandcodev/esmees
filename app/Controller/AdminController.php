@@ -236,8 +236,6 @@
 	
 	public function view_products(){
 		$this->Paginator->settings = $this->paginate;
-
-		// similar to findAll(), but fetches paged results
 		$data = $this->Paginator->paginate('Product');
 		$this->set('products', $data);
     }

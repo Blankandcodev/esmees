@@ -1,12 +1,15 @@
 <?php class UsersController extends AppController {
 	var $uses = array('User','Product','Look','Wishlist','Order','Follower','Like');
-	var $helpers = array('Form', 'Country');
-	public $components = array('Image', 'Email');
+	var $helpers = array('Form', 'Country','Paginator' => array('Paginator'));
+	public $components = array('Image', 'Email','Paginator');
+	public $paginate = array(
+		'limit' => 10
+	);
 	
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->deny();
-        $this->Auth->allow('add', 'login', 'register', 'sendNewUserMail');
+        $this->Auth->allow('add', 'login', 'register', 'followers', 'profile', 'sendNewUserMail');
     }
 	
     public function isAuthorized($user){
@@ -39,12 +42,6 @@
 			$likeList = $this->Like->find('all', array('conditions' => array('Like.user_id' => $this->user['id'])));
 			
 			$this->set('likeLists',$likeList);
-			
-			
-			
-			$likeCount = $this->Like->find('count', array('conditions' => array('Like.user_id' => $this->user['id'])));
-			
-			$this->set('likeCounts',$likeCount);
 			
 			
 			
@@ -124,12 +121,85 @@
 	
 	
 	
-	public function followed_user()
-	{
-	  	$followeds = $this->Follower->find('all', array('conditions' => array('Follower.user_id' =>$this->user['id'] )));
-		$this->set('followerLists',$followeds);
+	public function followed_user(){
+	  	$this->Paginator->settings = $this->paginate;
+		$this->Follower->contain('followed');
+		$followed = $this->Paginator->paginate('Follower', array(
+			'Follower.user_id' => $this->user['id']
+		));
+		$this->set('followed',$followed);
+	}
+	
+	public function followers($userId = null){
+		if(!empty($userId)){
+			$this->User->contain();
+			$user = $this->User->find('first', array('conditions' => array('User.id' => $userId)));
+			
+			$this->Paginator->settings = $this->paginate;
+			$this->Follower->contain('followedby');
+			$followers = $this->Paginator->paginate('Follower', array(
+				'Follower.follow_id' => $userId
+			));
+			$this->set('followers',$followers);
+			$this->set('user', $user['User']);
+		}
+	}
+	
+	public function profile($id=null){
+		if($id != null){
+			$user = $this->User->find('first', array('conditions' => array('User.id' => $id)));
+		}
+		if($id != null && !empty($user)){
+			$this->Follower->contain('User');
+			$this->Follower->contain('followedby');
+			$followers = $this->Follower->find('all', array('conditions' => array('Follower.follow_id' => $id),'limit' => 10));
+			$newlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $id),'limit' => 10));
+			
+			
+			$isfollowed = $this->Follower->find('first', array(
+				'conditions'=>array('Follower.follow_id'=>$id, 'Follower.user_id'=>  $this->user['id']),
+				'fields' => array('Follower.id'),
+			));
+			$this->set('isfollowed', $isfollowed);
+			$this->set('userLooks',$newlooks);
+			$this->set('followers',$followers);
+			$this->set('user', $user['User']);
+		}else{
+			throw new NotFoundException(__('Not Found'));
+		}
+	}
+	
+	public function follow($uid=null){
+		if($uid != null){
+			$checkExist = $this->Follower->find('count', array('conditions'=>array('Follower.follow_id'=>$uid, 'Follower.user_id'=>  $this->user['id']),));			
+			if(!$checkExist){
+				if (!$this->Follower->save(array('follow_id'=>$uid, 'user_id'=>$this->user['id']))){
+					$this->Session->setFlash('Oops an unexpected error occurred, Please try again.', 'flash_error');
+					$this->redirect($this->referer());
+				}
+			}
+			$this->Session->setFlash('You Liked this Look.', 'flash_success');
+			$this->redirect($this->referer());
+		}else{
+			$this->Session->setFlash('Please select a look to like.', 'flash_error');
+			$this->redirect($this->referer());
+		}
 		
 	}
+	public function unfollow($fid=null){
+		if($fid != null){
+			if (!$this->Follower->delete($fid)){
+				$this->Session->setFlash('Oops an unexpected error occurred, Please try again.', 'flash_error');
+				$this->redirect($this->referer());
+			}
+			$this->Session->setFlash('You Unfollowed this User.', 'flash_success');
+			$this->redirect($this->referer());
+		}else{
+			$this->Session->setFlash('Please select a User to unfollow.', 'flash_error');
+			$this->redirect($this->reffrer());
+		}
+	}
+
 	
 	public function user_profile($id=null)
 	{
@@ -328,53 +398,7 @@
 		
 	}
 	
-	public function followers($userId = null)
-	{
-		if(!empty($userId))
-		{
-			$this->User->id = $userId;
-			$this->set('user', $this->User->read(null, $userId));
-			$user = $this->User->read(null, $userId);
-			$this->set('user', $user['User']);
-			
-			$total = $this->Follower->find('count', array('conditions'=>array('Follower.user_id'=>$this->user['id'])));
-		
-			$this->set('totalUser', $total);
-			
-			$newlooks = $this->Look->find('all', array('order' => array('Look.created' => 'DESC'),'limit' => '32'));
-			$this->set('userLooks',$newlooks);
-			
-			
-			
-			$whofollome =$this->Follower->find('all', array('conditions'=>array('Follower.user_id'=>$this->user['id'])));
-			$this->set('peopleFollos',$whofollome);
-			
-			
-			
-		
-		if ($this->request->is('post') || $this->request->is('put'))
-		{
-		
-				$followid=$this->request->data['User']['user_id'];
-				$checkExist = $this->Follower->find('count', array('conditions'=>array('Follower.follow_id'=>$followid, 'Follower.user_id'=>$this->user['id'])));
-				if(!$checkExist)
-				{
-				if ($this->Follower->save(array('follow_id'=>$followid, 'user_id'=>$this->user['id']))){
-					$this->Session->setFlash('The User has added to your Follower.', 'flash_success');
-				}
-				else
-				{
-					$this->Session->setFlash('The User has could not be added to your Follower.', 'flash_error');
-				}
-				}
-				else
-				{
-					$this->Session->setFlash('The User is already in your Follower.', 'flash_error');
-				}
-				
-		}
-		}
-	}
+	
 	
 	
 	

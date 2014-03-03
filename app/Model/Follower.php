@@ -2,26 +2,19 @@
 class Follower extends AppModel 
 {
  Public $name = 'Follower';
+	var $actsAs = array('Containable');
  
 
- 
- public $hasMany = array(  
-	'Follower' => array(
-		'className' => 'Follower',
-		'foreignKey' => 'user_id'
-	)
-);
 
 public $belongsTo = array(
-	'User' => array(
+	'followedby' => array(
 		'className' => 'User',
 		'foreignKey' => 'user_id'
 	),
-	'Look' => array(
-		'className' => 'Look',
-		'foreignKey' => 'user_id'
+	'followed' => array(
+		'className' => 'User',
+		'foreignKey' => 'follow_id'
 	)
-	
 );
 
 }
