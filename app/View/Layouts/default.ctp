@@ -28,8 +28,6 @@ $cakeDescription = __d('cake_dev', 'Esmees');
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
-
-		echo $this->Html->css('cake.generic');
 		echo $this->Html->css('style');
 
 		echo $this->fetch('meta');
@@ -69,25 +67,11 @@ $cakeDescription = __d('cake_dev', 'Esmees');
                          </ul>
                       </div>
                       <div class="srch_div">
-						
-                         <?PHP
-					
-					
-			echo $this->Form->Create('Search',array('url'=>array('controller'=>'Products','action'=>'serach'),'type'=>'get'));
-					echo $this->Form->input('keyword');
-					
-					echo $this->Form->end('Serach')
-					
-					
-					
-					
-						
-					?>
-                        
-					
-					  
-					  
-					  
+                        <?PHP echo $this->Form->Create('Search', array( 'url' => array( 'controller'=>'Products', 'action'=>'serach' ), 'type'=>'get' ) );
+						echo $this->Form->input('keyword', array('placeholder'=>'Search Esmees', 'type'=>'text'));
+						echo $this->Form->submit('Serach');
+						echo $this->Form->end();
+						?>
                       </div>
                    </div>
                 </div>

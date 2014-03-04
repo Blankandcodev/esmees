@@ -1,8 +1,9 @@
 <div class="page-container user-profile">
 	<div class="title">
-		<a class="back-link" href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'index'),true) ?>"><img class="left" src="<?php echo $this->webroot; ?>img/img17.png" /> &nbsp;Back</a>
+		<a class="back-link" href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'profile', $user['id']),true) ?>"><img class="left" src="<?php echo $this->webroot; ?>img/img17.png" /> &nbsp;Back</a>
 		<h1>People who follow <?php echo $user['name']; ?></h1>
 	</div>
+		<div class="look-listing">
 	<?php if(!empty($followers)){ ?>
 			<div class="listing cf">
 				<ul class="users-list cf">

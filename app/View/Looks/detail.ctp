@@ -53,7 +53,7 @@ $_product = $looks['Product'];
 				} ?>
 			</div>
 			
-			<?php echo $this->Html->link("Add to Wishlist", array( 'controller' => 'Users', 'action' => 'addlooks_wishlists', $_look['id']), array('class'=>'button primary')); ?>
+			<?php echo $this->Html->link("Add to Wishlist", array( 'controller' => 'Users', 'action' => 'add_wishlist', $_look['id'], 1), array('class'=>'button primary')); ?>
 		</div>
 	</div>
 	

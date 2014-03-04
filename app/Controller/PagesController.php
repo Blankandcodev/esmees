@@ -35,9 +35,13 @@ class PagesController extends AppController {
         parent::beforeFilter();
     }
 	
-	public function index()
-	{
+	public function index(){
+		$products=$this->Product->find('all', array('order' => array('Product.created' => 'DESC'),'limit' => 10));
 		
+		$looks = $this->Look->find('all', array('group'=>'Look.product_id', 'lomit'=>10));
+		
+		$this->set('products', $products);
+		$this->set('looks', $looks);
 	}
 	
 	public function home()
@@ -59,12 +63,7 @@ public function search()
 	
      //   $this->set('products', $this->Product->find('all'));
 		
-		$women_product_list=$this->Product->find('all', array('order' => array('Product.created' => 'DESC'),'limit' => '32'));
-		$this->set('products', $women_product_list);
 		
-		
-		
-		$this->set('looks', $this->Look->find('all', array('conditions' => array('' ),'group'=>'Look.product_id')));
        	$path = func_get_args();
 
 		$count = count($path);

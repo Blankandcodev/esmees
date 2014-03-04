@@ -1,13 +1,8 @@
 <?php
 class Wishlist extends AppModel 
 {
- Public $name = 'Wishlist';
- public $hasMany = array(  
-	'Wishlist' => array(
-		'className' => 'Wishlist',
-		'foreignKey' => 'product_id'
-	)
-);
+var $actsAs = array('Containable');
+Public $name = 'Wishlist';
 
 public $belongsTo = array(
 	'User' => array(
@@ -16,6 +11,12 @@ public $belongsTo = array(
 	),
 	'Product' => array(
 		'className' => 'Product',
+		'conditions' => array('Wishlist.type = 0'),
+		'foreignKey' => 'product_id'
+	),
+	'Look' => array(
+		'className' => 'Look',
+		'conditions' => array('Wishlist.type = 1'),
 		'foreignKey' => 'product_id'
 	)
 	
