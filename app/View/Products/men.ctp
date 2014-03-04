@@ -18,14 +18,13 @@
 									<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'gallery'),true) ?>"><div class="trnd_txt_rt"><i>View all</i></div></a>
 						</div>
 								<div class="list5">
-									<ul>
-								<?php foreach ($looks as $look): ?>
-									  <li>
-										<div class="div_pic1">
-												<?php
-						
-												
- echo $this->Html->link($this->Html->image('Looks/big/'.$look['Look']['image']), array(
+									<ul class="listing cf">
+
+
+									<?php foreach ($looks as $look): ?>
+									  <li class="item-list">
+										<div class="image">
+												<?php  echo $this->Html->link($this->Html->image('Looks/big/'.$look['Look']['image']), array(
                                                     'controller' => 'Looks',
                                                     'action' => 'detail',
                                                     $look['Look']['product_id']

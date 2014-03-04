@@ -17,7 +17,7 @@
 						    <div class="txt_lft">#TREND<span class="span2">Setters</span></div>
 								
 								
-								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'women_gallery'),true) ?>"><div class="trnd_txt_rt"><i>View all</i></div></a>
+								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'gallery'),true) ?>"><div class="trnd_txt_rt"><i>View all</i></div></a>
 						</div>
 								<div class="list5">
 									<ul>

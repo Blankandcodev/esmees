@@ -23,21 +23,13 @@
                   <div class="list2">
 				  
                     <ul>
-					  <?php foreach ($allProducts as $product): ?>
+					  <?php foreach ($allLooks as $look): ?>
                       <li>
 						
                         <div class="div_pic">
 						
 
-<?php echo $this->Html->link($this->Html->image($product['Product']['image_url'], array( 'alt' => 'No Image')), array(
-                                                    'controller' => 'Products',
-                                                    'action' => 'product_details',
-                                                    $product['Product']['id']
-                                               ), array(
-                                                    'escape' => false
-                                                   
-                                               )); ?>	
-<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $product['Look']['product_id']),true) ?>"><?php echo $this->Html->image('Looks/small/'.$product['Look']['image']);?></a>												   
+<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $look['Look']['product_id']),true) ?>"><?php echo $this->Html->image('Looks/small/'.$look['Look']['image']);?></a>					  
 						  
 						  
 
@@ -45,10 +37,13 @@
 						</div>
                         <div class="list_txt">
                            <div class="txt3">
-						    <?php echo $this->Text->truncate($product['Product']['name'],10,array('ellipsis' => '...','exact' => 'false')); ?>
+						    <?php echo $this->Text->truncate($look['Look']['caption_name'],10,array('ellipsis' => '...','exact' => 'false')); ?>
+							
+							
+							
+							
 						   </div>
-                          
-
+                           <div class="txtt3"></div>
                       
                         </div>
 						

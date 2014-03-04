@@ -19,7 +19,7 @@
 						
 						<a href="#"><img src="<?php echo $this->webroot; ?>/img/img13.png" width="7" height="10" /></a>
 						
-						 <a href="<?php echo $this->Html->url(array('controller'=>'products', 'action'=>'men_gallery',$category['Category']['id'])) ?>">
+						 <a href="<?php echo $this->Html->url(array('controller'=>'products', 'action'=>'gallery',$category['Category']['id'])) ?>">
                         <?php echo  $category['Category']['name']; ?>
 						 
 						</a>
@@ -60,7 +60,8 @@
 		<?php
 					
 					
-					echo $this->Form->Create('Search',array('url'=>array('controller'=>'Products','action'=>'serach'),'type'=>'get'));
+					
+					echo $this->Form->create('Search', array('type' => 'get'));
 					echo $this->Form->input('keyword');
 					
 					echo $this->Form->end('Serach')

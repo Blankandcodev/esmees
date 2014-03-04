@@ -61,7 +61,7 @@
 					
 					
 					
-					echo $this->Form->create('Search', array('type' => 'get'));
+					echo $this->Form->Create('Search',array('url'=>array('controller'=>'Products','action'=>'serach'),'type'=>'get'));
 					echo $this->Form->input('keyword');
 					
 					echo $this->Form->end('Serach')

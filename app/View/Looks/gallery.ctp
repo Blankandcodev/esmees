@@ -13,7 +13,7 @@
 						  <?php foreach($categories as $category){ ?>
                        <li>
                          <a href="#"><img src="../img/img13.png" width="7" height="10" /></a>
-                         <a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'categories',$category['Category']['id'])) ?>"><?php echo  $category['Category']['name']; ?>
+                         <a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'gallery',$category['Category']['id'])) ?>"><?php echo  $category['Category']['name']; ?>
 						 
 						
 						 </a>
@@ -31,36 +31,29 @@
 				   
 				    
 				   
-				    <div class="category_sec">
 				   
-					
-						
-                       <ul>
-					    <li>Brands</li>
-						
-						  <?php foreach($AllBrands as $brand){ ?>
-                       <li>
-                         <a href="#"><img src="../img/img13.png" width="7" height="10" /></a>
-                    
-						
-						 <a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'brands',$brand['Product']['mnf_name'])) ?>"><?php echo  $brand['Product']['mnf_name']; ?>
-						
-						 
-						
-						
-						 
-                       </li>
-					   	<?php }; ?>
-                        </ul>
-                   
-                   </div>
                 
                 </div>
                 <div class="content_rgt3">
                   <div class="div1">
+				  <?php
+					
+					
+					echo $this->Form->Create('Search',array('url'=>array('controller'=>'Looks','action'=>'serach'),'type'=>'get'));
+					echo $this->Form->input('keyword');
+					
+					echo $this->Form->end('Serach')
+					
+					
+					
+					
+						
+					?>
                     <div class="srch_div1">
-                         <input type="text" value="@User or #Caption" class="txt_box1" />
-                         <div class="srch_img"><a href="#"><img src="../img/img2.png" /></a></div>
+                         
+						 		
+		
+						
                       
                       </div>
                     <div class="div_rgt1">

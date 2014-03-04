@@ -2,6 +2,19 @@
 App::uses('AuthComponent', 'Controller/Component');
 class Product extends AppModel {
     public $name = 'Product';
+	
+	public $belongsTo = array(
+       
+        'Look' => array(
+            'className' => 'Look',
+            'foreignKey' => 'id'
+        ),
+		'Category' => array(
+            'className' => 'Category',
+            'foreignKey' => 'parent_id'
+        )
+    );
+	
 	public $validate = array(
 		'sku' => array(
 			'isUnique' => array (

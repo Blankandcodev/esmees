@@ -43,15 +43,37 @@
 	
 	public function gallery()
 	{
-		$this->set('categories', $this->Category->find('all'));
+		$allChildren = $this->Category->children(2,3);
+		$this->set('categories',$allChildren);
+		
 		$alllooks =$this->Look->find('all');
 		$this->set('allLooks', $alllooks);
 		
-		$brand_data = $this->Product->find('all',array('fields'=>'mnf_name','recursive'=>0,'group' => 'Product.mnf_name','conditions' => array('not' => array('Product.mnf_name'))));
-		$this->set('AllBrands',$brand_data);
+		
 		
 		
 	}
+	
+ public function serach()
+		{
+   
+		if (!empty($this->request->query['keyword'])) 
+		{ 
+		$this->paginate = array('conditions' => array(
+		'OR'=>array( 
+                'Look.caption_name LIKE' => '%'.$this->request->query['keyword'].'%', 
+				'User.username LIKE' => '%'.$this->request->query['keyword'].'%', 
+				
+               ))); 
+			   $results = $this->paginate('Look'); 
+			  $this->set('allLooks', $results);  
+		} 
+		else
+		{
+			  $results = $this->paginate('Look'); 
+			  $this->set('allLooks', $results); 
+		}
+     } 
 	
 	public function categories($id = null)
 	{
