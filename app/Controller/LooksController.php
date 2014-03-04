@@ -52,6 +52,9 @@
 		$this->set('categories', $cats);
 		$looks = $this->Look->find('all', array('group'=>'Look.product_id'));		
 		$this->set('looks', $looks);
+		
+		$brand_data = $this->Product->find('all',array('fields'=>'mnf_name','recursive'=>0,'group' => 'Product.mnf_name','conditions' => array('not' => array('Product.mnf_name'))));
+		$this->set('AllBrands',$brand_data);
 	}
 	
  public function serach()
