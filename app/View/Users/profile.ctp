@@ -26,7 +26,8 @@
 		</div>
 	</div>
 		<div class="look-listing">
-			<h1 class="sec-title"><?php echo $user['name']; ?>'s Looks</h1>
+			<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'looks', $user['id'])); ?>" class="title-btn right">View All</a>
+			<h1 class="sec-title bordered"><?php echo $user['name']; ?>'s Looks</h1>
 	<?php if(!empty($userLooks)){ ?>
 			<div class="listing cf">
 				<ul class="item-list cf">

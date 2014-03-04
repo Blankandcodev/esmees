@@ -9,7 +9,7 @@
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->deny();
-        $this->Auth->allow('add', 'login', 'register', 'followers', 'profile', 'sendNewUserMail');
+        $this->Auth->allow('add', 'login', 'looks', 'register', 'followers', 'profile', 'sendNewUserMail');
     }
 	
     public function isAuthorized($user){
@@ -22,104 +22,27 @@
 		}
 	}
 	
-	public function index()	{
-	if(!empty($this->user['id']))
-		{
-			$this->set('user', $this->User->read(null,$this->user['id']));
-			$user = $this->User->read(null, $this->user['id']);
-			$this->set('user', $user['User']);
-			
-			
-			$newlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $this->user['id'])));
-			
-			$this->set('userLooks',$newlooks);
-			
-			$wishlist = $this->Wishlist->find('all', array('conditions' => array('Wishlist.user_id' => $this->user['id'])));
-			
-			$this->set('wishLists',$wishlist);
-			
-			
-			$likeList = $this->Like->find('all', array('conditions' => array('Like.user_id' => $this->user['id'])));
-			
-			$this->set('likeLists',$likeList);
-			
-			
-			
-			
-			$flowCount = $this->Follower->find('count', array('conditions' => array('Follower.user_id' => $this->user['id'])));
-			
-			$this->set('flowCounts',$flowCount);
-			
-		}
-		else
-		{
-		//		return $this->redirect(array('action' => 'login'));	
-		}
-			
-			
+	public function index(){
+		$this->set('user', $this->User->read(null,$this->user['id']));
+		$user = $this->User->read(null, $this->user['id']);
+		$this->set('user', $user['User']);
+		
+		$newlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $this->user['id']),'limit' => 10));	
+		$this->set('userLooks',$newlooks);
+		
+		$wishlists = $this->Wishlist->find('all', array('conditions' => array('Wishlist.user_id' => $this->user['id']),'limit' => 10));
+		$this->set('wishLists',$wishlists);
+		
+		$flowCount = $this->Follower->find('count', array('conditions' => array('Follower.follow_id' => $this->user['id'])));		
+		$this->set('flowCounts',$flowCount);
 	}
-	
-	public function my_account()
-	{	
-		
-		if(!empty($this->user['id']))
-		{
-			$this->set('user', $this->User->read(null,$this->user['id']));
-			$user = $this->User->read(null, $this->user['id']);
-			$this->set('user', $user['User']);
-			
-			
-			$newlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $this->user['id'])));
-			$this->set('userLooks',$newlooks);
-			
-		
-			$wishlist = $this->Wishlist->find('all', array('conditions' => array('Wishlist.user_id' => $this->user['id'])));
-			$this->set('wishLists',$wishlist);
-			
-			$likeList = $this->Like->find('all', array('conditions' => array('Like.user_id' => $this->user['id'])));
-			$this->set('likeLists',$likeList);
-			
-			$likeCount = $this->Like->find('count', array('conditions' => array('Like.user_id' => $this->user['id'])));
-			$this->set('likeCounts',$likeCount);
-			
-			$flowCount = $this->Follower->find('count', array('conditions' => array('Follower.user_id' => $this->user['id'])));
-			
-			$this->set('flowCounts',$flowCount);
-			
-			
-			
-			
-		}
-		
-		
-		
-		
-	}
-	
 	public function portfolio(){
 		$orders = $this->Order->find('all', array(
 			'conditions' => array('Order.user_id' => $this->user['id']),
 			'group' => array('Order.product_id')
 		));
 		$this->set('orderLists',$orders);
-	}
-	
-	public function view_newlooks($orderid=null)
-	{
-		if(!empty($this->user['id']))
-			{
-			$orderlist = $this->Order->find('all', array('conditions' => array('Order.order_id' =>$orderid )));
-			$this->set('productImages',$orderlist);
-			
-			
-			$productlists = $this->Look->find('all', array('conditions' => array('Look.order_id' =>$orderid )));
-			$this->set('memberImages',$productlists);
-			}
-			
-			
-	}
-	
-	
+	}	
 	
 	public function followed_user(){
 	  	$this->Paginator->settings = $this->paginate;
@@ -145,12 +68,33 @@
 		}
 	}
 	
+	public function looks($userId = null){
+		if(!empty($userId)){
+			$this->User->contain();
+			$user = $this->User->find('first', array('conditions' => array('User.id' => $userId)));
+			
+			$this->Paginator->settings = $this->paginate;
+			$looks = $this->Paginator->paginate('Look', array(
+				'Look.user_id' => $userId
+			));
+			$this->set('looks',$looks);
+			$this->set('user', $user['User']);
+		}
+	}
+	
+	public function wishlist(){
+	  	$this->Paginator->settings = $this->paginate;
+		$wishlists = $this->Paginator->paginate('Wishlist', array(
+			'Wishlist.user_id' => $this->user['id']
+		));
+		$this->set('wishLists',$wishlists);
+	}
+	
 	public function profile($id=null){
 		if($id != null){
 			$user = $this->User->find('first', array('conditions' => array('User.id' => $id)));
 		}
 		if($id != null && !empty($user)){
-			$this->Follower->contain('User');
 			$this->Follower->contain('followedby');
 			$followers = $this->Follower->find('all', array('conditions' => array('Follower.follow_id' => $id),'limit' => 10));
 			$newlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $id),'limit' => 10));
@@ -168,6 +112,8 @@
 			throw new NotFoundException(__('Not Found'));
 		}
 	}
+	
+	
 	
 	public function follow($uid=null){
 		if($uid != null){
@@ -196,28 +142,22 @@
 			$this->redirect($this->referer());
 		}else{
 			$this->Session->setFlash('Please select a User to unfollow.', 'flash_error');
-			$this->redirect($this->reffrer());
+			$this->redirect($this->referer());
 		}
 	}
 
 	
-	public function user_profile($id=null)
-	{
-		$id=$this->Session->read('Auth.User.id');
-		if(!empty($id))
-		{
-		$this->User->id = $id;
-        if (empty($this->data))
-        {
-            $this->data = $this->User->read();
-			$userprofile = $this->data = $this->User->read();
-			$this->set('userProfile',$userprofile);
-			
-			$productlists = $this->Look->find('all', array('conditions' => array('Look.user_id' => $id )));
-			$this->set('memberImages',$productlists);
-			
-        }
-		$users = $this->User->find('first', array('conditions' => array('User.id' => $id)));
+	public function edit_profile(){
+		$id = $this->user['id'];
+		
+		$users = $this->User->find('first', array(
+					'conditions' => array(
+						'User.id'=> $id
+					)
+				)
+			);
+		$this->data = $users;
+		$this->set('userProfile',$users['User']);
 		if ($this->request->is('post') || $this->request->is('put')) {
 		
 			 if (empty($this->data['User']['image']['name'])) {
@@ -243,282 +183,48 @@
 				}
 		
 		}
-		
-		$newlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $this->user['id'])));
-		$this->set('userLooks',$newlooks);
-		if(!empty($this->user['id']))
-		{
-			$wishlist = $this->Wishlist->find('all', array('conditions' => array('Wishlist.user_id' => $this->user['id'])));
-			
-			$this->set('wishLists',$wishlist);
-			
-			
-		
-			$likeList = $this->Like->find('all', array('conditions' => array('Like.user_id' => $this->user['id'])));
-			
-			$this->set('likeLists',$likeList);
-			
-			
-			
-		
-		
-			$likeCount = $this->Like->find('count', array('conditions' => array('Like.user_id' => $this->user['id'])));
-			
-			$this->set('likeCounts',$likeCount);
-			
-			
-			
-			
-		}
-	
-	else
-	{
-		return $this->redirect(array('action' => 'login'));	
-	}
-	}
 	}
 	
 
 	
 	public function add_wishlist($objId = null, $type = 0){
 		
-		if($this->user && $objId){
-			$checkExist = $this->Wishlist->find('count', array('conditions'=>array('Wishlist.product_id'=>$objId, 'Wishlist.user_id'=>$this->user['id'])));
-			
-			
-			if(!$checkExist)
-			{
-				if ($this->Wishlist->save(array('product_id'=>$objId, 'user_id'=>$this->user['id'], 'type'=>$type))){
-					$this->Session->setFlash('The Item has added to your Wishlist.', 'flash_success');
-				}else{
-					$this->Session->setFlash('The Item has could not be added to your Wishlist.', 'flash_error');
-				}
+		if($objId){
+			if ($this->Wishlist->save(array('product_id'=>$objId, 'user_id'=>$this->user['id'], 'type'=>$type))){
+				$this->Session->setFlash('The Item has added to your Wishlist.', 'flash_success');
 			}else{
-				$this->Session->setFlash('The Item is already in your Wishlist.', 'flash_error');
+				$this->Session->setFlash('The Item has could not be added to your Wishlist.', 'flash_error');
 			}
-			if($type == 1)
-			{
-				$this->redirect(array('controller'=>'Looks', 'action' => 'detail', $objId));
-			}
-			else
-			{
-				$this->redirect(array('controller'=>'Products', 'action' => 'product_details', $objId));
-			}
-		}else{
-			return $this->redirect(array('action' => 'login'));	
+		}
+		$this->redirect($this->referer());
+	}
+	function delete_wishlist($id=null){
+		if($id != null){
+			$this->Wishlist->delete($id);
+			$this->Session->setFlash('The WishList item has been deleted.');
+			$this->redirect($this->referer());
 		}
 	}
 	
-	
-	public function addlooks_wishlists($objId = null, $type = 1){
-		
-		if($this->user && $objId){
-			$checkExist = $this->Wishlist->find('count', array('conditions'=>array('Wishlist.product_id'=>$objId, 'Wishlist.user_id'=>$this->user['id'])));
-			if(!$checkExist)
-			{
-				if ($this->Wishlist->save(array('product_id'=>$objId, 'user_id'=>$this->user['id'], 'type'=>$type))){
-					$this->Session->setFlash('The Item has added to your Wishlist.', 'flash_success');
-				}else{
-					$this->Session->setFlash('The Item has could not be added to your Wishlist.', 'flash_error');
-				}
-			}else{
-				$this->Session->setFlash('The Item is already in your Wishlist.', 'flash_error');
-			}
-			if($type == 1)
-			{
-				$this->redirect(array('controller'=>'Looks', 'action' => 'detail', $objId));
-			}
-			else
-			{
-				$this->redirect(array('controller'=>'Looks', 'action' => 'detail', $objId));
-			}
-		}else{
-			return $this->redirect(array('action' => 'login'));	
-		}
-	}
-	
-	
-	public function add_Like($objId = null,$type = 1){
-		
-		if($this->user && $objId){
-		
-			
-			$checkExist = $this->Like->find('count', array('conditions'=>array('Like.product_id'=>$objId, 'Like.user_id'=>$this->user['id'])));
-			
-			
-			if(!$checkExist)
-			{
-				if ($this->Like->save(array('product_id'=>$objId, 'user_id'=>$this->user['id']))){
-					$this->Session->setFlash('The Item has added to your Likes.', 'flash_success');
-				}else{
-					$this->Session->setFlash('The Item has could not be added to your Likes.', 'flash_error');
-				}
-			}else{
-				$this->Session->setFlash('The Item is already in your Likes.', 'flash_error');
-			}
-			if($type == 1)
-			{
-				$this->redirect(array('controller'=>'Looks', 'action' => 'detail', $objId));
-			}
-			else
-			{
-				$this->redirect(array('controller'=>'Looks', 'action' => 'detail', $objId));
-			}
-		}else{
-			return $this->redirect(array('action' => 'login'));	
-		}
-	}
-	
-	
-	
-	public function viewall_wishlist()
-	{
-	if(!empty($this->user['id']))
-		{
-		
-			$wishlists = $this->Wishlist->find('all', array('conditions' => array('Wishlist.user_id' => $this->user['id'],'Wishlist.type' => '0'  )));
-			$this->set('wishLists',$wishlists);
-	
-			
-			$userlooks = $this->Wishlist->find('all', array('conditions' => array('Wishlist.type' => '1'  )));
-			
-			$userlooks= $this->Look->find('all', array('conditions' => array('Look.product_id' => $userlooks[0]['Wishlist']['product_id'],'Look.user_id' => $this->user['id']  )));
-			$this->set('userLooks',$userlooks);
-			
-			
-			
-			
-			
-	}
-		
-	}
 	
 	public function commission()
 	{
 		
 	}
 	
-	
-	
-	
-	
-
-	
-	public function purchase()
-	{
-		
-		$orders = $this->Order->find('all', array('group' => array('Order.product_id')));
-		$this->set('orders', $orders);
+	function delete_potfolio($id){
+		$this->Look->delete($id);
+		$this->Session->setFlash('The Portfolio with id: '.$id.' has been deleted.');
+		$this->redirect($this->referer());
 	}
 	
-	
-	
-	public function purchase_items()
-	{
-			
-		
-			
-			$orderid = $this->Order->find('all', array('Order.user_id'=>$this->user['id']));
-			$oid=$orderid['Order']['product_id'];
-			echo $oid;
-			$orders = $this->Order->find('all', array('Order.order_id' => $orderid['Order']['order_id'],'Order.product_id' => $orderid['Order']['product_id'],'Order.user_id'=>$this->user['id']));
-		    $this->set('orders', $orders);
-			$productlists = $this->Look->find('all', array('conditions' => array('Look.order_id' => $orderid['Order']['order_id'],'Look.product_id' =>$orderid['Order']['product_id'], 'Look.user_id' => $this->user['id'] )));
-			$this->set('memberImages',$productlists);
-			
+	function delete_lookimage($id=null, $orderid=null){
+		$this->Look->delete($id);
+		$this->Session->setFlash('The Look with id: '.$id.' has been deleted.');
+		$this->redirect(array('action'=>'view_newlooks',$orderid));
+		$this->redirect($this->referer());
 	}
-	
-	
-	public function order_details()
-	{
-		
-		
-		
-		
-		
-		
-			if(!empty($this->user['id']))
-			{
-				$orderlists = $this->Order->find('all', array('conditions'=>array('Order.user_id'=>$this->user['id'])));
-				$this->set('orderList',$orderlists);
-				
-				//$this->set('order', $this->Order->read(null,$this->user['id']));
-			
-				//$orderlists = $this->Order->read(null, $this->user['id']);
-				//$this->set('orderList', $orderlists);
-				//print_r($orderlists);
-				//print_r($this->user['id']);
-				
-				
-			}
-		
-			
-			
-	}
-	 
-	
-	
-	function delete_potfolio($id)
-    {
-		if(!empty($this->user['id']))
-			{
-				
-				$this->Look->delete($id);
-				$this->Session->setFlash('The Portfolio with id: '.$id.' has been deleted.');
-				$this->redirect(array('action'=>'portfolio',$id));
-				
-				
-			}
-		}
-	
-	function delete_lookimage($id=null, $orderid=null)
-    {
-		if(!empty($this->user['id']))
-			{
-				echo $orderid;
-				$this->Look->delete($id);
-				$this->Session->setFlash('The Look with id: '.$id.' has been deleted.');
-				$this->redirect(array('action'=>'view_newlooks',$orderid));
-				
-				
-			}
-		}
 
-	function delete_wishlist($id=null)
-    {
-		if(!empty($this->user['id']))
-			{
-				
-				$this->Wishlist->delete($id);
-				$this->Session->setFlash('The WishList with id: '.$id.' has been deleted.');
-				$this->redirect(array('action'=>'viewall_wishlist',$id));
-
-				
-				
-			}
-		}
-		
-	function delete_wishlistlook($id=null)
-    {
-		if(!empty($this->user['id']))
-			{
-				
-				
-				
-				$this->Wishlist->delete(array('Wishlist.id' => '$id'));
-				$this->Session->setFlash('The WishList with id: '.$id.' has been deleted.');
-				$this->redirect(array('action'=>'viewall_wishlist',$id));
-				
-			
-				
-
-				
-				
-			}
-		}
-   
-   
-   
 	
 	function edit_lookimage($id)
     {

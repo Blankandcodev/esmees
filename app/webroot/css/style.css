@@ -512,6 +512,11 @@ form{
 fieldset{
 	padding:20px;
 }
+
+.hform fieldset{
+	padding:0px;
+}
+
 form legend {
 	background: none repeat scroll 0 0 #E5E5E5;
 	display: block;
@@ -582,7 +587,7 @@ h3.subtitle{border-bottom: 1px solid #000000; color: #6C6C6C; font-size: 16px; f
 
 .listing{margin:10px 0;}
 .listing ul{display:block; margin:0 -10px;}
-.listing ul li{position:relative; float:left; margin:0 10px; display:block; width:184px;}
+.listing ul li{position:relative; float:left; margin:0 10px 25px; display:block; width:184px;}
 .listing ul li .image{display:block; height:232px; border:1px solid #ddd; margin:0 0 10px;}
 .listing ul li .image a{display:block; line-height:232px; height:100%; width:100%; text-align:center;}
 .listing ul li .image img{max-height:100%; max-width:100%; vertical-align:middle;}
