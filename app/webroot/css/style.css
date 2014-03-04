@@ -67,7 +67,7 @@ h1,h2,h3,h4,h5,h6,ul,img,a,p{margin:0px; padding:0px;text-decoration:none;list-s
 
 /*********************************ContentSection starts---------------------------------------*/
 .content{ float:left; width:100%; height:auto; margin-top:17px; min-height:800px;}
-.content_div1{ float:left; width:100%; height:auto;}
+
 .div_lft{ float:left; width:490px; border:1px solid #c7c7c7; background-image:url(../img/img3.png); height:485px;}
 .div_txt{ float:left; width:304px; margin:26px;}
 .titl{ float:left; text-align:left; font-family:Arial, Helvetica, sans-serif; font-size:28px; color:#3a3a3a; width:100%;}
@@ -75,7 +75,7 @@ h1,h2,h3,h4,h5,h6,ul,img,a,p{margin:0px; padding:0px;text-decoration:none;list-s
 .div_btn{ float:left;  width:304px; margin:26px;position: relative;top: 202px;}
 .div_btn input.btnn1{ float:left; width:123px; height:37px; border-radius:4px; cursor:pointer; background-image:url(../img/img4.png); font-size:16px; color:#ffffff; border:1px solid #000000;}
 .div_rgt{ float:right; width:490px; border:1px solid #c7c7c7; background-image:url(../img/img5.png); height:485px;}
-.banr{ float:left; background-image:url(../img/img6.png); width:100%; margin-top:12px; height:225px;}
+.banr{ background-image:url(../img/img6.png); width:100%; margin:12px 0; height:225px;}
 .txt2{ float:right; width:427px; margin:35px 82px 0px 0px; color:#000000; font-size:63px; text-transform:uppercase; text-align:center; }
 .txt2 span.span1{ color:#ff031a;}
 .content_div2{ float:left; width:100%; height:auto; margin-top:14px;}
@@ -552,6 +552,74 @@ form .submit{
 .floated .submit{clear:both;}
 .sec-title span{font-style:italic; color:#666;}
 img{max-width:100%;}
+
+/* Home Page */
+.srch_div {border:0; position:relative;}
+.srch_div form {display:block; width:100%; float:left;}
+.srch_div form .input{padding:0; margin:0; float:left;}
+.srch_div form .submit{position:absolute; right:0; top:0; margin:0; padding:0;}
+.srch_div form .submit input:hover,
+.srch_div form .submit input{
+	margin:0;
+	background:url(../img/img2.png) 50% 50% no-repeat transparent;
+	border:0;
+	height:32px;
+	width:35px;
+	text-indent:-999em;
+	padding:0 15px;
+	box-shadow:none;
+	-moz-box-shadow:none;
+	-webkit-box-shadow:none;
+}
+.srch_div form .input label{display:none;}
+.srch_div form .input  input[type=text]{
+	border-color:#ccc;
+	color: #666;
+	float: left;
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 14px;
+	height: 20px;
+	padding:5px 40px 5px 0;
+	line-height: 30px;
+	text-align: left;
+	text-indent: 6px;
+	width: 260px;
+}
+
+.heading{
+	clear:both;
+	background-color: #2E2E2E;
+	min-height:50px;
+	display:block;
+	width: 100%;
+}
+.heading h1{
+	color: #FFFFFF;
+	font-family: 'helvetica_blackregular';
+	font-size: 37px;
+	line-height: 50px;
+	margin-left: 10px;
+}
+.heading h1 span{
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 38px;
+	font-style: italic;
+	letter-spacing: 1px;
+}
+.heading .title-btn {
+	color: #FFFFFF;
+	float: right;
+	font-family: 'helvetica_blackregular';
+	font-size: 22.32px;
+	font-style: italic;
+	font-weight: normal;
+	line-height: 50px;
+	margin-right: 20px;
+	margin-top: 0;
+}
+.heading a{color:#fff;}
+.heading a:hover{}
+
 /* Detail Page Style **/
 .item-detail{padding-bottom:30px; border-bottom:1px solid #ddd; margin-bottom:30px;}
 .image-box img{max-width:100%; max-height:100%;}
@@ -586,22 +654,40 @@ h3.subtitle{border-bottom: 1px solid #000000; color: #6C6C6C; font-size: 16px; f
 
 
 .listing{margin:10px 0;}
+.listing a{color:#3f3f3f;}
 .listing ul{display:block; margin:0 -10px;}
 .listing ul li{position:relative; float:left; margin:0 10px 25px; display:block; width:184px;}
 .listing ul li .image{display:block; height:232px; border:1px solid #ddd; margin:0 0 10px;}
 .listing ul li .image a{display:block; line-height:232px; height:100%; width:100%; text-align:center;}
-.listing ul li .image img{max-height:100%; max-width:100%; vertical-align:middle;}
+.listing ul li .image img{max-height:99%; max-width:100%; vertical-align:middle;}
 .listing .info{color: #444444; font-size: 14px; font-weight: bold; line-height:18px;}
 .listing .info .i-title{color: #444444; font-size: 14px; font-weight: bold; margin-bottom: 5px;}
 .listing .info .user-name{}
 
+.price-box a{color:#000;}
+.price-box .price{color:#f00;}
+.lthru,
+.price-box .price.lthru{text-decoration:line-through; margin-right:10px; color:#000;}
+.price-box .sale-price{color:#f00;}
+
 /* USER PAGE STYLE */
 .title-btn{margin-top:8px; font-weight:bold; }
-.title h1{font-size:24px; clear:both;}
+.title {height:30px; margin:0 0 12px;}
+.title .srch_div{margin:0px;}
+.title h1{font-size:24px; clear:both;color: #3F3F3F; margin:0;}
+.title h1 span{
+	color: #3F3F3F;
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 22px;
+	font-weight:normal;
+	font-style:italic;
+	text-align: left;
+}
 .page-container{}
 .colset{}
 .col2 .left{ width:185px;}
 .col2 .main{float:right; width:795px;}
+h3.box-title{padding:0 15px;}
 
 .nav-box{margin:0 0 15px; background:#F1F1F1; padding:10px 0;}
 .left-nav{list-style:none; margin:0; padding:0;}

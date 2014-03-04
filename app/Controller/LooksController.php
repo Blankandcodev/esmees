@@ -41,11 +41,17 @@
 	}
 	
 	
-	public function gallery()
-	{
-		$this->set('categories', $this->Category->find('all'));
-		$alllooks =$this->Look->find('all');
-		$this->set('allLooks', $alllooks);
+	public function gallery(){
+		$parent = $this->Category->find('first', array('conditions' => array(
+			'Category.id' => 1
+		)));
+		$cats = $this->Category->find('threaded', array('conditions' => array(
+			'Category.lft >' => $parent['Category']['lft'], 
+			'Category.rght <' => $parent['Category']['rght']
+		)));
+		$this->set('categories', $cats);
+		$looks = $this->Look->find('all', array('group'=>'Look.product_id'));		
+		$this->set('looks', $looks);
 		
 		$brand_data = $this->Product->find('all',array('fields'=>'mnf_name','recursive'=>0,'group' => 'Product.mnf_name','conditions' => array('not' => array('Product.mnf_name'))));
 		$this->set('AllBrands',$brand_data);
