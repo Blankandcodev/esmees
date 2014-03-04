@@ -41,7 +41,7 @@
 	}
 	
 	
-	public function gallery(){
+	public function gallery($id = null){
 		$parent = $this->Category->find('first', array('conditions' => array(
 			'Category.id' => 1
 		)));
@@ -50,7 +50,36 @@
 			'Category.rght <' => $parent['Category']['rght']
 		)));
 		$this->set('categories', $cats);
-		$looks = $this->Look->find('all', array('group'=>'Look.product_id'));		
+		
+		$this->Look->contain('User', 'Like');
+		$this->paginate = array('group'=>'Look.product_id'); 			
+		$looks = $this->paginate('Look');
+		
+		$id = intval($id);
+				
+		$cond0 = array();
+		if(isset($this->request->query['brand']) && $this->request->query['brand'] != ''){
+			$brand = $this->request->query['brand'];
+			array_push($cond0, "Look.brand = '$brand'");
+		};
+		if(!empty($id) && is_int($id)){
+			$subCats = $this->Category->children($id, false, 'Category.id');
+			$cond = array();
+			array_push($cond, "Look.category_id = $id");
+			foreach($subCats as $scat){
+				$sid = $scat ['Category']['id'];
+				array_push($cond, "Look.category_id = $sid");
+			}
+			
+			
+			$this->Look->contain('User', 'Like');
+			$this->paginate = array('conditions' => array(
+				'AND'=>$cond0,
+				'OR'=>$cond
+			),'group'=>'Look.product_id'); 			
+			$looks = $this->paginate('Look');
+		}
+
 		$this->set('looks', $looks);
 		
 		$brand_data = $this->Product->find('all',array('fields'=>'mnf_name','recursive'=>0,'group' => 'Product.mnf_name','conditions' => array('not' => array('Product.mnf_name'))));

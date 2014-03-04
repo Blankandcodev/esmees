@@ -670,6 +670,10 @@ h3.subtitle{border-bottom: 1px solid #000000; color: #6C6C6C; font-size: 16px; f
 .price-box .price.lthru{text-decoration:line-through; margin-right:10px; color:#000;}
 .price-box .sale-price{color:#f00;}
 
+ul.cat_menu li a{background:url(../img/img13.png) 15px 50% no-repeat; padding-left:25px;}
+ul.cat_menu li.parent > a{font-weight:bold;}
+li.parent ul.cat_menu{margin-left:10px;}
+
 /* USER PAGE STYLE */
 .title-btn{margin-top:8px; font-weight:bold; }
 .title {height:30px; margin:0 0 12px;}

@@ -19,7 +19,7 @@
 						
 						<a href="#"><img src="<?php echo $this->webroot; ?>/img/img13.png" width="7" height="10" /></a>
 						
-						 <a href="<?php echo $this->Html->url(array('controller'=>'products', 'action'=>'men_gallery',$category['Category']['id'])) ?>">
+						 <a href="<?php echo $this->Html->url(array('controller'=>'products', 'action'=>'men_gallery',$category['Category']['name'])) ?>">
                         <?php echo  $category['Category']['name']; ?>
 						 
 						</a>

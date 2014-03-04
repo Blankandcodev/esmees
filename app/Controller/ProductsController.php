@@ -105,7 +105,8 @@
 	
 	public function men_gallery($id=null ,$bname=null)
 	{
-		$allChildren = $this->Category->children(2);
+		$allChildren = $this->Category->children(5
+		);
 		$this->set('categories',$allChildren); 
 		$brand_data = $this->Product->find('all',array('fields'=>'mnf_name','recursive'=>0,'group' => 'Product.mnf_name','conditions' => array('not' => array('Product.mnf_name'))));
 		$this->set('AllBrands',$brand_data);
@@ -127,17 +128,27 @@
 			   $this->set('allProducts', $results); 
 		}
 		
-		else if (!empty($id))
-		{ 
-			 $this->paginate = array('conditions' => array('Product.Parent_id' => $id )); 
+		else if (!empty($id) &&  is_int($id))
+		{
+			$subCats = $this->Category->children($id, false, 'Category.id');
+			$cond = array();
+			array_push($cond, "Product.Parent_id = $id");
+			foreach($subCats as $scat){
+				$sid = $scat ['Category']['id'];
+				array_push($cond, "Product.Parent_id = $sid");
+			}
+			$this->paginate = array('conditions' => array( 'OR'=>$cond)); 
 			 $results = $this->paginate('Product'); 
 			 $this->set('allProducts', $results); 
 		} 
 		
 		else
 		{
+			$this->paginate = array('conditions' => array('Product.advetiser_name'=>$id)); 
 			 $results = $this->paginate('Product'); 
-			  $this->set('allProducts', $results); 
+			 $this->set('allProducts', $results); 
+			// $results = $this->paginate('Product'); 
+			 // $this->set('allProducts', $results); 
 		}
 		
 		

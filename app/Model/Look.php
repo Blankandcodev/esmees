@@ -1,6 +1,6 @@
 <?php
-	class Look extends AppModel 
-	{
+	class Look extends AppModel{
+		var $actsAs = array('Containable');
 	 Public $name = 'Look';
 	 public $hasMany = array(
 		 'Like' => array(

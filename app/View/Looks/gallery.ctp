@@ -20,15 +20,8 @@
 			<div class="nav-box">
 				<h3 class="box-title">Categories</h3>
 				<ul class="left-nav">
-					<?php 
-					echo $this->Menu->menu($categories,'down'); 
-					foreach($categories as $category){ ?>
-						<li>
-							<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'categories',$category['Category']['id'])) ?>">
-								<?php echo  $category['Category']['name']; ?>
-							</a>
-                       </li>
-					<?php }; ?>
+					<?php $url = $this->Html->url(array('controller'=>'Looks', 'action'=>'gallery'), true); ?>
+					<?php echo $this->Menu->menu($categories, 'list', $url); ?>
 				</ul>
 			</div>
 			<div class="nav-box">
@@ -36,7 +29,7 @@
 				<ul class="left-nav">
 					<?php foreach($AllBrands as $brand){ ?>
 						<li>
-							<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'brands',$brand['Product']['mnf_name'])) ?>">
+							<a href="<?php echo $this->here.'?brand='.$brand['Product']['mnf_name']; ?>">
 								<?php echo  $brand['Product']['mnf_name']; ?>
 							</a>
 						</li>
@@ -68,7 +61,7 @@
 						</ul>
 					</div>
 				<?php }else{
-					echo '<div class="flash">No looks uploaded yet!</div>';
+					echo '<div class="flash">Looks not fount!</div>';
 				} ?>
 			</div>
 		</div>
