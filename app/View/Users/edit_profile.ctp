@@ -21,7 +21,10 @@
 					<h2 class="sub-title bordered">Edit Profile Information</h2>			
 				<?php echo $this->Form->create('User', array('type'=>'file', 'class'=>'hform'));?>
 					<fieldset>
-						<?php echo $this->Form->input('name',array('label'=>' Full Name', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
+						<?php echo $this->Form->input('display_name',array('label'=>'Nick Name', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
+						<?php echo $this->Form->input('name',array('label'=>'First Name', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
+						<?php echo $this->Form->input('middle_name',array('label'=>' Middle Name', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
+						<?php echo $this->Form->input('last_name',array('label'=>' Last Name', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
 						<?php echo $this->Form->input('username', array('label'=>' Email Address', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
 						<?php echo $this->Form->input('address',array('label'=>'Address', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>
 						<?php echo $this->Form->input('ss_number', array('label'=>'Social Security Number', 'type'=>'text', 'required', 'div' => array('class' => 'required'))); ?>

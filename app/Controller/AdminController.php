@@ -39,7 +39,7 @@
 
     public function login() {
 		$this->layout = 'blank';
-		print_r($this->Auth->user());
+		
         if ($this->request->is('post')) {
             if ($this->Auth->login()){
                 $this->Session->setFlash(__('You are successfully logged in'), 'flash_success');
@@ -198,6 +198,8 @@
 			$this->redirect(array('action' => 'index'));
 		}
 	}
+	
+
 		
 	function edit_product($id = null) {
 	

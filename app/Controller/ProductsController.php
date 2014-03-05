@@ -160,24 +160,13 @@
     }
 	public function product_details($productId=null)
 	{
-			
-		
-		
-		if(!empty($productId))
-		{
+		if(!empty($productId)){
+			$this->Product->contain();
 			$details=$this->Product->find('first', array('conditions' => array('Product.id' => $productId )));
 			$this->set('products', $details);  
-	
-			
-			
-			
 			
 			$whowearlists = $this->Product->find('all',array('conditions' => array('Product.id' => $productId)));
 			$this->set('whoWears',$whowearlists);
-			
-			
-			
-			
 			$mname=	$this->Product->find('first', array('conditions'=>array('Product.id'=>$productId),'fields'=>array('Product.mnf_name')));
 			$this->set('brands', $mname); 
 			
