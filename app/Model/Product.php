@@ -2,6 +2,7 @@
 App::uses('AuthComponent', 'Controller/Component');
 class Product extends AppModel {
     public $name = 'Product';
+	var $actsAs = array('Containable');
 	
 	public $belongsTo = array(
        

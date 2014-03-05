@@ -1,11 +1,20 @@
-<!-- app/View/Users/add.ctp -->
+
 <div class="users form">
 <?php echo $this->Form->create('User'); ?>
     <fieldset>
         <legend><?php echo __('User Registration'); ?></legend>
     <?php
         echo $this->Form->input('role', array('value'=>'0', 'type'=>'hidden'));
-        echo $this->Form->input('name',  array('label'=>'Full Name','maxLength'=>'50',  'type'=>'text', 'required', 'div' => array(
+		 echo $this->Form->input('display_name',  array('label'=>'Nick Name','maxLength'=>'50',  'type'=>'text', 'required', 'div' => array(
+			'class' => 'required',
+		)));
+        echo $this->Form->input('name',  array('label'=>'First Name','maxLength'=>'50',  'type'=>'text', 'required', 'div' => array(
+			'class' => 'required',
+		)));
+		 echo $this->Form->input('middle_name',  array('label'=>'Middle Name','maxLength'=>'50',  'type'=>'text', 'required', 'div' => array(
+			'class' => 'required',
+		)));
+		 echo $this->Form->input('last_name',  array('label'=>'Last Name','maxLength'=>'50',  'type'=>'text', 'required', 'div' => array(
 			'class' => 'required',
 		)));
         echo $this->Form->input('gender', array('label'=>'Gender', 'type'=>'radio', 'options' => array('0' => 'Male', '1' => 'Female') ));
