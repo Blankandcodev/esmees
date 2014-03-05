@@ -383,6 +383,7 @@ letter-spacing: 1px;}
 
 
 /* Common Styles */
+a{color:#000;}
 .left{float:left;}
 .right{float:right;}
 .cf:before,
@@ -674,9 +675,24 @@ ul.cat_menu li a{background:url(../img/img13.png) 15px 50% no-repeat; padding-le
 ul.cat_menu li.parent > a{font-weight:bold;}
 li.parent ul.cat_menu{margin-left:10px;}
 
+.filter{display:block; margin:0 0 20px; height:25px;}
+.filter ul.filter-menu{margin:0; padding:0; list-style:none;}
+.filter ul.filter-menu li{float:left; margin-right:10px;}
+.filter ul.filter-menu li a {
+  background: url("../img/cros1.png") no-repeat scroll 100% 50% #E5E5E5;
+  color: #333333;
+  text-transform:capitalize;
+  display: block;
+  line-height: 25px;
+  padding: 0 30px 0 10px;
+}
+.filter ul.filter-menu li.cat{display:none;}
+.filter ul.filter-menu li a span{font-weight:bold; color:#000;}
+.filter ul.filter-menu li a:hover{background-color:#ccc;}
+
 /* USER PAGE STYLE */
 .title-btn{margin-top:8px; font-weight:bold; }
-.title {height:30px; margin:0 0 12px;}
+.title {min-height:30px; margin:0 0 12px;}
 .title .srch_div{margin:0px;}
 .title h1{font-size:24px; clear:both;color: #3F3F3F; margin:0;}
 .title h1 span{
@@ -690,7 +706,7 @@ li.parent ul.cat_menu{margin-left:10px;}
 .page-container{}
 .colset{}
 .col2 .left{ width:185px;}
-.col2 .main{float:right; width:795px;}
+.col2 .main{float:right; width:796px;}
 h3.box-title{padding:0 15px;}
 
 .nav-box{margin:0 0 15px; background:#F1F1F1; padding:10px 0;}

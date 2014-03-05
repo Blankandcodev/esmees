@@ -1,95 +1,105 @@
-
-   <div align="center">
-        <div class="container">
-        
-            <div class="content_fwd">
-               <div class="pgm_bnr">
-			   	<div class="pgm_bnr2"> <img src="../img/pgm_bnr.png" /></div>
-					<div class="bnr_rt">
-						<div class="bnr_hd">Shop by Hot Products</div>
-							<div class="bnr_p">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are , you need to be sure there isn't anything embarrassing hidden in the middle of text.</div>
-						<div class="brnd"><img src="../img/ht_bnr.png" /></div>
-							<div class="by_nw_btn"><a href="#"><img src="../img/by_nw_btn.png" /></a></div>
-						</div>
-			   </div>
-			   		<div class="pgm_cntnt2">
-						<div class="trnd_hd">
-						    <div class="txt_lft">#TREND<span class="span2">Setters</span></div>
-									<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'gallery'),true) ?>"><div class="trnd_txt_rt"><i>View all</i></div></a>
-						</div>
-								<div class="list5">
-									<ul class="listing cf">
+<div class="page-container home-page">
+	<div class="content_div1 cf">
+		<div class="div_lft">
+			<div class="div_txt">
+				<div class="titl">Shop by Hot Products</div>
+				<div class="txt1">Lorem Ipsum Standard text Portion for Dummy Text Area Lorem Ipsum<br /> Standard text Portion<br /> for Dummy Text.
+				</div>
+			</div>
+			<div class="div_btn">
+				<input type="button" value="Buy Now!" class="btnn1" />
+			</div>
+		</div>
 
 
-									<?php foreach ($looks as $look): ?>
-									  <li class="item-list">
-										<div class="image">
-												<?php  echo $this->Html->link($this->Html->image('Looks/big/'.$look['Look']['image']), array(
-                                                    'controller' => 'Looks',
-                                                    'action' => 'detail',
-                                                    $look['Look']['product_id']
-                                               ), array(
-                                                    'escape' => false
-                                                   
-                                               )); ?>
-						
-						
-										<div class="list_txt">
-										   
-										</div>
-									  </li>
-							<?php endforeach; ?>
-									  <li>
-										
-									</ul>
-                          </div>
-						  		<div class="trnd_hd">
-						    <div class="txt_lft">#NewOnThe<span class="span2">Web</span></div>
-									<a href="<?php echo $this->Html->url(array('controller'=>'products', 'action'=>'men_gallery'),true) ?>"><div class="trnd_txt_rt"><i>View all</i></div></a>
-						</div>
-								<div class="list5">
-									<ul>
-										<?php foreach ($products as $product): ?>
-									  <li>
-										<div class="div_pic1">
-										<?php echo $this->Html->link($this->Html->image($product['Product']['image_url'], array( 'alt' => 'Clear list')), array(
-                                                    'controller' => 'Products',
-                                                    'action' => 'product_details',
-                                                    $product['Product']['id']
-                                               ), array(
-                                                    'escape' => false
-                                                   
-                                               )); ?>
-										</div>
-										  <div class="list_txt">
-										   <div class="txt5">
-													
-										    <?php echo $this->Text->truncate($product['Product']['name'],10,	array('ellipsis' => '...','exact' => 'false')); ?>
-										   </div>
-										    
-										     <div class="txtt5">$<?php echo  $product['Product']['price']; ?></div>
-										</div>
-									  </li>
-									  <?php endforeach; ?>
-									  
-									</ul>
-                          </div>
-					</div>	 
-						
-					</div>
-                
-                
-                
-                
-                
-            
-            
-            
-          
-        
-        <div class="clear"></div>
-        </div>
-   
-   </div>
-
-
+		<div class="div_rgt">
+			<div class="div_txt">
+				<div class="titl">Shop by Member Looks</div>
+				<div class="txt1">Lorem Ipsum Standard text Portion for Dummy Text Area Lorem Ipsum<br /> Standard text Portion<br /> for Dummy Text.</div>
+			</div>
+			<div class="div_btn">
+				<input type="button" value="Buy Now!" class="btnn1" />
+			</div>
+		</div>
+	</div>
+	<div class="banr"></div>
+	
+	<div class="look-listing">	
+		<div class="heading">
+			<div class="title-btn">
+				<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'gallery', 'men')); ?>">View All</a>
+			</div>
+			<h1>#TREND<span>Setters</span></h1>
+		</div>
+		<?php if(!empty($looks)){ ?>
+			<div class="listing cf">
+				<ul class="item-list cf">
+					<?php foreach($looks as $mlook){?>
+						<li>
+							<div class="image">
+								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['id']),true) ?>"><?php echo $this->Html->image('Looks/home/'.$mlook['Look']['image']);?></a>
+							</div>
+							<div class="info">
+								<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '...','exact' => 'false')); ?></p>
+								
+								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['id']),true) ?>" class="like-btn right small"><?php echo count($mlook['Like']) ?></a>
+								
+								<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'profile', $mlook['Look']['user_id']),true) ?>" class="user-name">
+									<?php echo $this->Text->truncate($mlook['User']['name'],20,	array('ellipsis' => '...','exact' => 'false')); ?>
+								</a>
+							</div>
+						</li>
+					  <?php } ?>
+				</ul>
+			</div>
+		<?php }else{
+			echo '<div class="flash">No looks uploaded yet!</div>';
+		} ?>
+	</div>
+	<div class="product-listing">	
+		<div class="heading">
+			<div class="title-btn">
+				<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'gallery','men'),true) ?>">View All</a>
+			</div>
+			<h1>#NewOnThe<span>Web</span></h1>
+		</div>
+		<?php if(!empty($products)){ ?>
+			<div class="listing cf">
+				<ul class="item-list cf">
+					<?php foreach($products as $product){
+						$_product = $product['Product'];
+					?>
+						<li>
+							<div class="image">
+								<?php if($_product['image_url']!=NULL){
+									$image = $_product['image_url'];
+								}else{
+									$image="product.jpg";
+								}
+								$image = $this->Html->image($image, array('class'=>'mainimg')); ?>
+								<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>"><?php echo $image; ?></a>
+							</div>
+							<div class="info">
+								<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>" class="i-title">
+									<?php echo $this->Text->truncate($_product['name'],23,	array('ellipsis' => '...','exact' => 'false')); ?>
+								</a>
+								<div class="price-box">
+									<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>">
+										<?php if($_product['sale_price'] != '' && $_product['sale_price'] < $_product['price']){ ?>
+											<span class="price lthru"><?php echo $this->Number->currency($_product['price'], 'USD'); ?></span>
+											<span class="sale-price"><?php echo $this->Number->currency($_product['sale_price'], 'USD'); ?></span>
+										<?php }else{ ?>
+											<span class="price"><?php echo $this->Number->currency($_product['price'], 'USD'); ?></span>
+										<?php } ?>
+									</a>
+								</div>
+							</div>
+						</li>
+					  <?php } ?>
+				</ul>
+			</div>
+		<?php }else{
+			echo '<div class="flash">No looks uploaded yet!</div>';
+		} ?>
+	</div>
+</div>

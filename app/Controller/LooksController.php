@@ -9,11 +9,8 @@
     }
 	
     public function index(){
-		
-    }	
-	function search_esmees(){
-		
-	}
+		$this->redirect(array('action'=>'gallery', 'all'));
+    }
 	function detail($id=null){
 		$looks = $this->Look->find('first', array('conditions' => array('Look.id' => $id )));
 		$this->set('looks', $looks);
@@ -22,7 +19,7 @@
 		
 
 		if(!empty($user_id)){
-			$userlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $user_id )));
+			$userlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $user_id ), 'limit'=>10));
 			$this->set('memberLooks',$userlooks);
 			
 			$isLike = $this->Like->find('first', array(
@@ -41,98 +38,63 @@
 	}
 	
 	
-	public function gallery($id = null){
+	public function gallery($cat = null){
+		if($cat == null){
+			$this->redirect(array('action'=>'gallery', 'all'));
+		}
 		$parent = $this->Category->find('first', array('conditions' => array(
-			'Category.id' => 1
+			'Category.name' => $cat
 		)));
-		$cats = $this->Category->find('threaded', array('conditions' => array(
-			'Category.lft >' => $parent['Category']['lft'], 
-			'Category.rght <' => $parent['Category']['rght']
-		)));
-		$this->set('categories', $cats);
-		
-		$this->Look->contain('User', 'Like');
-		$this->paginate = array('group'=>'Look.product_id'); 			
-		$looks = $this->paginate('Look');
-		
-		$id = intval($id);
-				
-		$cond0 = array();
-		if(isset($this->request->query['brand']) && $this->request->query['brand'] != ''){
-			$brand = $this->request->query['brand'];
-			array_push($cond0, "Look.brand = '$brand'");
-		};
-		if(!empty($id) && is_int($id)){
-			$subCats = $this->Category->children($id, false, 'Category.id');
+		if(!empty($parent)){
+			$cats = $this->Category->find('threaded', array('conditions' => array(
+				'Category.lft >' => $parent['Category']['lft'], 
+				'Category.rght <' => $parent['Category']['rght']
+			)));
+			$this->set('categories', $cats);
+						
+			$cond0 = array();
 			$cond = array();
-			array_push($cond, "Look.category_id = $id");
-			foreach($subCats as $scat){
-				$sid = $scat ['Category']['id'];
-				array_push($cond, "Look.category_id = $sid");
+			
+			if(isset($this->request->query['brand']) && $this->request->query['brand'] != ''){
+				$brand = $this->request->query['brand'];
+				array_push($cond0, "Look.brand = '$brand'");
+			};
+			if(isset($this->request->query['keyword']) && $this->request->query['keyword'] != ''){
+				$keyword = '%'.$this->request->query['keyword'].'%';
+				array_push($cond, "Look.caption_name LIKE '$keyword'"); 
+				array_push($cond, "User.username LIKE '$keyword'");
+			};
+			if(isset($this->request->query['cat']) && $this->request->query['cat'] != ''){
+				$cat = $this->request->query['cat'];
+				$id = intval($cat);
+			}else{
+				$id = intval($parent['Category']['id']);
+			};
+			if(isset($id) && is_int($id)){
+				$subCats = $this->Category->children($id, false, 'Category.id');
+				array_push($cond, "Look.category_id = $id");
+				foreach($subCats as $scat){
+					$sid = $scat ['Category']['id'];
+					array_push($cond, "Look.category_id = $sid");
+				}
+				
 			}
-			
-			
+				
 			$this->Look->contain('User', 'Like');
 			$this->paginate = array('conditions' => array(
 				'AND'=>$cond0,
 				'OR'=>$cond
-			),'group'=>'Look.product_id'); 			
+			),'group'=>'Look.product_id', 'limit'=>20); 			
 			$looks = $this->paginate('Look');
-		}
 
-		$this->set('looks', $looks);
-		
-		$brand_data = $this->Product->find('all',array('fields'=>'mnf_name','recursive'=>0,'group' => 'Product.mnf_name','conditions' => array('not' => array('Product.mnf_name'))));
-		$this->set('AllBrands',$brand_data);
-	}
-	
- public function serach()
-		{
-   
-		if (!empty($this->request->query['keyword'])) 
-		{ 
-		$this->paginate = array('conditions' => array(
-		'OR'=>array( 
-                'Look.caption_name LIKE' => '%'.$this->request->query['keyword'].'%', 
-				'User.username LIKE' => '%'.$this->request->query['keyword'].'%', 
-				
-               ))); 
-			   $results = $this->paginate('Look'); 
-			  $this->set('allLooks', $results);  
-		} 
-		else
-		{
-			  $results = $this->paginate('Look'); 
-			  $this->set('allLooks', $results); 
-		}
-     } 
-	
-	public function categories($id = null)
-	{
-		if(!empty($id))
-		{
-		$this->set('categories', $this->Category->find('all'));
-		$brand_data = $this->Product->find('all',array('fields'=>'mnf_name','recursive'=>0,'group' => 'Product.mnf_name','conditions' => array('not' => array('Product.mnf_name'))));
-		$this->set('AllBrands',$brand_data);
-		$product_category =$this->Product->find('all', array('conditions' => array('Product.parent_id' => $id )));
-		$this->set('products', $product_category);
-		
+			$this->set('looks', $looks);
+			
+			$brand_data = $this->Product->find('all',array('fields'=>'mnf_name','recursive'=>0,'group' => 'Product.mnf_name','conditions' => array('not' => array('Product.mnf_name'))));
+			$this->set('AllBrands',$brand_data);
+		}else{
+			throw new NotFoundException(__('Not Found'));
 		}
 	}
-	
-	public function brands($brands = null)
-	{
-		if(!empty($brands))
-		{
-		$this->set('categories', $this->Category->find('all'));
-		$brand_data = $this->Product->find('all',array('fields'=>'mnf_name','recursive'=>0,'group' => 'Product.mnf_name','conditions' => array('not' => array('Product.mnf_name'))));
-		$this->set('AllBrands',$brand_data);
-		$product_category =$this->Product->find('all', array('conditions' => array('Product.mnf_name' => $brands )));
-		$this->set('products', $product_category);
-		
-		}
-	}
-	
 	public function like($objId = null){
 		
 		if($this->user){		

@@ -6,13 +6,66 @@
 	
 	public function beforeFilter(){
         parent::beforeFilter();
-		
-  }
+	}
 	
-    public function index() 
-	{
-		
+    public function index(){
+		$this->redirect(array('action'=>'gallery', 'all'));
     }
+	public function gallery($cat = null){
+		if($cat == null){
+			$this->redirect(array('action'=>'gallery', 'all'));
+		}
+		$parent = $this->Category->find('first', array('conditions' => array(
+			'Category.name' => $cat
+		)));
+		if(!empty($parent)){
+			$cats = $this->Category->find('threaded', array('conditions' => array(
+				'Category.lft >' => $parent['Category']['lft'], 
+				'Category.rght <' => $parent['Category']['rght']
+			)));
+			$this->set('categories', $cats);
+						
+			$cond0 = array();
+			$cond = array();
+			if(isset($this->request->query['brand']) && $this->request->query['brand'] != ''){
+				$brand = $this->request->query['brand'];
+				array_push($cond0, "Product.mnf_name = '$brand'");
+			};
+			if(isset($this->request->query['keyword']) && $this->request->query['keyword'] != ''){
+				$keyword = '%'.$this->request->query['keyword'].'%';
+				array_push($cond, "Product.name LIKE '$keyword'");
+			};
+			if(isset($this->request->query['cat']) && $this->request->query['cat'] != ''){
+				$cat = $this->request->query['cat'];
+				$id = intval($cat);
+			}else{
+				$id = intval($parent['Category']['id']);
+			};
+			if(isset($id) && is_int($id)){
+				$subCats = $this->Category->children($id, false, 'Category.id');
+				array_push($cond, "Product.parent_id = $id");
+				foreach($subCats as $scat){
+					$sid = $scat ['Category']['id'];
+					array_push($cond, "Product.parent_id = $sid");
+				}
+				
+			}
+				
+			$this->Product->contain();
+			$this->paginate = array('conditions' => array(
+				'AND'=>$cond0,
+				'OR'=>$cond
+			), 'limit'=>20);			
+			$products = $this->paginate('Product');
+			$this->set('products', $products);
+			
+			$brand_data = $this->Product->find('all',array('fields'=>'mnf_name','recursive'=>0,'group' => 'Product.mnf_name','conditions' => array('not' => array('Product.mnf_name'))));
+			$this->set('AllBrands',$brand_data);
+		}else{
+			throw new NotFoundException(__('Not Found'));
+		}
+	}
+	
 	
 	public function wishlist()
 	{
@@ -45,20 +98,65 @@
 	
    
 	
-	public function men()
-	{
-	
-		$this->set('looks', $this->Look->find('all', array('conditions' => array(),'group'=>'Look.order_id')));
+	public function men(){
+		$cat = $this->Category->find('first', array('conditions' => array(
+			'Category.name' => 'men'
+		)));
+		$cond = array();
+		$cond0 = array();
+		if(!empty($cat)){
+			$cid = $cat['Category']['id'];
+			if($cid){
+				$subCats = $this->Category->children($cid, false, 'Category.id');
+				array_push($cond, "Product.parent_id = $cid");
+				array_push($cond0, "Look.category_id = $cid");
+				foreach($subCats as $scat){
+					$sid = $scat ['Category']['id'];
+					array_push($cond, "Product.parent_id = $sid");
+					array_push($cond0, "Look.category_id = $sid");
+				}				
+			}
+				
+			$this->Product->contain();
+			$this->Look->contain('User', 'Like');
+			
+			$products=$this->Product->find('all', array('conditions' => array('OR'=>$cond), 'order' => array('Product.created' => 'DESC'),'limit' => 10));
 		
-		$men_product_list=$this->Product->find('all', array('conditions' => array('Product.parent_id' => '2' )));
-		$this->set('products', $men_product_list);
+			$looks = $this->Look->find('all', array('conditions' => array('OR'=>$cond0), 'group'=>'Look.product_id', 'lomit'=>10));
+			
+			$this->set('products', $products);
+			$this->set('looks', $looks);
+		}
     }
-	public function women()
-	{
-		$this->set('looks', $this->Look->find('all', array('conditions' => array(),'group'=>'Look.order_id')));
+	public function women(){
+		$cat = $this->Category->find('first', array('conditions' => array(
+			'Category.name' => 'women'
+		)));
+		$cond = array();
+		$cond0 = array();
+		if(!empty($cat)){
+			$cid = $cat['Category']['id'];
+			if($cid){
+				$subCats = $this->Category->children($cid, false, 'Category.id');
+				array_push($cond, "Product.parent_id = $cid");
+				array_push($cond0, "Look.category_id = $cid");
+				foreach($subCats as $scat){
+					$sid = $scat ['Category']['id'];
+					array_push($cond, "Product.parent_id = $sid");
+					array_push($cond0, "Look.category_id = $sid");
+				}				
+			}
+				
+			$this->Product->contain();
+			$this->Look->contain('User', 'Like');
+			
+			$products=$this->Product->find('all', array('conditions' => array('OR'=>$cond), 'order' => array('Product.created' => 'DESC'),'limit' => 10));
 		
-		$women_product_list=$this->Product->find('all', array('conditions' => array('Product.parent_id' => '3' )));
-		$this->set('products', $women_product_list);
+			$looks = $this->Look->find('all', array('conditions' => array('OR'=>$cond0), 'group'=>'Look.product_id', 'lomit'=>10));
+			
+			$this->set('products', $products);
+			$this->set('looks', $looks);
+		}
     }
 	public function product_details($productId=null)
 	{
@@ -67,7 +165,6 @@
 		
 		if(!empty($productId))
 		{
-			
 			$details=$this->Product->find('first', array('conditions' => array('Product.id' => $productId )));
 			$this->set('products', $details);  
 	
@@ -81,7 +178,7 @@
 			
 			
 			
-			$mname=	$this->Product->find('first', array('conditions'=>array('id'=>$productId),'fields'=>array('Product.mnf_name')));
+			$mname=	$this->Product->find('first', array('conditions'=>array('Product.id'=>$productId),'fields'=>array('Product.mnf_name')));
 			$this->set('brands', $mname); 
 			
 			

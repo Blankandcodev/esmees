@@ -26,5 +26,19 @@
 				</ul>
 			</div>
 		</div>
-	<?php } ?>
+		<div class="paginate">
+		<?php	
+		echo $this->Paginator->numbers(array(
+		  //'modulus' => 4,   /* Controls the number of page links to display */
+		  'first' => '< First',
+		  'last' => 'Last >',
+		  'separator'=>'</li><li>',
+		  'before' => '<ul><li>', 'after' => '</li></ul>')
+		);
+		?>
+		</div>
+	<?php }else{
+		echo '<div class="flash">Looks not uploaded yet!</div>';
+	} ?>
+	</div>
 </div>

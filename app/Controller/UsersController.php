@@ -1,10 +1,7 @@
 <?php class UsersController extends AppController {
 	var $uses = array('User','Product','Look','Wishlist','Order','Follower','Like');
-	var $helpers = array('Form', 'Country','Paginator' => array('Paginator'));
-	public $components = array('Image', 'Email','Paginator');
-	public $paginate = array(
-		'limit' => 10
-	);
+	var $helpers = array('Form', 'Country');
+	public $components = array('Image', 'Email');
 	
     public function beforeFilter() {
         parent::beforeFilter();
@@ -45,11 +42,11 @@
 	}	
 	
 	public function followed_user(){
-	  	$this->Paginator->settings = $this->paginate;
 		$this->Follower->contain('followed');
-		$followed = $this->Paginator->paginate('Follower', array(
+		$this->paginate = array('conditions' => array(
 			'Follower.user_id' => $this->user['id']
-		));
+		), 'limit'=>20); 			
+		$followed = $this->paginate('Follower');
 		$this->set('followed',$followed);
 	}
 	
@@ -58,11 +55,11 @@
 			$this->User->contain();
 			$user = $this->User->find('first', array('conditions' => array('User.id' => $userId)));
 			
-			$this->Paginator->settings = $this->paginate;
 			$this->Follower->contain('followedby');
-			$followers = $this->Paginator->paginate('Follower', array(
+			$this->paginate = array('conditions' => array(
 				'Follower.follow_id' => $userId
-			));
+			), 'limit'=>20); 			
+			$followers = $this->paginate('Follower');
 			$this->set('followers',$followers);
 			$this->set('user', $user['User']);
 		}
@@ -73,20 +70,20 @@
 			$this->User->contain();
 			$user = $this->User->find('first', array('conditions' => array('User.id' => $userId)));
 			
-			$this->Paginator->settings = $this->paginate;
-			$looks = $this->Paginator->paginate('Look', array(
+			$this->paginate = array('conditions' => array(
 				'Look.user_id' => $userId
-			));
+			), 'limit'=>20); 			
+			$looks = $this->paginate('Look');
 			$this->set('looks',$looks);
 			$this->set('user', $user['User']);
 		}
 	}
 	
 	public function wishlist(){
-	  	$this->Paginator->settings = $this->paginate;
-		$wishlists = $this->Paginator->paginate('Wishlist', array(
+		$this->paginate = array('conditions' => array(
 			'Wishlist.user_id' => $this->user['id']
-		));
+		), 'limit'=>20); 			
+		$wishlists = $this->paginate('Wishlist');
 		$this->set('wishLists',$wishlists);
 	}
 	

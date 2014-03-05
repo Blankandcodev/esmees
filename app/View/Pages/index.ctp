@@ -27,8 +27,8 @@
 	<div class="look-listing">	
 		<div class="heading">
 			<div class="title-btn">
-				<a href="#">Men</a> /
-				<a href="#">Women</a>
+				<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'gallery', 'men')); ?>">Men</a> /
+				<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'gallery', 'women')); ?>">Women</a>
 			</div>
 			<h1>#TREND<span>Setters</span></h1>
 		</div>
@@ -60,8 +60,8 @@
 	<div class="product-listing">	
 		<div class="heading">
 			<div class="title-btn">
-				<a href="#">Men</a> /
-				<a href="#">Women</a>
+				<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'gallery','men'),true) ?>">Men</a> /
+				<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'gallery','women'),true) ?>">Women</a>
 			</div>
 			<h1>#NewOnThe<span>Web</span></h1>
 		</div>
@@ -87,12 +87,12 @@
 								</a>
 								<div class="price-box">
 									<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>">
-									<?php if($_product['sale_price'] != '' && $_product['sale_price'] < $_product['price']){ ?>
-										<span class="price lthru">$<?php echo $_product['price']; ?></span>
-										<span class="sale-price">$<?php echo $_product['sale_price']; ?></span>
-									<?php }else{ ?>
-										<span class="price">$<?php echo $_product['price']; ?></span>
-									<?php } ?>
+										<?php if($_product['sale_price'] != '' && $_product['sale_price'] < $_product['price']){ ?>
+											<span class="price lthru"><?php echo $this->Number->currency($_product['price'], 'USD'); ?></span>
+											<span class="sale-price"><?php echo $this->Number->currency($_product['sale_price'], 'USD'); ?></span>
+										<?php }else{ ?>
+											<span class="price"><?php echo $this->Number->currency($_product['price'], 'USD'); ?></span>
+										<?php } ?>
 									</a>
 								</div>
 							</div>

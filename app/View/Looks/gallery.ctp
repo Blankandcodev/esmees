@@ -6,7 +6,7 @@
 			</div>
 			<div class="main">
 				<div class="srch_div">
-					<?PHP echo $this->Form->Create('Search', array( 'url' => array( 'controller'=>'Products', 'action'=>'serach' ), 'type'=>'get' ) );
+					<?PHP echo $this->Form->Create('Search', array( 'type'=>'get' ) );
 					echo $this->Form->input('keyword', array('placeholder'=>'@User or #caption', 'type'=>'text'));
 					echo $this->Form->submit('Serach');
 					echo $this->Form->end();
@@ -21,7 +21,7 @@
 				<h3 class="box-title">Categories</h3>
 				<ul class="left-nav">
 					<?php $url = $this->Html->url(array('controller'=>'Looks', 'action'=>'gallery'), true); ?>
-					<?php echo $this->Menu->menu($categories, 'list', $url); ?>
+					<?php echo $this->Menu->menu($categories, 'list'); ?>
 				</ul>
 			</div>
 			<div class="nav-box">
@@ -29,7 +29,7 @@
 				<ul class="left-nav">
 					<?php foreach($AllBrands as $brand){ ?>
 						<li>
-							<a href="<?php echo $this->here.'?brand='.$brand['Product']['mnf_name']; ?>">
+							<a href="<?php echo $this->Menu->qurl('brand', $brand['Product']['mnf_name']); ?>">
 								<?php echo  $brand['Product']['mnf_name']; ?>
 							</a>
 						</li>
@@ -39,6 +39,7 @@
 		</div>
 		<div class="main">
 			<div class="look-listing">
+				<?php echo $this->Menu->qmenu(); ?>
 				<?php if(!empty($looks)){ ?>
 					<div class="listing cf">
 						<ul class="item-list cf">
@@ -59,6 +60,17 @@
 								</li>
 							  <?php } ?>
 						</ul>
+					</div>
+					<div class="paginate">
+					<?php	
+					echo $this->Paginator->numbers(array(
+					  //'modulus' => 4,   /* Controls the number of page links to display */
+					  'first' => '< First',
+					  'last' => 'Last >',
+					  'separator'=>'</li><li>',
+					  'before' => '<ul><li>', 'after' => '</li></ul>')
+					);
+					?>
 					</div>
 				<?php }else{
 					echo '<div class="flash">Looks not fount!</div>';

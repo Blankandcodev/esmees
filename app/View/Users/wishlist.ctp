@@ -4,8 +4,6 @@
 		<h1>My Wishlist</h1>
 	</div>
 		<div class="look-listing">
-			<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'wishlist')); ?>" class="title-btn right">View All</a>
-			<h1 class="sec-title bordered"></h1>
 	<?php if(!empty($wishLists)){ ?>
 			<div class="listing cf">
 				<ul class="users-list cf">
@@ -52,6 +50,17 @@
 						<?php } ?>
 					  <?php } ?>
 				</ul>
+			</div>
+			<div class="paginate">
+			<?php	
+			echo $this->Paginator->numbers(array(
+			  //'modulus' => 4,   /* Controls the number of page links to display */
+			  'first' => '< First',
+			  'last' => 'Last >',
+			  'separator'=>'</li><li>',
+			  'before' => '<ul><li>', 'after' => '</li></ul>')
+			);
+			?>
 			</div>
 	<?php }else{
 		echo '<div class="flash">No Items in your wishlist!</div>';

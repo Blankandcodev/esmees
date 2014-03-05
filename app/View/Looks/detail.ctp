@@ -59,7 +59,8 @@ $_product = $looks['Product'];
 	
 	<?php if(isset($memberLooks)){?>
 		<div class="look-listing">
-			<h1 class="sec-title"><?php echo $_user['name']; ?>' Looks</h1>
+			<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'looks', $_user['id'])); ?>" class="title-btn right">View All</a>
+			<h1 class="sec-title bordered"><?php echo $_user['name']; ?>' Looks</h1>
 			<div class="listing cf">
 				<ul class="item-list cf">
 					<?php foreach($memberLooks as $mlook){?>
