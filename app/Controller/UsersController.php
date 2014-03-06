@@ -220,7 +220,7 @@
 		$this->Look->delete($id);
 		$this->Session->setFlash('The Look with id: '.$id.' has been deleted.');
 		$this->redirect(array('action'=>'view_newlooks',$orderid));
-		$this->redirect($this->referer());
+		 
 	}
 
 	
@@ -341,7 +341,7 @@
 				
 				$this->User->saveField('member_id', $newMemId);
 				
-				//$this->sendNewUserMail($this->request->data['User']['username'], $newMemId);
+				$this->sendNewUserMail($this->request->data['User']['username'], $newMemId);
 				 
 				 
 				 $this->Session->setFlash(__('Please varify your account by clicking on varification link on your mail'), 'flash_success');
