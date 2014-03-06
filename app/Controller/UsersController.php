@@ -153,10 +153,7 @@
 					)
 				)
 			);
-		$this->data = $users;
-		$this->set('userProfile',$users['User']);
 		if ($this->request->is('post') || $this->request->is('put')) {
-		
 			 if (empty($this->data['User']['image']['name'])) {
 
                   $image_path = $users['User']['image'];
@@ -168,7 +165,9 @@
 			
          
                 $this->request->data['User']['image'] = $image_path;
-				if ($this->User->save($this->data)) 
+                $this->request->data['User']['id'] = $users['User']['id'];
+				pr($this->request->data);
+				if ($this->User->save($this->request->data)) 
 				{
 					$this->Session->setFlash(__('The User Profile has been saved.'));
 					return $this->redirect(array('action' => 'index'));	
@@ -180,6 +179,8 @@
 				}
 		
 		}
+		$this->data = $users;
+		$this->set('userProfile',$users['User']);
 	}
 	
 
@@ -340,13 +341,24 @@
 				
 				$this->User->saveField('member_id', $newMemId);
 				
-				$this->sendNewUserMail($this->request->data['User']['username'], $newMemId);
+				//$this->sendNewUserMail($this->request->data['User']['username'], $newMemId);
+				 
+				 
 				 $this->Session->setFlash(__('Please varify your account by clicking on varification link on your mail'), 'flash_success');
+				 return $this->redirect(array('controller'=>'Users', 'action' => 'login'));
+				 
             } else {
+				
                 $this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'flash_error');
             }
 			
         }
+		else
+		{
+				  
+		}
+		
+		
     }
 	
 	
