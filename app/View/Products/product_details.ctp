@@ -1,193 +1,95 @@
- <?php foreach ($products as $product){ ?>
-
-
- <div align="center">
-        <div class="container">
-            </div>
-			
-            <div class="content_pr">
-			
-				<div class="pr_1">
-					<div class="ppi_left">
-						<div class="ppi_img">
-						<?php echo '<a href="#"><img width=100%  src="'. $product['image_url'].'" ></a>' ?>
-						
-						 
-						</div>
-						  
-					</div>
-						
-				    	<div class="ppi_rt">
-						  <div class="ppi_mn">
-							<div class="ppi_txt"><i>Brand Name</i></div>
-								<div class="ppi_txt"><?php echo $product['name']; ?></div>
-                                  <div class="cst_div">$<?php echo $product['price']; ?></div>
-							    	<div class="ppi_txt2">Detail</div>
-										<div class="ppi_txt3">
-										<?php echo	$product['descrition'];?>
-										
-										
-										</div>
+<?php
+$_product = $products['Product'];
+?>
+<div class="detailwrap">
+	<div class="item-detail cf">
+		<div class="look-pics image-box">
+			<div class="main-image">
+				<a href="<?php echo $_product['image_url']; ?>" class="fancy"><img src="<?php echo $_product['image_url']; ?>"/></a>
+			</div>
+		</div>
+		<div class="item-info">
+			<?php if(!empty($_product['mnf_name'])){ ?><h2 class="brand"><?php echo $_product['mnf_name']; ?></h2><?php }; ?>
+			<h1 class="item-title"><?php echo $_product['name']; ?></h1>
+			<div class="price">
+				<?php $currency = !empty($_product['currency']) ? $_product['currency'] : 'USD';
+				if($_product['sale_price'] != '' && $_product['sale_price'] < $_product['price']){ ?>
+					<span class="price lthru"><?php echo $this->Number->currency($_product['price'], $currency); ?></span>
+					<span class="sale-price"><?php echo $this->Number->currency($_product['sale_price'], $currency); ?></span>
+				<?php }else{ ?>
+					<span class="price"><?php echo $this->Number->currency($_product['price'], $currency); ?></span>
+				<?php } ?>
+			</div>
+			<div class="detail">
+				<h3 class="subtitle">Detail</h3>
+				<?php echo $_product['descrition']; ?>
+			</div>
+			<div class="buy-button">
+				<?php $trakker = "";				
+				$referid = 'ESMADMIN';
+				$cid = isset($loggeduser['member_id']) ? $loggeduser['member_id'] : 'GUEST';
+				if( $_product['type'] == 1){
+					$trakker = "&u1=$referid-$cid";
+				}else if($_product['type'] == 0){
+					$trakker = "&sid=$referid-$cid";
+				} ?>
+				<a target="_blank" class="button buy-btn primary" href="<?php echo $_product['buy_url'].$trakker; ?>">Buy @ <?php echo $_product['advetiser_name']; ?></a>
+			</div>
+		</div>
+		<div class="item-action">
+			<?php echo $this->Html->link("Add to Wishlist", array( 'controller' => 'Users', 'action' => 'add_wishlist', $_product['id'], 0), array('class'=>'button primary')); ?>
+		</div>
+	</div>
+	
+	<?php if(isset($similarLooks)){?>
+		<div class="look-listing">
+			<h1 class="sec-title bordered">Who wears this</h1>
+			<div class="listing cf">
+				<ul class="item-list cf">
+					<?php foreach($similarLooks as $mlook){?>
+						<li>
+							<div class="image">
+								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['id']),true) ?>"><?php echo $this->Html->image('Looks/home/'.$mlook['Look']['image']);?></a>
+							</div>
+							<div class="info">
+								<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '...','exact' => 'false')); ?></p>
 								
-						  </div>
-							  <div class="ppi_btn">
-							
-							
-								 <?php 
-						  
-
-							 if( $product['type'] == 1){
-									$trakker = "&u1=GUEST-GUEST";
-							}else if($product['type'] == 0){
-								$trakker = "&sid=GUEST-GUEST";
-							}
-							  ?>
-							  
-							 
-							 
-							   <a target="_blank" href="<?php echo $product['buy_url'].$trakker; ?>"><img src="../../img/by_now_btn.png" /></a>
-							
-							  
-							
-							
-							  
-							  
-							  
-							  
-							  
-							  </div>
-						</div>
-					
-						
-						
-						<?php echo $this->Html->link($this->Html->image("../img/adt_bnt.png" , array( 'alt' => 'Clear list')), array(
-                                                    'controller' => 'Users',
-                                                    'action' => 'add_wishlist',
-                                                    $product['id']
-                                               ), array(
-                                                    'escape' => false
-                                                   
-                                               )); ?>
-						
-					 <?php }; ?>
-					
-					
-					
-					
-					
-					
-					
-					</div>
-				</div>
-				
-            </div> 
-				
-				  <div class="content_pr2">
-					
-				  	  <div class="ul_hd"><b>Who wears this</b></div>
-						<?php if(!empty($userLists)){ ?>
-							
-                		 <div class="list7_a">
-						 <ul>
+								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['id']),true) ?>" class="like-btn right small"><?php echo $mlook['Look']['likes'] ?></a>
 								
+								<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'followers', $mlook['Look']['user_id']),true) ?>" class="user-name">
+									<?php echo $this->Text->truncate($mlook['User']['name'],10,	array('ellipsis' => '...','exact' => 'false')); ?>
+								</a>
+							</div>
+						</li>
+					  <?php } ?>
+				</ul>
+			</div>
+		</div>
+	<?php } ?>	
+	
+	<?php if(isset($brandLooks)){?>
+		<div class="look-listing">
+			<h1 class="sec-title bordered">Who wears "<?php echo $_product['mnf_name'] ?>"</h1>
+			<div class="listing cf">
+				<ul class="item-list cf">
+					<?php foreach($brandLooks as $mlook){?>
+						<li>
+							<div class="image">
+								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['id']),true) ?>"><?php echo $this->Html->image('Looks/home/'.$mlook['Look']['image']);?></a>
+							</div>
+							<div class="info">
+								<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '...','exact' => 'false')); ?></p>
 								
+								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['id']),true) ?>" class="like-btn right small"><?php echo $mlook['Look']['likes'] ?></a>
 								
-								 <?php 
-					foreach($memberImages as $whowear){
-                        /*$count = 0;
-                       
-                        }*/?>
-						
-							  <li>
-								<div class="div_pic1">
-								
-								
-								
-							<?php echo $this->Html->image('../../Users/home/'.$whowear['User']['image']);?>
-								
-								
-							
-								
-								
-								
-								
-								</div>
-								  <div class="list_txt">
-								    <div class="txt5"><?php echo $whowear['Product']['name']; ?>
-									
-									</div>
-								      <div class="ul_txt"><span class="labl">
-									  <a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'followers', $whowear['User']['id']),true) ?>"> 
-									  <?php echo $this->Text->truncate($whowear['User']['name'],10,	array('ellipsis' => '...','exact' => 'false')); ?>
-									
-									  
-									  </a>
-									  
-									 </span><span>999</span><span><img src="../../img/like.png" /></span></div>
-									  
-								 </div>
-							  </li>
-							  <?php } ?>
-							  </ul>
-
-							
-						 </div>	
-						 		  <div class="more1">Load More...</div>
-						<?php }else{
-		echo ' <div class="more1">No Records Yet!...</div>';
-	    } ?>
-              </div>
-		   
-		   		<div class="content_pr2">
-				  	  <div class="ul_hd"><b>Who wears  “Brand Name”</b></div>
-                		 <div class="list7_a">
-						 <?php if(!empty($userBrands)){ ?>
-							<ul>
-							
-							 <?php 
-					foreach($userBrands as $brand){
-                        /*$count = 0;
-                       
-                        }*/?>
-							  <li>
-								<div class="div_pic1">
-								
-								<?php echo $this->Html->image('Users/home/'.$brand['User']['image']);?>
-								
-								
-								
-								
-								</div>
-								  <div class="list_txt">
-								    <div class="txt5">
-									 <?php echo $this->Text->truncate($brand['Product']['name'],10,	array('ellipsis' => '...','exact' => 'false')); ?>
-									
-								     <div class="ul_txt"><span class="labl">
-									 
-									 
-									   <a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'followers', $whowear['User']['id']),true) ?>"> 
-									  <?php echo $this->Text->truncate($brand['User']['name'],10,	array('ellipsis' => '...','exact' => 'false')); ?>
-									
-									  
-									  </a>
-									 
-									 
-									 </span><span>999</span><span><img src="../../img/like.png" /></span></div>
-									  
-								 </div>
-							  </li>
-							  <?php } ?>
-							  		<li>
-								
-                            </ul>
-						 </div>	
-						 		  <div class="more1">Load More...</div>
-								  <?php }else{
-		echo ' <div class="more1">No Records Yet!...</div>';
-	    } ?>
-              </div>
-			  				
-        
-        <div class="clear"></div>		
-   
-
+								<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'followers', $mlook['Look']['user_id']),true) ?>" class="user-name">
+									<?php echo $this->Text->truncate($mlook['User']['name'],10,	array('ellipsis' => '...','exact' => 'false')); ?>
+								</a>
+							</div>
+						</li>
+					  <?php } ?>
+				</ul>
+			</div>
+		</div>
+	<?php } ?>	
+</div>

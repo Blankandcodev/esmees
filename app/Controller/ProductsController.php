@@ -122,7 +122,7 @@
 			
 			$products=$this->Product->find('all', array('conditions' => array('OR'=>$cond), 'order' => array('Product.created' => 'DESC'),'limit' => 10));
 		
-			$looks = $this->Look->find('all', array('conditions' => array('OR'=>$cond0), 'group'=>'Look.product_id', 'lomit'=>10));
+			$looks = $this->Look->find('all', array('conditions' => array('OR'=>$cond0), 'lomit'=>10));
 			
 			$this->set('products', $products);
 			$this->set('looks', $looks);
@@ -152,41 +152,33 @@
 			
 			$products=$this->Product->find('all', array('conditions' => array('OR'=>$cond), 'order' => array('Product.created' => 'DESC'),'limit' => 10));
 		
-			$looks = $this->Look->find('all', array('conditions' => array('OR'=>$cond0), 'group'=>'Look.product_id', 'lomit'=>10));
+			$looks = $this->Look->find('all', array('conditions' => array('OR'=>$cond0), 'lomit'=>10));
 			
 			$this->set('products', $products);
 			$this->set('looks', $looks);
 		}
     }
-	public function product_details($productId=null)
+	public function product_details($id=null)
 	{
-		if(!empty($productId)){
-			$this->Product->contain();
-			$details=$this->Product->find('first', array('conditions' => array('Product.id' => $productId )));
-			$this->set('products', $details);  
-			
-			$whowearlists = $this->Product->find('all',array('conditions' => array('Product.id' => $productId)));
-			$this->set('whoWears',$whowearlists);
-			$mname=	$this->Product->find('first', array('conditions'=>array('Product.id'=>$productId),'fields'=>array('Product.mnf_name')));
-			$this->set('brands', $mname); 
-			
-			
-			
-			$brandlists = $this->Order->find('all',array('conditions' => array('Product.id' => $productId, 'Product.mnf_name'=>$mname['Product']['mnf_name'])));
-			$this->set('userBrands',$brandlists);
-			
-			
-			
-			
-			$orderlists = $this->Order->find('all', array('conditions'=>array('Order.product_id'=> $productId)));
-			
-			$this->set('userLists', $orderlists);
-			
-		}
-			
 		
-		
-		
+		$id = intval($id);
+		$this->Product->contain();
+		$details=$this->Product->find('first', array('conditions' => array('Product.id' => $id )));
+		if(!empty($details)){
+			$this->set('products', $details);
+			$brand = $details['Product']['mnf_name'];
+			$product_id = $details['Product']['id'];
+			if(!empty($product_id)){
+				$similarLooks = $this->Look->find('all', array('conditions' => array('Look.product_id' => $product_id ), 'limit'=>10));
+				$this->set('similarLooks',$similarLooks);
+			}
+			if(!empty($brand)){
+				$brandLooks = $this->Look->find('all', array('conditions' => array('Look.brand' => $brand ), 'limit'=>10));
+				$this->set('brandLooks',$brandLooks);
+			}
+		}else{
+			throw new NotFoundException(__('Not Found'));
+		}		
     }
 	
 	public function men_gallery($id=null ,$bname=null)

@@ -25,7 +25,9 @@
 									<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $itm['id']),true) ?>" class="user-name">
 										<?php echo $this->Text->truncate($itm['name'],25,	array('ellipsis' => '...','exact' => 'false')); ?>
 									</a>
-									<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'delete_wishlist', $item['Wishlist']['id'])); ?>" class="del-icn">Delete</a>
+									<div class="sact">
+										<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'delete_wishlist', $item['Wishlist']['id'])); ?>" class="del-icn">Delete</a>
+									</div>
 								</div>
 							</li>
 						<?php }else if(empty($item['Product']['id']) && !empty($item['Look']['Id'])){
@@ -44,7 +46,9 @@
 									<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $itm['Id']),true) ?>" class="user-name">
 										<?php echo $this->Text->truncate($itm['caption_name'],25,	array('ellipsis' => '...','exact' => 'false')); ?>
 									</a>
-									<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'delete_wishlist', $item['Wishlist']['id'])); ?>" class="del-icn">Delete</a>
+									<div class="sact">
+										<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'delete_wishlist', $item['Wishlist']['id'])); ?>" class="del-icn">Delete</a>
+									</div>
 								</div>
 							</li>
 						<?php } ?>

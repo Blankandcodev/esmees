@@ -8,8 +8,6 @@ $(document).ready(function(){
     })
 	
 	$('.fancy').fancybox({
-		autoResize:  true,
-		autoCenter:  true,
 		afterShow: function(){			
 			$('form').each(function(){
 				$(this).validate();

@@ -12,28 +12,33 @@
 		$this->redirect(array('action'=>'gallery', 'all'));
     }
 	function detail($id=null){
+		$id = intval($id);
 		$this->Look->contain('User', 'Product');
 		$looks = $this->Look->find('first', array('conditions' => array('Look.Id' => $id )));
-		$this->set('looks', $looks);
-		$user_id = $looks['User']['id'];
-		$product_id = $looks['Product']['id'];
+		if(!empty($looks)){
+			$this->set('looks', $looks);
+			$user_id = $looks['User']['id'];
+			$product_id = $looks['Product']['id'];
 
-		if(!empty($user_id)){
-			$userlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $user_id ), 'limit'=>10));
-			$this->set('memberLooks',$userlooks);
+			if(!empty($user_id)){
+				$userlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $user_id ), 'limit'=>10));
+				$this->set('memberLooks',$userlooks);
+				
+				$isLike = $this->Like->find('first', array(
+					'conditions'=>array('Like.user_id'=>$this->user['id'], 'Like.product_id'=>  $looks['Look']['Id']),
+					'fields' => array('Like.id'),
+				));
+				$this->set('isLiked', $isLike);
+			}
 			
-			$isLike = $this->Like->find('first', array(
-				'conditions'=>array('Like.user_id'=>$this->user['id'], 'Like.product_id'=>  $looks['Look']['Id']),
-				'fields' => array('Like.id'),
-			));
-			$this->set('isLiked', $isLike);
-		}
-		
-		if(!empty($product_id)){
-			$productlists = $this->Look->find('all', array('conditions' => array('Look.product_id' => $product_id ),'limit'=>3));
-			$this->set('memberImages',$productlists);
-			
-			
+			if(!empty($product_id)){
+				$productlists = $this->Look->find('all', array('conditions' => array('Look.product_id' => $product_id ),'limit'=>3));
+				$this->set('memberImages',$productlists);
+				
+				
+			}
+		}else{
+			throw new NotFoundException(__('Not Found'));
 		}
 	}
 	

@@ -26,7 +26,7 @@
   <li><a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'gallery')); ?>">Trendsetters</a></li>
   <li><a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'index')); ?>">User Dashboard</a></li>
 </ul>
-<p>If you followed a broken link, please <a target="_blank" href="mailto:support@kissmetrics.com&amp;su=%5B404%5D%20">let us know</a> where the broken link came from.</p>
+
 <?php  // echo __d('cake', 'Error'); ?>: </strong>
 	<?php /* printf(
 		__d('cake', 'The requested address %s was not found on this server.'),

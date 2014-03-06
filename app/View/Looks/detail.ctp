@@ -13,7 +13,7 @@ $_product = $looks['Product'];
 				<ul>
 					<?php foreach($memberImages as $mimage){?>
 						<li>
-							<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $_look['product_id']),true) ?>"><?php echo $this->Html->image('Looks/small/'.$mimage['Look']['image']);?></a>
+							<a class="fancy" rel="gallery" href="<?php echo $this->webroot; ?>img/Looks/big/<?php echo $mimage['Look']['image']; ?>"><?php echo $this->Html->image('Looks/small/'.$mimage['Look']['image']);?></a>
 						</li>
 					<?php } ?>
 				</ul>
