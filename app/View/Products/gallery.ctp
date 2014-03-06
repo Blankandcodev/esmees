@@ -12,6 +12,18 @@
 					echo $this->Form->end();
 					?>
 				</div>
+				
+				<div class="sorting right">
+					<ul class="custdrop">
+						<li><span class="ftitle">Sort by</span>
+							<ul class="drop">
+								<li><?php echo $this->Paginator->sort('name', 'Name'); ?></li>
+								<li><?php echo $this->Paginator->sort('price', 'Price'); ?></li>
+								<li><?php echo $this->Paginator->sort('mnf_name', 'Brand'); ?></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -59,6 +71,12 @@
 									<div class="info">
 										<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>" class="i-title">
 											<?php echo $this->Text->truncate($_product['name'],23,	array('ellipsis' => '...','exact' => 'false')); ?>
+										</a>
+										<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>" class="i-title">
+											<?php echo $this->Text->truncate($_product['mnf_name'],23,	array('ellipsis' => '...','exact' => 'false')); ?>
+											<?php if(empty($_product['mnf_name'])){
+												echo $this->Text->truncate($_product['advetiser_name'],23,	array('ellipsis' => '...','exact' => 'false'));
+											}; ?>
 										</a>
 										<div class="price-box">
 											<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>">

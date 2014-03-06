@@ -43,7 +43,6 @@ class MenuHelper extends AppHelper{
         $out ='';
         if($menu != true){
             $menu = true;
-            $out .= $this->Html->css('cat_menu');
         }
         return $this->output($out . $this->_menu_render($data, $type, $url));
     }

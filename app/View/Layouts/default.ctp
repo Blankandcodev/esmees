@@ -29,6 +29,10 @@ $cakeDescription = __d('cake_dev', 'Esmees');
 	<?php
 		echo $this->Html->meta('icon');
 		echo $this->Html->css('style');
+		echo $this->Html->css('plugin.css');
+		echo $this->Html->script('jquery.js');
+		echo $this->Html->script('plugins.js');
+		echo $this->Html->script('funcs.js');
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');

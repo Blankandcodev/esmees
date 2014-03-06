@@ -558,6 +558,16 @@ label.error{
 form .submit{
 }
 
+.custdrop{margin:0;}
+.custdrop ul{position:absolute; z-index:9999; display:none; right:0; top:100%; left:0;border:1px solid #d0d0d0; background:#fff;}
+.custdrop li{position:relative; white-space:nowrap; display:block;}
+.custdrop ul li {border-bottom:1px solid #f0f0f0;}
+.custdrop li .ftitle{display:block; font-weight:bold; line-height:30px; padding:0 100px 0 10px;border:1px solid #d0d0d0; cursor:pointer; background:url(../img/down.jpg) 100% 50% no-repeat;}
+.custdrop ul li a{display:block; line-height:30px; padding:0 35px 0 10px; color:#666;}
+.custdrop ul li a.asc,
+.custdrop ul li a.desc{font-weight:bold; color:#000;}
+.custdrop ul li a:hover{background:#f0f0f0;}
+
 .floated .input{float:left; margin:0 15px 15px 0;}
 .floated .input input{width:320px;}
 .floated .advance {clear:both; background:#f0f0f0; border:1px solid #ddd; margin:0 0 10px; padding:10px 10px 0;}
@@ -673,7 +683,7 @@ h3.subtitle{border-bottom: 1px solid #000000; color: #6C6C6C; font-size: 16px; f
 .listing ul li .image a{display:block; line-height:232px; height:100%; width:100%; text-align:center;}
 .listing ul li .image img{max-height:99%; max-width:100%; vertical-align:middle;}
 .listing .info{color: #444444; font-size: 14px; font-weight: bold; line-height:18px;}
-.listing .info .i-title{color: #444444; font-size: 14px; font-weight: bold; margin-bottom: 5px;}
+.listing .info .i-title{color: #444444; display:block; font-size: 14px; font-weight: bold; margin-bottom: 5px;}
 .listing .info .user-name{}
 
 .price-box a{color:#000;}

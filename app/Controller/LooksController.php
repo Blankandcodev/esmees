@@ -12,18 +12,18 @@
 		$this->redirect(array('action'=>'gallery', 'all'));
     }
 	function detail($id=null){
-		$looks = $this->Look->find('first', array('conditions' => array('Look.id' => $id )));
+		$this->Look->contain('User', 'Product');
+		$looks = $this->Look->find('first', array('conditions' => array('Look.Id' => $id )));
 		$this->set('looks', $looks);
 		$user_id = $looks['User']['id'];
 		$product_id = $looks['Product']['id'];
-		
 
 		if(!empty($user_id)){
 			$userlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $user_id ), 'limit'=>10));
 			$this->set('memberLooks',$userlooks);
 			
 			$isLike = $this->Like->find('first', array(
-				'conditions'=>array('Like.user_id'=>$this->user['id'], 'Like.product_id'=>  $looks['Look']['id']),
+				'conditions'=>array('Like.user_id'=>$this->user['id'], 'Like.product_id'=>  $looks['Look']['Id']),
 				'fields' => array('Like.id'),
 			));
 			$this->set('isLiked', $isLike);
@@ -84,7 +84,7 @@
 			$this->paginate = array('conditions' => array(
 				'AND'=>$cond0,
 				'OR'=>$cond
-			),'group'=>'Look.product_id', 'limit'=>20); 			
+			), 'limit'=>20); 			
 			$looks = $this->paginate('Look');
 
 			$this->set('looks', $looks);
@@ -109,6 +109,10 @@
 						array('User.likes' => 'User.likes + 1'),
 						array('User.id' => $this->user['id'])
 					);
+					$this->Look->updateAll(
+						array('Look.likes' => 'Look.likes + 1'),
+						array('Look.Id' => $objId)
+					);
 				}
 				$this->Session->setFlash('You Liked this Look.', 'flash_success');
 				$this->redirect(array('controller'=>'Looks', 'action' => 'detail', $objId));
@@ -124,16 +128,23 @@
 	public function ullike($likeId = null){
 		if($this->user){
 			if($likeId != null){
-				if (!$this->Like->delete($likeId)){
-					$this->Session->setFlash('Oops an unexpected error occurred, Please try again.', 'flash_error');
+				$like = $this->Like->find('first', array('conditions'=>array('Like.id'=>$likeId)));
+				if(!empty($like)){
+					if (!$this->Like->delete($likeId)){
+						$this->Session->setFlash('Oops an unexpected error occurred, Please try again.', 'flash_error');
+						$this->redirect($this->referer());
+					}
+					$this->User->updateAll(
+						array('User.likes' => 'User.likes - 1'),
+						array('User.id' => $this->user['id'])
+					);
+					$this->Look->updateAll(
+						array('Look.likes' => 'Look.likes - 1'),
+						array('Look.Id' => $like['Like']['product_id'])
+					);
+					$this->Session->setFlash('You Unliked this Look.', 'flash_success');
 					$this->redirect($this->referer());
 				}
-				$this->User->updateAll(
-					array('User.likes' => 'User.likes - 1'),
-					array('User.id' => $this->user['id'])
-				);
-				$this->Session->setFlash('You Unliked this Look.', 'flash_success');
-				$this->redirect($this->referer());
 			}else{
 				$this->Session->setFlash('Please select a look to like.', 'flash_error');
 				$this->redirect(array('controller'=>'Looks', 'action' => 'gallery'));
