@@ -520,7 +520,9 @@ form{
 	border:0px solid #d0d0d0;
 }
 fieldset{
-	padding:20px;
+	padding:0;
+	margin:0;
+	border:0;
 }
 
 .hform fieldset{
@@ -532,7 +534,7 @@ form legend {
 	display: block;
 	font-size: 13px;
 	font-weight: bold;
-	margin: 0 -20px;
+	margin: 0 0 15px;
 	padding: 13px 20px;
 	text-shadow: 1px 1px 1px #FFFFFF;
 	text-transform: uppercase;
@@ -816,3 +818,34 @@ ul.info-list li span{display:block; color:#000; font-weight:bold;}
 
 
 
+
+/* Alerts */
+#flashMessage,
+.flash{
+display: block;
+margin: 0 0 15px 0;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+background: #B5E5EF url(../img/admin/icn_alert_info.png) no-repeat;
+background-position: 10px 10px !important;
+border: 1px solid #77BACE;
+color: #082B33;
+padding: 10px 0;
+text-indent: 40px;
+font-size: 14px;}
+
+.flash.flash_alert{
+background: #F5F3BA url(../img/admin/icn_alert_warning.png) no-repeat;
+border: 1px solid #C7A20D;
+color: #796616;}
+
+.flash.flash_error {
+background: #F3D9D9 url(../img/admin/icn_alert_error.png) no-repeat;
+border: 1px solid #D20009;
+color: #7B040F;}
+
+.flash.flash_success{
+background: #E2F6C5 url(../img/admin/icn_alert_success.png) no-repeat;
+border: 1px solid #79C20D;
+color: #32510F;}
