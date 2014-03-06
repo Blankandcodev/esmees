@@ -8,7 +8,8 @@
 				<?php echo $this->Form->Hidden('product_id', array('value' => $order['Order']['product_id']));?>
 				<?php echo $this->Form->input('caption_name', array('label'=>'Caption', 'type'=>'text', 'required')); ?>
 				<?php echo $this->Form->file('image', array('class'=>'required')); ?>
-				<?php echo $this->Form->submit('Upload Image'); ?>
+				<?php echo $this->Form->submit('Upload Image', array('class'=>'primary button med')) ?>
+				
 			</div>
 		</fieldset>
 	<?php echo $this->Form->end(); ?>

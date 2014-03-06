@@ -166,7 +166,7 @@
          
                 $this->request->data['User']['image'] = $image_path;
                 $this->request->data['User']['id'] = $users['User']['id'];
-				pr($this->request->data);
+				
 				if ($this->User->save($this->request->data)) 
 				{
 					$this->Session->setFlash(__('The User Profile has been saved.'));
@@ -259,9 +259,13 @@
 	
 	public function upload_lookimage($orderid=null) {
 		$order = $this->Order->find('first', array('conditions'=>array('Order.id'=>$orderid)));
+		
+		
+		
 		if(!empty($order)){
 			$countLooks = count($order['Look']);
 			$this->set('order',$order);
+			
 			
 			if($countLooks < 3){
 				if ($this->request->is('post') || $this->request->is('put')) {
@@ -269,10 +273,12 @@
 					$name=$this->request->data['lookupload']['caption_name'];
 					$orderid=$this->request->data['lookupload']['order_id'];
 					$productid=$this->request->data['lookupload']['product_id'];
-					
+					$product = $this->Product->find('first', array('conditions'=>array('product.id'=>$productid)));
+					$categoryid=$product['Product']['parent_id'];
+					$mfname=$product['Product']['mnf_name'];
 					$image_path = $this->Image->upload_image_and_thumbnail($this->request->data['lookupload']['image'], "Looks");
 					if($image_path){
-						if ($this->Look->save(array('order_id'=>$orderid,'product_id'=>$productid,'caption_name'=>$name,'image'=>$image_path, 'user_id'=>$this->user['id']))){
+						if ($this->Look->save(array('order_id'=>$orderid,'product_id'=>$productid,'caption_name'=>$name,'image'=>$image_path, 'user_id'=>$this->user['id'],'category_id'=>$categoryid,'brand'=>$mfname))){
 							$this->Session->setFlash('The Looks Image has saved .', 'flash_success');
 						}else{
 							$this->Session->setFlash('Look could not saved .', 'flash_error');
@@ -345,7 +351,7 @@
 				 
 				 
 				 $this->Session->setFlash(__('Please varify your account by clicking on varification link on your mail'), 'flash_success');
-				 return $this->redirect(array('controller'=>'Users', 'action' => 'login'));
+				//return $this->redirect(array('controller'=>'Products', 'action' => 'index'));
 				 
             } else {
 				
@@ -353,10 +359,7 @@
             }
 			
         }
-		else
-		{
-				  
-		}
+		
 		
 		
     }

@@ -443,6 +443,11 @@
 			$this->set('looks', $looks);
 		
 	}
+	
+	public function view_commission()
+	{
+		
+	}
 }
 //------------------------------------------------End Category Function---------------------------
 

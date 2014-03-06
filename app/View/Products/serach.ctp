@@ -1,81 +1,50 @@
-
- <div align="center">
-        <div class="container">
-         
-            <div class="content">
-                <div class="content_div1">
-				  
-                  
+<div class="page-container home-page">
+	
+	
+	
+	
+	<div class="product-listing">	
+		<div class="heading">
 			
-				
-
-                
-                </div>
-              
-           
-                <div class="content_div2">
-                  <div class="div_head">
-                     <div class="txt_lft">#SEARCH<span class="span2">Results</span></div>
-                     <div class="txt_rgt"><a href="#">Men/Women</a></div>
-                  </div>
-				  
-				
-                  <div class="list2">
-				  
-                    <ul>
-					  <?php foreach ($allProducts as $product): ?>
-                      <li>
-						
-                        <div class="div_pic">
-						
-
-<?php echo $this->Html->link($this->Html->image($product['Product']['image_url'], array( 'alt' => 'No Image')), array(
-                                                    'controller' => 'Products',
-                                                    'action' => 'product_details',
-                                                    $product['Product']['id']
-                                               ), array(
-                                                    'escape' => false
-                                                   
-                                               )); ?>	
-<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $product['Look']['product_id']),true) ?>"><?php echo $this->Html->image('Looks/small/'.$product['Look']['image']);?></a>												   
-						  
-						  
-
-						  
-						</div>
-                        <div class="list_txt">
-                           <div class="txt3">
-						    <?php echo $this->Text->truncate($product['Product']['name'],10,array('ellipsis' => '...','exact' => 'false')); ?>
-						   </div>
-                          
-
-                      
-                        </div>
-						
-                      </li>
-					  
-					   <?php endforeach; ?>
-                     </ul>
-                   
-                  </div>
-				 
-                </div>
-				<div class="more1">
-				  <?php echo $this->Paginator->numbers(); ?>
-					
-		<?php echo $this->Paginator->prev('« Previous', null, null, array('class' => 'disabled')); ?>
-		<?php echo $this->Paginator->next('Next »', null, null, array('class' => 'disabled')); ?>
-
-			<?php echo $this->Paginator->counter(); ?></div>
-                </div>
-             
-            
-            
-            </div>
-            
-        
-        <div class="clear"></div>
-        </div>
-   
-   </div>
-  
+			<h1>#SEARCH<span>Results</span></h1>
+		</div>
+		<?php if(!empty($allProducts)){ ?>
+			<div class="listing cf">
+				<ul class="item-list cf">
+					<?php foreach($allProducts as $product){
+						$_product = $product['Product'];
+					?>
+						<li>
+							<div class="image">
+								<?php if($_product['image_url']!=NULL){
+									$image = $_product['image_url'];
+								}else{
+									$image="product.jpg";
+								}
+								$image = $this->Html->image($image, array('class'=>'mainimg')); ?>
+								<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>"><?php echo $image; ?></a>
+							</div>
+							<div class="info">
+								<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>" class="i-title">
+									<?php echo $this->Text->truncate($_product['name'],23,	array('ellipsis' => '...','exact' => 'false')); ?>
+								</a>
+								<div class="price-box">
+									<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>">
+										<?php if($_product['sale_price'] != '' && $_product['sale_price'] < $_product['price']){ ?>
+											<span class="price lthru"><?php echo $this->Number->currency($_product['price'], 'USD'); ?></span>
+											<span class="sale-price"><?php echo $this->Number->currency($_product['sale_price'], 'USD'); ?></span>
+										<?php }else{ ?>
+											<span class="price"><?php echo $this->Number->currency($_product['price'], 'USD'); ?></span>
+										<?php } ?>
+									</a>
+								</div>
+							</div>
+						</li>
+					  <?php } ?>
+				</ul>
+			</div>
+		<?php }else{
+			echo '<div class="flash">No looks uploaded yet!</div>';
+		} ?>
+	</div>
+</div>
