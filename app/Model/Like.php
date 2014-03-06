@@ -1,13 +1,7 @@
 <?php
-class Like extends AppModel 
-{
+class Like extends AppModel{
+		var $actsAs = array('Containable');
  Public $name = 'Like';
- public $hasMany = array(  
-	'Like' => array(
-		'className' => 'Like',
-		'foreignKey' => 'product_id'
-	)
-	);
 	  public $belongsTo = array(
         'User' => array(
             'className' => 'User',

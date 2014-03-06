@@ -40,11 +40,11 @@
 								}else{
 									$image="profile.png";
 								}
-								echo $this->Html->image($image, array('class'=>'mainimg', 'style'=>'width:100px; border:1px solid #999;')); ?>
+								echo $this->Html->image($image, array('class'=>'mainimg', 'style'=>'width:100px; border:1px solid #999;')); ?><br/>
 							<?php echo $this->Form->file('image',array('label'=>'Profile Image', 'type'=>'text')); ?>
 						</div>
 						<?php 	echo $this->Country->select('country', array('label'=>'Selct your Country')); ?></li>
-						<?php echo $this->Form->submit('Update'); ?>
+						<?php echo $this->Form->submit('Update', array('class'=>'button primary')); ?>
 					</fieldset>
 				<?php echo $this->Form->end(); ?>
 			</div>

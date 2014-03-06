@@ -12,6 +12,18 @@
 					echo $this->Form->end();
 					?>
 				</div>
+				
+				<div class="sorting right">
+					<ul class="custdrop">
+						<li><span class="ftitle">Sort by</span>
+							<ul class="drop">
+								<li><?php echo $this->Paginator->sort('caption_name', 'Look Caption'); ?></li>
+								<li><?php echo $this->Paginator->sort('likes', 'Popularity'); ?></li>
+								<li><?php echo $this->Paginator->sort('User.name', 'User Name'); ?></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>

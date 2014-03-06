@@ -47,13 +47,13 @@ $_product = $looks['Product'];
 		<div class="item-action">
 			<div class="like">
 				<?php if(!empty($isLiked) && $isLiked['Like']['id']){
-					echo $this->Html->link( count($looks['Like']), array('action' => 'ullike', $isLiked['Like']['id']), array('class'=>'like-btn unlike'));
+					echo $this->Html->link($_look['likes'], array('action' => 'ullike', $isLiked['Like']['id']), array('class'=>'like-btn unlike'));
 				}else{
-					echo $this->Html->link( count($looks['Like']), array('action' => 'Like', $_look['id']), array('class'=>'like-btn'));
+					echo $this->Html->link($_look['likes'], array('action' => 'Like', $_look['Id']), array('class'=>'like-btn'));
 				} ?>
 			</div>
 			
-			<?php echo $this->Html->link("Add to Wishlist", array( 'controller' => 'Users', 'action' => 'add_wishlist', $_look['id'], 1), array('class'=>'button primary')); ?>
+			<?php echo $this->Html->link("Add to Wishlist", array( 'controller' => 'Users', 'action' => 'add_wishlist', $_look['Id'], 1), array('class'=>'button primary')); ?>
 		</div>
 	</div>
 	
@@ -71,7 +71,7 @@ $_product = $looks['Product'];
 							<div class="info">
 								<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '...','exact' => 'false')); ?></p>
 								
-								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['id']),true) ?>" class="like-btn right small"><?php echo count($mlook['Like']) ?></a>
+								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['id']),true) ?>" class="like-btn right small"><?php echo $mlook['Look']['likes'] ?></a>
 								
 								<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'followers', $mlook['Look']['user_id']),true) ?>" class="user-name">
 									<?php echo $this->Text->truncate($mlook['User']['name'],10,	array('ellipsis' => '...','exact' => 'false')); ?>
