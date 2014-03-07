@@ -11,7 +11,7 @@
 	?>
 		<div class="portfolio-row cf">
 			<div class="product-info pbox">
-				<a href="<?php $this->Html->url(array('controller'=>'Products', 'action'=>'product_detail', $_product['id'])); ?>"><img src="<?php echo $_product['image_url']; ?>"></a>
+				<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_detail', $_product['id'])); ?>"><img src="<?php echo $_product['image_url']; ?>"></a>
 				<div class="sinfo">
 					<?php echo $_product['name']; ?>
 				</div>
@@ -20,7 +20,7 @@
 			<?php $i=0; 
 			foreach($looks as $look){ ;?>
 				<div class="look-info pbox">
-					<a class="img" href="<?php $this->Html->url(array('controller'=>'looks', 'action'=>'detail', $look['Id'])); ?>"><img  src="<?php echo $this->webroot. 'img/Looks/home/' .$look['image']; ?>"></a>
+					<a class="img" href="<?php echo $this->Html->url(array('controller'=>'looks', 'action'=>'detail', $look['Id'])); ?>"><img  src="<?php echo $this->webroot. 'img/Looks/home/' .$look['image']; ?>"></a>
 					<div class="sinfo">
 						<?php echo $look['caption_name']; ?>
 						<span class="delete-icn"><?php echo $this->Html->link('Delete', array('action' => 'delete_potfolio', $look['Id']), null, 'Are you sure?' )?> </span>

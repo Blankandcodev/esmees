@@ -529,17 +529,8 @@ fieldset{
 	padding:0px;
 }
 
-form legend {
-	background: none repeat scroll 0 0 #E5E5E5;
-	display: block;
-	font-size: 13px;
-	font-weight: bold;
-	margin: 0 0 15px;
-	padding: 13px 20px;
-	text-shadow: 1px 1px 1px #FFFFFF;
-	text-transform: uppercase;
-	width: 100%;
-}
+form legend { color: #444444; font-size: 20px; font-weight: bold; line-height:1; padding-bottom:4px;
+border-bottom:1px solid #E2E2E2; width:100%; margin:0 0 15px;}
 form .input {
 	display:block;
 	margin:0 0 15px;
@@ -549,6 +540,9 @@ form .input  label{
 	font-weight:bold;
 	font-size:13px;
 	display:block;
+}
+form .checkbox input[type=checkbox]{
+	float:left;
 }
 form .input  label.error,
 label.error{
