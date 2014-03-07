@@ -1,6 +1,6 @@
 <?php class AdminController extends AppController {
 	
-	var $uses = array('User','Adv','Category','Product','Look');
+	var $uses = array('User','Adv','Category','Product','Look','Commission');
 	
 	var $helpers = array('Form', 'Country','Paginator' => array('Paginator'));
 	
@@ -89,13 +89,13 @@
 		}
 		global $sort_order, $sort_by;
 		$URI = 'https://product-search.api.cj.com/v2/product-search?'.
-			'website-id=7352624'.	
+			'website-id=7386303'.	
 			$query_string;
 		$context = stream_context_create(
 			array(
 				'http' => array(
 					'method' => 'GET',
-					'header' => 'Authorization:  009a78554ed6290977c50955fa80012525e94ee9c1ca1684e2b630b67c97cd7fca4522d6c7b8cbb54487af26888d2bf2537bde134e24c4cb90edb20a6cbca5edd5/06aafd1bbb18e864b827b00371351b726880d48c5df9dce0a076b7d9e6ffa2ed7a21c733bd1ee7bd9a3da2b1f042e4c54ca25d3a6da625c31151028235c669a1'
+					'header' => 'Authorization:  009a4361d95c8e2bdce29187482ade06d25c54353bcbd8f380a2302f4358784d95be510873a64c2785e4bdd76a0876e68a8e6dfe46f462d5c585e420f2fa2c63c9/1ceeee775a48c02959c579de2b4c21736b25d0263b01a20a4a61473c1667da0523a54c62d9a9fb4fa0e5eaebb5f94f2a134d1d94e05ac90b26e3e27c09ef2801'
 				)
 			)
 		);
@@ -446,8 +446,12 @@
 	
 	public function view_commission()
 	{
-		
+			$commission=$this->Commission->find('all');
+			$this->set('commissionList', $commission);
+			pr($commission);
 	}
+	
+	
 }
 //------------------------------------------------End Category Function---------------------------
 

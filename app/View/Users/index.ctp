@@ -28,8 +28,8 @@
 						}
 						echo $this->Html->image($image, array('class'=>'mainimg')); ?>
 						<div class="image-action">
-							<div class="edit"><img src="img/img_edit.png" /><span><?php echo $this->Html->link('Edit', array('controller'=>'Users', 'action'=>'user_profile',$user['id']));?></span></div>
-							<div class="delete"><img src="img/cros.png" /><span><?php echo $this->Html->link('delete', array('controller'=>'Users', 'action'=>'user_profile',$user['id']));?></span></div>
+							<div class="edit"><img src="img/img_edit.png" /><span><?php echo $this->Html->link('Edit', array('controller'=>'Users', 'action'=>'edit_profile',$user['id']));?></span></div>
+							
 						</div>  
 					</div>
 				</div>

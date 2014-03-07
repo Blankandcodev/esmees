@@ -1,5 +1,5 @@
 <?php class UsersController extends AppController {
-	var $uses = array('User','Product','Look','Wishlist','Order','Follower','Like');
+	var $uses = array('User','Product','Look','Wishlist','Order','Follower','Like','Commission');
 	var $helpers = array('Form', 'Country');
 	public $components = array('Image', 'Email');
 	
@@ -205,10 +205,6 @@
 	}
 	
 	
-	public function commission()
-	{
-		
-	}
 	
 	function delete_potfolio($id){
 		$this->Look->delete($id);
@@ -454,5 +450,23 @@ public function password()
 			 
         }
 }
+	public function commission()
+	{
+			$commission=$this->Commission->find('all');
+			$this->set('commissionList', $commission);
+		
+	}
+	
+	
+	public function withdraw($id=null)
+	{
+		 $this->Session->setFlash(__('Please varify your account by clicking on varification link on your mail'), 'flash_success');
+		 
+		 
+	}
+	
+	
+	
+	
 }
 
