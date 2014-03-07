@@ -21,7 +21,7 @@
 			$product_id = $looks['Product']['id'];
 
 			if(!empty($user_id)){
-				$userlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $user_id ), 'limit'=>10));
+				$userlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $user_id, 'Look.cover'=>1 ), 'limit'=>10));
 				$this->set('memberLooks',$userlooks);
 				
 				$isLike = $this->Like->find('first', array(
@@ -59,7 +59,7 @@
 						
 			$cond0 = array();
 			$cond = array();
-			
+			array_push($cond0, "Look.cover = 1");
 			if(isset($this->request->query['brand']) && $this->request->query['brand'] != ''){
 				$brand = $this->request->query['brand'];
 				array_push($cond0, "Look.brand = '$brand'");
@@ -67,7 +67,10 @@
 			if(isset($this->request->query['keyword']) && $this->request->query['keyword'] != ''){
 				$keyword = '%'.$this->request->query['keyword'].'%';
 				array_push($cond, "Look.caption_name LIKE '$keyword'"); 
-				array_push($cond, "User.username LIKE '$keyword'");
+				array_push($cond, "User.name LIKE '$keyword'");
+				array_push($cond, "User.middle_name LIKE '$keyword'");
+				array_push($cond, "User.last_name LIKE '$keyword'");
+				array_push($cond, "User.nickname LIKE '$keyword'");
 			};
 			if(isset($this->request->query['cat']) && $this->request->query['cat'] != ''){
 				$cat = $this->request->query['cat'];

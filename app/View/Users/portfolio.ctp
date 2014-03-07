@@ -31,7 +31,7 @@
 			}
 			if($i < 3){ ?>
 				<div class="look-info pbox">
-					<a href="<?php echo $this->Html->url(array('action'=>'upload_lookimage',$order['Order']['id'] )) ?>" class="img"><img style="width:auto;" src="<?php echo $this->webroot; ?>img/plus.png"></a>
+					<a href="<?php echo $this->Html->url(array('action'=>'upload_lookimage',$_product['id'], $loggeduser['id'] )) ?>" class="img"><img style="width:auto;" src="<?php echo $this->webroot; ?>img/plus.png"></a>
 				</div>
 			<?php } ?>
 		</div>

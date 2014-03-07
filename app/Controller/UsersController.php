@@ -24,7 +24,7 @@
 		$user = $this->User->read(null, $this->user['id']);
 		$this->set('user', $user['User']);
 		
-		$newlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $this->user['id']),'limit' => 10));	
+		$newlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $this->user['id'], 'Look.cover'=>1),'limit' => 10));	
 		$this->set('userLooks',$newlooks);
 		
 		$wishlists = $this->Wishlist->find('all', array('conditions' => array('Wishlist.user_id' => $this->user['id']),'limit' => 10));
@@ -71,7 +71,7 @@
 			$user = $this->User->find('first', array('conditions' => array('User.id' => $userId)));
 			
 			$this->paginate = array('conditions' => array(
-				'Look.user_id' => $userId
+				'Look.user_id' => $userId, 'Look.cover'=>1,
 			), 'limit'=>20); 			
 			$looks = $this->paginate('Look');
 			$this->set('looks',$looks);
@@ -94,7 +94,7 @@
 		if($id != null && !empty($user)){
 			$this->Follower->contain('followedby');
 			$followers = $this->Follower->find('all', array('conditions' => array('Follower.follow_id' => $id),'limit' => 10));
-			$newlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $id),'limit' => 10));
+			$newlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $id, 'Look.cover'=>1),'limit' => 10));
 			
 			
 			$isfollowed = $this->Follower->find('first', array(
@@ -257,28 +257,45 @@
 	
 	
 	
-	public function upload_lookimage($orderid=null) {
-		$order = $this->Order->find('first', array('conditions'=>array('Order.id'=>$orderid)));
+	public function upload_lookimage($proId=null, $uid=null) {
+		intval($proId);
+		intval($uid);
+		if($uid && $proId){
+			$this->Order->contain();
+			$order = $this->Order->find('first', array('conditions'=>array(
+				'Order.product_id'=>$proId,
+				'Order.user_id'=>$uid,
+			)));
 		
-		
-		
-		if(!empty($order)){
-			$countLooks = count($order['Look']);
+			$countLooks = $this->Look->find('count', array('conditions'=>array(
+				'Look.user_id'=>$uid,
+				'Look.product_id'=>$proId
+			)));
 			$this->set('order',$order);
-			
-			
 			if($countLooks < 3){
 				if ($this->request->is('post') || $this->request->is('put')) {
-					$userId=$this->request->data['lookupload']['user_id'];
-					$name=$this->request->data['lookupload']['caption_name'];
-					$orderid=$this->request->data['lookupload']['order_id'];
-					$productid=$this->request->data['lookupload']['product_id'];
-					$product = $this->Product->find('first', array('conditions'=>array('product.id'=>$productid)));
-					$categoryid=$product['Product']['parent_id'];
-					$mfname=$product['Product']['mnf_name'];
+					$product = $this->Product->find('first', array('conditions'=>array('product.id'=>$this->request->data['lookupload']['product_id'])));
 					$image_path = $this->Image->upload_image_and_thumbnail($this->request->data['lookupload']['image'], "Looks");
 					if($image_path){
-						if ($this->Look->save(array('order_id'=>$orderid,'product_id'=>$productid,'caption_name'=>$name,'image'=>$image_path, 'user_id'=>$this->user['id'],'category_id'=>$categoryid,'brand'=>$mfname))){
+						$this->request->data['lookupload']['category_id'] = $product['Product']['parent_id'];
+						$this->request->data['lookupload']['brand'] = $product['Product']['mnf_name'];
+						$this->request->data['lookupload']['image'] = $image_path;
+						$this->Look->contain();
+						$checkCover = $this->Look->find('first', array('conditions' => array(
+							'Look.cover'=>1,
+							'Look.order_id'=>$this->request->data['lookupload']['order_id']
+						), 'fields'=>'Look.id'));						
+						if($checkCover){
+							if($this->request->data['lookupload']['cover'] > 0){
+								$this->Look->id = $checkCover['Look']['id'];
+								$this->Look->saveField('cover', 0);
+								echo "conflict resolved";
+							}
+						}else{
+							$this->request->data['lookupload']['cover'] = 1;
+								echo "no-conflict";
+						}
+						if ($this->Look->save($this->request->data['lookupload'])){
 							$this->Session->setFlash('The Looks Image has saved .', 'flash_success');
 						}else{
 							$this->Session->setFlash('Look could not saved .', 'flash_error');

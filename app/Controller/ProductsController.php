@@ -122,7 +122,7 @@
 			
 			$products=$this->Product->find('all', array('conditions' => array('OR'=>$cond), 'order' => array('Product.created' => 'DESC'),'limit' => 10));
 		
-			$looks = $this->Look->find('all', array('conditions' => array('OR'=>$cond0), 'lomit'=>10));
+			$looks = $this->Look->find('all', array('conditions' => array('AND'=>array('Look.cover'=>1), 'OR'=>$cond0), 'limit'=>10));
 			
 			$this->set('products', $products);
 			$this->set('looks', $looks);
@@ -152,7 +152,7 @@
 			
 			$products=$this->Product->find('all', array('conditions' => array('OR'=>$cond), 'order' => array('Product.created' => 'DESC'),'limit' => 10));
 		
-			$looks = $this->Look->find('all', array('conditions' => array('OR'=>$cond0), 'lomit'=>10));
+			$looks = $this->Look->find('all', array('conditions' => array('AND'=>array('Look.cover'=>1), 'OR'=>$cond0), 'limit'=>10));
 			
 			$this->set('products', $products);
 			$this->set('looks', $looks);
@@ -169,11 +169,11 @@
 			$brand = $details['Product']['mnf_name'];
 			$product_id = $details['Product']['id'];
 			if(!empty($product_id)){
-				$similarLooks = $this->Look->find('all', array('conditions' => array('Look.product_id' => $product_id ), 'limit'=>10));
+				$similarLooks = $this->Look->find('all', array('conditions' => array('Look.product_id' => $product_id, 'Look.cover'=>1 ), 'limit'=>10));
 				$this->set('similarLooks',$similarLooks);
 			}
 			if(!empty($brand)){
-				$brandLooks = $this->Look->find('all', array('conditions' => array('Look.brand' => $brand ), 'limit'=>10));
+				$brandLooks = $this->Look->find('all', array('conditions' => array('Look.brand' => $brand, 'Look.cover'=>1 ), 'limit'=>10));
 				$this->set('brandLooks',$brandLooks);
 			}
 		}else{
