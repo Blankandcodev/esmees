@@ -38,8 +38,8 @@ class PagesController extends AppController {
 	public function index(){
 		$products=$this->Product->find('all', array('order' => array('Product.created' => 'DESC'),'limit' => 10));
 		
-		$looks = $this->Look->find('all', array('group'=>'Look.product_id', 'limit'=>10));
-		
+		$this->Look->contain('User', 'Product');
+		$looks = $this->Look->find('all', array('conditions'=>array('Look.cover'=>1), 'limit'=>10));
 		$this->set('products', $products);
 		$this->set('looks', $looks);
 	}
