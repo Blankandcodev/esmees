@@ -1,6 +1,6 @@
 
 <div class="users form">
-<?php echo $this->Form->create('User'); ?>
+<?php echo $this->Form->create('User', array('class'=>'cform')); ?>
     <fieldset>
         <legend><?php echo __('User Registration'); ?></legend>
     <?php

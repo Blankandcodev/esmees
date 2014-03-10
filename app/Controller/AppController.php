@@ -53,6 +53,14 @@ class AppController extends Controller {
 	}
 	
     public function beforeFilter(){
+		$this->Auth->authenticate = array(
+			AuthComponent::ALL => array(
+				'userModel' => 'User',
+				'scope' => array('User.status' => 1)
+			),
+			'Form',
+			'Basic'
+		);
         if($this->Auth->user('role') == 0){
 			$this->set('loggeduser', $this->Auth->user());
 		}else{
