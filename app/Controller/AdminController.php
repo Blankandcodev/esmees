@@ -278,6 +278,33 @@
 		$response = json_decode(json_encode((array) simplexml_load_string($querryResult)), 1);
 		return $response;
    }
+   
+   
+   
+   //-------------------------------------------------Sales Reports-------------------------------------
+   
+  	public function reports(){
+		
+		$URI = 'https://reportws.linksynergy.com/downloadreport.php?bdate=20140301&edate=20140310&token=cd4f37dc86a07f7845f3d54a4c594f6fdd45a96355367de7348e3c77971aebd9&nid=1&reportid=9';
+		/*$context = stream_context_create(
+			array(
+				'http' => array(
+					'method' => 'GET',
+					'header' => 'Authorization:'
+				)
+			)
+		);*/
+		$querryResult = file_get_contents($URI, false);
+		$Data = str_getcsv($querryResult, "\n");
+//		$response = json_decode(json_encode((array) simplexml_load_string($querryResult)), 1);
+	//	return $response;
+		foreach($Data as &$Row){
+			pr(str_getcsv($Row)); //parse the items in rows 
+		}
+	//	pr($response);
+		die;
+   }
+   
 //----------------------------------------------------End Product Function-------------------------------
 
 	/*  MANAGE ADMIN */
