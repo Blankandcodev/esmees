@@ -196,7 +196,7 @@
 		}
 		$this->redirect($this->referer());
 	}
-	function delete_wishlist($id=null){
+	public function delete_wishlist($id=null){
 		if($id != null){
 			$this->Wishlist->delete($id);
 			$this->Session->setFlash('The WishList item has been deleted.');
@@ -206,13 +206,13 @@
 	
 	
 	
-	function delete_potfolio($id){
+	public function delete_potfolio($id){
 		$this->Look->delete($id);
 		$this->Session->setFlash('The Portfolio with id: '.$id.' has been deleted.');
 		$this->redirect($this->referer());
 	}
 	
-	function delete_lookimage($id=null, $orderid=null){
+	public function delete_lookimage($id=null, $orderid=null){
 		$this->Look->delete($id);
 		$this->Session->setFlash('The Look with id: '.$id.' has been deleted.');
 		$this->redirect(array('action'=>'view_newlooks',$orderid));
@@ -220,7 +220,7 @@
 	}
 
 	
-	function edit_lookimage($id)
+	public function edit_lookimage($id)
     {
 		$this->Look->id = $id;
         if (empty($this->data))
@@ -315,6 +315,14 @@
 			return $this->redirect(array('controller'=>'Users', 'action' => 'index'));
 		}
         if ($this->request->is('post')) {
+			$user = $this->User->findByUsername($this->request->data['User']['username']);
+			if (!empty($user)) {
+				if ($user['User']['status'] == 0){
+					$this->Session->setFlash(__('Your account is not verified, please verify your account'), 'flash_error');
+					$this->redirect($this->referer());
+				}
+			}
+
             if ($this->Auth->login()){
                 $this->Session->setFlash(__('You are successfully logged in'), 'flash_success');
                 $this->redirect($this->Auth->redirect());
@@ -342,39 +350,31 @@
         $this->set('user', $this->User->read(null, $id));
     }
 
-    public function register() {
+    public function register(){
 		if($this->Auth->loggedIn()){
 			$this->Session->setFlash(__('You are Already logged in'));
 			return $this->redirect(array('controller'=>'Users', 'action' => 'index'));
 		}
         if ($this->request->is('post')){
-           //$this->User->create();
+			$hash=sha1($this->data['User']['username'].rand(0,100));
+			//Create Token using form data and random number to ensure its unique and cannot be replicated
+			$this->request->data['User']['token']=$hash;
             if ($this->User->save($this->request->data)){
-               
 				$id = $this->User->id;
 				$newMemId = "ES". sprintf("%06d", $id);
 				$this->request->data['User'] = array_merge(
 					$this->request->data['User'],
 					array('id' => $id)
 				);
-				
 				$this->User->saveField('member_id', $newMemId);
-				
-				$this->sendNewUserMail($this->request->data['User']['username'], $newMemId);
+				$this->sendNewUserMail($this->request->data['User']);
+				$this->Session->setFlash(__('Please verify your email by clicking on verification link'), 'flash_success');
+				return $this->redirect(array('controller'=>'Pages', 'action' => 'index'));
 				 
-				 
-				 $this->Session->setFlash(__('Please varify your account by clicking on varification link on your mail'), 'flash_success');
-				//return $this->redirect(array('controller'=>'Products', 'action' => 'index'));
-				 
-            } else {
-				
+            }else{
                 $this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'flash_error');
             }
-			
         }
-		
-		
-		
     }
 	
 	
@@ -382,23 +382,16 @@
 	
 
 	
-	 function sendNewUserMail($email = null, $code = null){
-		
-		
-		//$email=array('sbdh.singh@gmail.com');
-		
+	 public function sendNewUserMail($data = array()){
         if ($email != NULL){
-
-            $this->Email->to =$email;
+            $this->Email->to =$data['username'];
             $this->Email->subject = 'Welcome to Esmees';
             $this->Email->from = 'Esmees <Subodh@blankandco.com>';
-			$this->set('code', $code);
-            $this->set('email', $email);
+			$this->set('data', $data);
 			$this->Email->template = 'new_user';
             $this->Email->sendAs = 'html';
 	    
-	    if ($this->Email->send()) {
-				
+	    if ($this->Email->send()) {				
                 return TRUE;
             } else {
 				
@@ -407,7 +400,9 @@
         }
     }
 	
-
+	public function varify(){
+		die("sd");
+	}
    
 
 	
