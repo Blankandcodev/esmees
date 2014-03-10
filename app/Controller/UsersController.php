@@ -383,7 +383,7 @@
 
 	
 	 public function sendNewUserMail($data = array()){
-        if ($email != NULL){
+        if ($data != NULL){
             $this->Email->to =$data['username'];
             $this->Email->subject = 'Welcome to Esmees';
             $this->Email->from = 'Esmees <Subodh@blankandco.com>';
