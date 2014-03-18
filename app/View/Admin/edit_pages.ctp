@@ -3,12 +3,12 @@
 	<h1 class="title">Edit Page</h1>
 </div>
 <?php echo $this->Form->create('Page');
- echo $this->Form->input('page_id', array('type'=>'hidden')); ?>
+ echo $this->Form->input('id', array('type'=>'hidden')); ?>
 		<fieldset>
  
      
    
-    <?php echo $this->Form->input('Name', array('label'=>'Name')); ?>
+    <?php echo $this->Form->input('name', array('label'=>'Name')); ?>
 	<?php echo $this->Form->input('description', array('label'=>'Description', 'type'=>'textarea', 'class'=>'required'));?>
 	<?php echo $this->Form->end(__('Update')); ?>
 	</fieldset>

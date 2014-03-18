@@ -463,9 +463,9 @@
         }
 		
 	}
-	Public function edit_pages($id=null)
+	Public function edit_pages($id = null)
 	{
-		$this->Page->page_id = $id;
+		$this->Page->id = $id;
         if (empty($this->data))
         {
             $this->data = $this->Page->read();
@@ -485,11 +485,26 @@
         }
 	}
 	
-	Public function delete_pages()
+
+	
+	
+	Public function delete_pages($id = null)
+	{
+		$this->Page->delete($id);
+      
+		$this->Session->setFlash(__('The Pages with id: '.$id.' has been deleted.'), 'flash_success');
+        $this->redirect(array('action'=>'view_pages'));
+	}
+	
+	
+	
+	
+	//--------------------------------------------Banners-----------------------------------
+	
+	public function add_banners()
 	{
 		
 	}
-	
 	
 	
 }

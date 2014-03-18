@@ -19,8 +19,7 @@
 		}
 	}
 	
-	public function index(){
-		
+	public function index(){		
 		$newlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $this->user['id'], 'Look.cover'=>1),'limit' => 10));	
 		$this->set('userLooks',$newlooks);
 		
@@ -389,34 +388,7 @@
 	}
 	
 	public function resend(){
-	
-		
-		 if ($this->request->is('post')){
-			
-			$username=$this->request->data['User']['username'];
-			$user = $this->User->find('first', array('conditions'=>array('User.username'=>$username)));
-			
-			$token=$user['User']['token'];
-			
-			if ($user['User']['status']==0)
-			{	
-			
-				$email = $this->sendNewUserMail(array_merge($this->request->data['User'],array('username' => $username)));
-				$this->Session->setFlash(__('Please verify your email by clicking on verification link'));
-				$this->redirect(array('controller'=>'Pages','action' =>'index'));
-			
-			}
-			if ($user['User']['status']==1)
-			{			
-					$this->Session->setFlash('Your account is already verified, Please login');
-					$this->redirect(array('controller'=>'Pages', 'action'=>'index'));
-			
-			}
-				
-			
-		
-	}
-		
+		die("sdsdd");
 	}
 	
 	public function verify(){
@@ -486,8 +458,7 @@
             $this->redirect(array('action' => 'index'));
         }
         $this->Session->setFlash(__('User was not deleted'));
-        $this->redirect(array('action' => '
-		'));
+        $this->redirect(array('action' => 'index'));
     }
 	
 public function password()

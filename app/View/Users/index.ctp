@@ -3,11 +3,12 @@
 		<h1>My Dashboard</h1>
 	</div>
 	<div class="colset col2 cf top-part">
+	<?php if(isset($loggeduser) && $loggeduser){ ?>
 		<div class="left">
 			<div class="nav-box">
 				<ul class="left-nav">
 					<li> <a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'portfolio'),true) ?>">PORTFOLIO</a></li>
-					<li> <a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'profile', $user['id']),true) ?>">MY PROFILE</a></li>
+					<li> <a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'profile', $loggeduser['id']),true) ?>">MY PROFILE</a></li>
 					
 					<li><a href="#">MY OFFER</a></li>
 					<li> <a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'followed_user'),true) ?>">FOLLOWED USERS</a></li>
@@ -19,35 +20,39 @@
 		<div class="main">
 			<div class="user-profile cf">
 				<div class="profile-picture">
+				
 					<h2 class="sub-title">Profile Picture</h2>
 					<div class="picture">
-						<?php if($user['image']!=NULL){
-							$image='Users/home/'.$user['image'];
+						<?php if($loggeduser['image']!=NULL){
+							$image='Users/home/'.$loggeduser['image'];
 						}else{
 							$image="profile.png";
 						}
 						echo $this->Html->image($image, array('class'=>'mainimg')); ?>
 						<div class="image-action">
-							<div class="edit"><img src="img/img_edit.png" /><span><?php echo $this->Html->link('Edit', array('controller'=>'Users', 'action'=>'edit_profile',$user['id']));?></span></div>
+							<div class="edit"><img src="img/img_edit.png" /><span><?php echo $this->Html->link('Edit', array('controller'=>'Users', 'action'=>'edit_profile',$loggeduser['id']));?></span></div>
 							
 						</div>  
 					</div>
 				</div>
 				
 				<div class="account-info">
-					<?php echo $this->Html->link('Edit', array('controller'=>'Users', 'action'=>'edit_profile',$user['id']), array('class'=>'right tbtn'));?> 
+					<?php echo $this->Html->link('Edit', array('controller'=>'Users', 'action'=>'edit_profile',$loggeduser['id']), array('class'=>'right tbtn'));?> 
 					<h2 class="sub-title bordered">Account Info</h2>
 					<ul class="info-list">
+					
 						<li>
-							<?php echo $this->Html->link('ChangePassword', array('controller'=>'Users', 'action'=>'password',$user['id']), array('class'=>'right'));?> 
-							<span>Email Address :</span> <?php echo  $user['username']; ?>
+							<?php echo $this->Html->link('ChangePassword', array('controller'=>'Users', 'action'=>'password',$loggeduser['id']), array('class'=>'right'));?> 
+							<span>Email Address :</span> <?php echo  $loggeduser['username']; ?>
 						</li>
-						<li><span>Name:  </span><?php echo  $user['name']; ?> </li>
-						<li><span>City:  </span><?php echo  $user['city']; ?> </li>
-						<li><span>State:  </span><?php echo  $user['state']; ?></li>
-						<li><span>Zip Code: </span> <?php echo  $user['zip']; ?></li>
-						<li><span>Country:  </span><?php echo  $user['country']; ?></li>
+						<li><span>Name:  </span><?php echo  $loggeduser['name']; ?> </li>
+						<li><span>City:  </span><?php echo $loggeduser['city']; ?> </li>
+						<li><span>State:  </span><?php echo  $loggeduser['state']; ?></li>
+						<li><span>Zip Code: </span> <?php echo  $loggeduser['zip']; ?></li>
+						<li><span>Country:  </span><?php echo $loggeduser['country']; ?></li>
+					
 					</ul>
+					
 				</div>
 				
 				<div class="account-pop">
@@ -55,7 +60,7 @@
 						<span>Followers :</span> <span class="num"><?php echo $flowCounts ?></span>
 					</div>
 					<div class="pop-box">
-						<span>Likes :</span> <span class="num"><?php echo $user['likes'] ?></span>
+						<span>Likes :</span> <span class="num"><?php echo $loggeduser['likes'] ?></span>
 					</div>
 					<div class="pop-box">
 						<span>Commission :</span> <span class="num">999</span>
@@ -63,10 +68,11 @@
 				</div>
 			</div>
 		</div>
+		 <?php } ?>
 	</div>
 		<div class="look-listing">
-			<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'looks', $user['id'])); ?>" class="title-btn right">View All</a>
-			<h1 class="sec-title bordered"><?php echo $user['name']; ?>'s Looks</h1>
+			<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'looks', $loggeduser['id'])); ?>" class="title-btn right">View All</a>
+			<h1 class="sec-title bordered"><?php echo $loggeduser['name']; ?>'s Looks</h1>
 	<?php if(!empty($userLooks)){ ?>
 			<div class="listing cf">
 				<ul class="item-list cf">

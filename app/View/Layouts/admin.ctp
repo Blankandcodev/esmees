@@ -82,7 +82,7 @@ $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 		</li>
 		<li>
 		
-		<?php echo $this->Html->link('Banners', array('controller' => 'Admin', 'action' => 'logout'), array('class'=>'left')); ?>
+		<?php echo $this->Html->link('Banners', array('controller' => 'Admin', 'action' => 'add_banners'), array('class'=>'left')); ?>
 			
 		
 		</li>

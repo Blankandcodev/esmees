@@ -23,8 +23,8 @@
 		<td><?php echo  $page['Page']['description']; ?></td>
         
         <td  align='right'>
-        <?php echo $this->Html->link('Edit', array('action'=>'edit_pages', $page['Page']['page_id']), array('class'=>'edit'));?> 
-        <?php echo $this->Html->link('Delete', array('action' => 'delete_pages', $page['Page']['page_id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
+        <?php echo $this->Html->link('Edit', array('action'=>'edit_pages', $page['Page']['id']), array('class'=>'edit'));?> 
+        <?php echo $this->Html->link('Delete', array('action' => 'delete_pages', $page['Page']['id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
 
         </td>
     </tr>
