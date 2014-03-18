@@ -375,7 +375,7 @@
             }
         }
     }
-	 public function sendNewUserMail($data = array()){
+	public function sendNewUserMail($data = array()){
         if ($data != NULL){
             $this->Email->to =$data['username'];
             $this->Email->subject = 'Welcome to Esmees.com';
@@ -395,7 +395,6 @@
 		die("sdsdd");
 	}
 	
-
 	public function verify(){
 		if (!empty($this->passedArgs['t']) && !empty($this->passedArgs['u'])){
 			$name = $this->passedArgs['u'];
@@ -410,10 +409,6 @@
 					$this->User->save($results);
 					$this->Session->setFlash('Your registration is complete', 'flsah_success');
 					$this->redirect(array('controller'=>'Users', 'action'=>'login'));
-<<<<<<< HEAD
-=======
-					
->>>>>>> e03978d17108891c97d88fdaf82953b09262c980
 				}else{
 					$this->Session->setFlash('Your registration failed please try again', 'flsah_error');
 					$this->redirect(array('controller'=>'Users', 'action'=>'register'));
