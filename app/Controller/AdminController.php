@@ -439,7 +439,7 @@
 	{
 			$commission=$this->Commission->find('all');
 			$this->set('commissionList', $commission);
-			pr($commission);
+			
 	}
 	
 	
