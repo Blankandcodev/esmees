@@ -1,6 +1,6 @@
 <?php class AdminController extends AppController {
 	
-	var $uses = array('User','Adv','Category','Product','Look','Commission');
+	var $uses = array('User','Adv','Category','Product','Look','Commission','Page');
 	
 	var $helpers = array('Form', 'Country','Paginator' => array('Paginator'));
 	
@@ -441,6 +441,56 @@
 			$this->set('commissionList', $commission);
 			
 	}
+	
+	public function view_pages()
+	{
+		$this->set('pages', $this->Page->find('all'));
+	}
+	
+	
+	public function add_pages()
+	{
+		if ($this->request->is('post')) {
+            if ($this->Page->save($this->request->data)) {
+				$this->Session->setFlash(__('The Pages has been saved.'), 'flash_success');
+               
+                //$this->redirect(array('action' => 'index'));
+            } else 
+			{
+                $this->Session->setFlash(__('The Pages could not be saved. Please, try again.', 'flash_success'));
+            }
+			 unset($this->request->data['Page']['name']);
+			 unset($this->request->data['Page']['description']);
+        }
+		
+	}
+	Public function edit_pages($id=null)
+	{
+		$this->Page->page_id = $id;
+        if (empty($this->data))
+        {
+            $this->data = $this->Page->read();
+			echo(this->Page->read());
+        }
+        if ($this->request->is('post') || $this->request->is('put')) {
+            if ($this->Page->save($this->request->data)) {
+               
+				 	$this->Session->setFlash(__('The Pages Name has been Updated.'), 'flash_success');
+               // $this->redirect(array('action' => 'index'));
+            } else {
+                $this->Session->setFlash(__('The Pages could not be saved. Please, try again.'), 'flash_error');
+            }
+        } else {
+            //$this->request->data = $this->Category->read(null, $id);
+           // unset($this->request->data['Category']['name']);
+        }
+	}
+	
+	Public function delete_pages()
+	{
+		
+	}
+	
 	
 	
 }
