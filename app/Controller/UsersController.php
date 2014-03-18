@@ -319,6 +319,7 @@
 			if (!empty($user)) {
 				if ($user['User']['status'] == 0){
 					$this->Session->setFlash(__('Your account is not verified, please verify your account'), 'flash_error');
+					
 					$this->redirect($this->referer());
 				}
 			}
@@ -366,37 +367,29 @@
 					array('id' => $id)
 				);
 				$this->User->saveField('member_id', $newMemId);
-				$this->sendNewUserMail($this->request->data['User']);
-				$this->Session->setFlash(__('Please verify your email by clicking on verification link'), 'flash_success');
-				return $this->redirect(array('controller'=>'Pages', 'action' => 'index'));
-				 
+				$email = $this->sendNewUserMail($this->request->data['User']);
+				$this->Session->setFlash(__('Please verify your email by clicking on verification link'));
+				$this->redirect(array('controller'=>'Pages','action' =>'index'));
             }else{
                 $this->Session->setFlash(__('The user could not be saved. Please, try again.'), 'flash_error');
             }
         }
     }
-	
-	
-	
-	
-
-	
 	 public function sendNewUserMail($data = array()){
         if ($data != NULL){
             $this->Email->to =$data['username'];
-            $this->Email->subject = 'Welcome to Esmees';
+            $this->Email->subject = 'Welcome to Esmees.com';
             $this->Email->from = 'Esmees <Subodh@blankandco.com>';
 			$this->set('data', $data);
 			$this->Email->template = 'new_user';
             $this->Email->sendAs = 'html';
-	    
-	    if ($this->Email->send()) {				
-                return true;
-            } else {				
-                return false;
-            }
-        }
-    }
+			if ($this->Email->send()) {
+				return true;
+			} else {				
+				return false;	
+			}
+		}
+	}
 	
 	public function resend(){
 		die("sdsdd");
@@ -416,7 +409,6 @@
 					$this->User->save($results);
 					$this->Session->setFlash('Your registration is complete', 'flsah_success');
 					$this->redirect(array('controller'=>'Users', 'action'=>'login'));
-					exit;
 				}else{
 					$this->Session->setFlash('Your registration failed please try again', 'flsah_error');
 					$this->redirect(array('controller'=>'Users', 'action'=>'register'));

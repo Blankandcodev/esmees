@@ -261,5 +261,9 @@ class Dispatcher implements CakeEventListener {
 		}
 		return false;
 	}
+	
+	protected function _loadRoutes() {
+		include APP . 'Config' . DS . 'routes.php';
+	}
 
 }

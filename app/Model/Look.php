@@ -18,7 +18,12 @@
         'Product' => array(
             'className' => 'Product',
             'foreignKey' => 'product_id'
-        )
+        ),
+		 'Wishlist' => array(
+            'className' => 'Wishlist',
+			'conditions' => array('Wishlist.type' => '1'),
+            'foreignKey' => 'product_id'
+        )		
     );
 	
 	}

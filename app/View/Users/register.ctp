@@ -1,4 +1,3 @@
-
 <div class="users form">
 <?php echo $this->Form->create('User', array('class'=>'cform')); ?>
     <fieldset>
@@ -31,7 +30,7 @@
 		echo $this->Country->select('country', array('label'=>'Country', 'maxLength'=>'15', 'type'=>'text'));
 		
     ?>
-	<?php echo $this->Form->submit('Regster', array('class'=>'primary button med')) ?>
+	<?php echo $this->Form->submit('Register', array('class'=>'primary button med')) ?>
     </fieldset>
 <?php echo $this->Form->end(); ?>
 </div>

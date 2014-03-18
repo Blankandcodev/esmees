@@ -1,4 +1,4 @@
- <?php 
+<?php 
 /**
  * Helper for outputing a country select list.
  *
@@ -273,4 +273,3 @@ class CountryHelper extends FormHelper{
         return $this->output($list);
     }
 };
-?> 
