@@ -6,7 +6,7 @@
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->deny();
-        $this->Auth->allow('add', 'login', 'looks', 'register', 'followers', 'profile', 'sendNewUserMail');
+        $this->Auth->allow('add', 'login', 'looks', 'resend', 'register', 'verify', 'followers', 'profile', 'sendNewUserMail');
     }
 	
     public function isAuthorized($user){
@@ -353,11 +353,10 @@
     public function register(){
 		if($this->Auth->loggedIn()){
 			$this->Session->setFlash(__('You are Already logged in'));
-			return $this->redirect(array('controller'=>'Users', 'action' => 'index'));
+			$this->redirect(array('controller'=>'Users', 'action' => 'index'));
 		}
         if ($this->request->is('post')){
-			$hash=sha1($this->data['User']['username'].rand(0,100));
-			//Create Token using form data and random number to ensure its unique and cannot be replicated
+			$hash=sha1($this->request->data['User']['username'].rand(0,100));
 			$this->request->data['User']['token']=$hash;
             if ($this->User->save($this->request->data)){
 				$id = $this->User->id;
@@ -392,16 +391,44 @@
             $this->Email->sendAs = 'html';
 	    
 	    if ($this->Email->send()) {				
-                return TRUE;
-            } else {
-				
+                return true;
+            } else {				
                 return false;
             }
         }
     }
 	
-	public function varify(){
-		die("sd");
+	public function resend(){
+		die("sdsdd");
+	}
+	
+	public function verify(){
+		if (!empty($this->passedArgs['t']) && !empty($this->passedArgs['u'])){
+			$name = $this->passedArgs['u'];
+			$token = $this->passedArgs['t'];
+			$results = $this->User->findByUsername($name);
+			if ($results['User']['status']==0){
+				if($results['User']['token']==$token){					
+					$hash=sha1($results['User']['username'].rand(0,100));
+					
+					$results['User']['status']=1;
+					$results['User']['token']=$hash;
+					$this->User->save($results);
+					$this->Session->setFlash('Your registration is complete', 'flsah_success');
+					$this->redirect(array('controller'=>'Users', 'action'=>'login'));
+					exit;
+				}else{
+					$this->Session->setFlash('Your registration failed please try again', 'flsah_error');
+					$this->redirect(array('controller'=>'Users', 'action'=>'register'));
+				}
+			}else{
+				$this->Session->setFlash('Token has alredy been used', 'flsah_error');
+					$this->redirect(array('controller'=>'Users', 'action'=>'resend'));
+			}
+		}else{
+			$this->Session->setFlash('Token corrupted', 'flsah_error');
+			$this->redirect(array('controller'=>'Users', 'action'=>'resend'));
+		}
 	}
    
 

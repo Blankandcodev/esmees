@@ -40,6 +40,7 @@ class AppController extends Controller {
             'logoutRedirect' => array('controller' => 'users', 'action' => 'login'),
             'loginAction' => array('controller' => 'users', 'action' => 'login'),
 			'authError' => 'You must be logged in to view this page.',
+			'scope' => array('User.status' => 1),
             'authorize' => array('Controller')
         )
     );
@@ -53,14 +54,6 @@ class AppController extends Controller {
 	}
 	
     public function beforeFilter(){
-		$this->Auth->authenticate = array(
-			AuthComponent::ALL => array(
-				'userModel' => 'User',
-				'scope' => array('User.status' => 1)
-			),
-			'Form',
-			'Basic'
-		);
         if($this->Auth->user('role') == 0){
 			$this->set('loggeduser', $this->Auth->user());
 		}else{

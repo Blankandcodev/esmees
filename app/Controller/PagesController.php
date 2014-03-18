@@ -63,9 +63,7 @@ public function search()
 	
      //   $this->set('products', $this->Product->find('all'));
 		
-		
        	$path = func_get_args();
-
 		$count = count($path);
 		if (!$count) {
 			return $this->redirect('/');
@@ -82,7 +80,7 @@ public function search()
 			$title_for_layout = Inflector::humanize($path[$count - 1]);
 		}
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
-
+/*
 		try {
 			$this->render(implode('/', $path));
 		} catch (MissingViewException $e) {
@@ -90,6 +88,6 @@ public function search()
 				throw $e;
 			}
 			throw new NotFoundException();
-		}
+		}*/
 	}
 }
