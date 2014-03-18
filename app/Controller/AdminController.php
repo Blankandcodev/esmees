@@ -469,7 +469,7 @@
         if (empty($this->data))
         {
             $this->data = $this->Page->read();
-			echo(this->Page->read());
+		//	echo(this->Page->read());
         }
         if ($this->request->is('post') || $this->request->is('put')) {
             if ($this->Page->save($this->request->data)) {
