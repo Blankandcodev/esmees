@@ -384,11 +384,10 @@
         ));
 	}
 	public function add_category(){
-		$AllCats = $this->Category->find('all');
+		$AllCats = $this->Category->generateTreeList(null, null, null, '-- ');
 		$catalist = array();
-		foreach($AllCats as $cat){
-			$cat =$cat['Category'];
-			$catalist[$cat['id']] = $cat['name'];
+		foreach($AllCats as $id=>$cat){
+			$catalist[$id] = $cat;
 		}
 		$this->set('categoryList', $catalist);
 		

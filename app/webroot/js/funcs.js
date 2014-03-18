@@ -4,7 +4,8 @@ $(document).ready(function(){
         return (value != '0');
     }, "This field is required.");
 	$.validator.addClassRules({
-        selchk: { selectcheck: true }
+        selchk: { selectcheck: true },
+        conf: { equalTo : "#pwd" }
     })
 	
 	$('.fancy').fancybox({

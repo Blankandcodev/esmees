@@ -6,6 +6,7 @@
 	<?php 
 		$affiliate = isset($searchdata['affiliate']) ? $searchdata['affiliate'] : 0;
 		$adv_id = isset($searchdata['adv_id']) ? $searchdata['adv_id'] : 0;
+		$record = isset($searchdata['record']) ? $searchdata['record'] : 15;
 		$keywords = isset($searchdata['keywords']) ? $searchdata['keywords'] : '';
 		$category = isset($searchdata['category']) ? $searchdata['category'] : '';
 		$currency = isset($searchdata['currency']) ? $searchdata['currency'] : '';
@@ -19,7 +20,7 @@
 				echo $this->Form->input('category', array( 'label'=>'Category ','type' => 'text', 'value'=>$category));
 				echo $this->Form->input('currency', array( 'label'=>'Currency','type' => 'text', 'value'=>$currency, 'style'=>'width:50px'));
 				echo $this->Form->input('pagenumber', array( 'label'=>'Page','type' => 'text', 'value'=>1, 'id'=>'pageNo', 'style'=>'width:50px'));
-				echo $this->Form->input('record', array('options' => array(15=>15, 30=>30, 50=>50), 'label'=>'Records-per-page'));
+				echo $this->Form->input('record', array('options' => array(15=>15, 30=>30, 50=>50), 'default'=>$record, 'label'=>'Records-per-page'));
 			echo '</div>';
 			echo $this->Form->submit('Search Products', array('class'=>'button primary left'));
 		?>

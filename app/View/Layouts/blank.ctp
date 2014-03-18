@@ -49,8 +49,8 @@ $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 	<ul class="menu">
 	</ul>
 </nav>
-<?php echo $this->Session->flash(); ?>
 </header>
+<?php echo $this->Session->flash(); ?>
 
 <section class="wrapper">
 	<?php echo $this->fetch('content'); ?>

@@ -19,11 +19,7 @@
 		}
 	}
 	
-	public function index(){
-		$this->set('user', $this->User->read(null,$this->user['id']));
-		$user = $this->User->read(null, $this->user['id']);
-		$this->set('user', $user['User']);
-		
+	public function index(){		
 		$newlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $this->user['id'], 'Look.cover'=>1),'limit' => 10));	
 		$this->set('userLooks',$newlooks);
 		
@@ -402,24 +398,29 @@
 			$results = $this->User->findByUsername($name);
 			if ($results['User']['status']==0){
 				if($results['User']['token']==$token){					
-					$hash=sha1($results['User']['username'].rand(0,100));
+					$hash= sha1($results['User']['username'].rand(0,100));
 					
-					$results['User']['status']=1;
-					$results['User']['token']=$hash;
-					$this->User->save($results);
-					$this->Session->setFlash('Your registration is complete', 'flsah_success');
+					$this->User->updateAll(
+						array(
+							'User.status' => 1,
+							'User.token' => "'".$hash."'"
+						),
+						array(
+							'User.id' => $results['User']['id']
+						)
+					);
+					$this->Session->setFlash('Your registration is complete');
 					$this->redirect(array('controller'=>'Users', 'action'=>'login'));
 				}else{
-					$this->Session->setFlash('Your registration failed please try again', 'flsah_error');
-					$this->redirect(array('controller'=>'Users', 'action'=>'register'));
+					$this->Session->setFlash('Verification code expired, please fill your email below and resend verification code');
+					$this->redirect(array('controller'=>'Users', 'action'=>'resend'));
 				}
 			}else{
-				$this->Session->setFlash('Token has alredy been used', 'flsah_error');
-					$this->redirect(array('controller'=>'Users', 'action'=>'resend'));
+				$this->Session->setFlash('Your account is already verified, Please login');
+					$this->redirect(array('controller'=>'Users', 'action'=>'login'));
 			}
 		}else{
-			$this->Session->setFlash('Token corrupted', 'flsah_error');
-			$this->redirect(array('controller'=>'Users', 'action'=>'resend'));
+			throw new NotFoundException(__('Invalid user'));
 		}
 	}
    
