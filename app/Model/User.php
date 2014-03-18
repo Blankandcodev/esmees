@@ -22,8 +22,7 @@ class User extends AppModel {
         'password' => array(
             'required' => array(
                 'rule' => array('notEmpty'),
-                'message' => 'A password is required',
-				'on' => 'create'
+                'message' => 'A password is required'
             )
         )
     );

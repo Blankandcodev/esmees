@@ -39,10 +39,11 @@
         
         <td>
         <?php echo $this->Html->link('User looks', array('action'=>'view_looksimage',  $user['User']['id']), array('class'=>'gallery-btn'));?>  
-	
+		 <?php echo $this->Html->link('Delete', array('action'=>'delete',  $user['User']['id']), array('class'=>'gallery-btn'));?>  
         
 
         </td>
+	
     </tr>
     <?php endforeach; ?>
 
