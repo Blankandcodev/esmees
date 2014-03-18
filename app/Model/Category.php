@@ -7,14 +7,8 @@ class Category extends AppModel {
             'required' => array(
                 'rule' => array('notEmpty'),
                 'message' => 'A category name is required'
-            ),
-			'isUnique' => array (
-				'rule' => 'isUnique',
-				'message' => 'This category name already exists.',
-				'on' => 'create'
-			)
-        ),
-        
+            )
+        )
     );
 	
 }
