@@ -1,0 +1,55 @@
+function uploadCsv(){
+    if (!empty($this->data)) {
+        $csvFile = $this->Upload->csvUpload('files/assessments/csv', $this->data['Assessment']['csv']);// upload avata and the image path to the form array; ready to be served
+       unset($this->request->data['Assessment']['csv']);
+            if(isset($csvFile['path'])) {
+                 $file = $csvFile['path'];
+                    $delimiter = ',';
+                       if (($handle = fopen($file, "r")) !== FALSE) { 
+                        $i = 0; 
+                        while (($lineArray = fgetcsv($handle, 4000, $delimiter)) !== FALSE) { 
+                            for ($j=0; $j<count($lineArray); $j++) { 
+                                $data2DArray[$i][$j] = $lineArray[$j]; 
+                                } 
+                            $i++; 
+                            } 
+                            fclose($handle); 
+
+
+                        } 
+                        //return $data2DArray;
+                        $i = 0;
+                        foreach($data2DArray as $csv){
+                            $this->request->data['Assessment'][$i]['id'] = '';
+                            $this->request->data['Assessment'][$i]['test1'] = $csv[0];
+                            $this->request->data['Assessment'][$i]['test2'] = $csv[1];
+                            $this->request->data['Assessment'][$i]['ass1'] = $csv[2];
+                            $this->request->data['Assessment'][$i]['ass2'] = $csv[3];
+                            $this->request->data['Assessment'][$i]['ass3'] = $csv[4];
+                            $this->request->data['Assessment'][$i]['ca1'] = $csv[5];
+                            $this->request->data['Assessment'][$i]['ca2'] = $csv[6];
+                            $this->request->data['Assessment'][$i]['exams'] = $csv[7];
+                            $this->request->data['Assessment'][$i]['total'] = $csv[8];
+                            $this->request->data['Assessment'][$i]['subject_id'] = $csv[9];
+                            $this->request->data['Assessment'][$i]['student_id'] = $csv[10];
+                            $this->request->data['Assessment'][$i]['my_classes_student_id'] = $csv[11];
+                            $i++;
+                            }
+
+                $this->Assessment->create();
+                        if ($this->Assessment->saveAll($this->data['Assessment'])) {
+                            $this->Session->setFlash(__('The assessment has been saved', true));
+                            //$this->redirect(array('action' => 'index'));
+                        } else {
+                            $this->Session->setFlash(__('The assessment could not be saved. Please, try again.', true));
+                        }
+            $this->set('data', $this->data['Assessment']);
+
+        }else{
+
+            $this->set('errors', $csvFile['errors']);
+
+            }
+
+    }// end of $thid->data check
+}

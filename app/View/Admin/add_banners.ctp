@@ -10,7 +10,7 @@
         )));?>
 		
  <?php
-	echo $this->Form->input('section', array('label'=>'Section', 'type'=>'select', 'options' => array('left' => 'Left', 'Right' => 'Right'
+	echo $this->Form->input('section', array('label'=>'Position', 'type'=>'select', 'options' => array('left' => 'Left', 'Right' => 'Right'
         )));?>
     
      

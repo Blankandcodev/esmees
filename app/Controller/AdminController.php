@@ -450,6 +450,7 @@
 	public function add_pages()
 	{
 		if ($this->request->is('post')) {
+			
             if ($this->Page->save($this->request->data)) {
 				$this->Session->setFlash(__('The Pages has been saved.'), 'flash_success');
                
@@ -503,13 +504,101 @@
 	
 	public function add_banners()
 	{
-		
+		if ($this->request->is('post')) {
+			
+            if ($this->Banner->save($this->request->data)) {
+				$this->Session->setFlash(__('The Pages has been saved.'), 'flash_success');
+               
+                //$this->redirect(array('action' => 'index'));
+            } else 
+			{
+                $this->Session->setFlash(__('The Pages could not be saved. Please, try again.', 'flash_success'));
+            }
+			// unset($this->request->data['Page']['name']);
+			// unset($this->request->data['Page']['description']);
+        }
 	}
 	
 	
-}
-//------------------------------------------------End Category Function---------------------------
+		public function fetch_commission(){
+			$URI = 'https://reportws.linksynergy.com/downloadreport.php?bdate=20140301&edate=20140319&token=cd4f37dc86a07f7845f3d54a4c594f6fdd45a96355367de7348e3c77971aebd9&nid=1&reportid=12';
+		/*$context = stream_context_create(
+			array(
+				'http' => array(
+					'method' => 'GET',
+					'header' => 'Authorization:'
+				)
+			)
+		);*/
+		//echo $URI;
+		$querryResult = file_get_contents($URI, false);
+		$Data = str_getcsv($querryResult, "\n");
+		//print_r($Data);
+	
+		
+		
+		
+		
+		$i = 0;
+		foreach($Data as $row)
+		{
+		
+		
+	
+		
+		//pr(str_getcsv($row)); //parse the items in rows 
+		
+		$reports=array(str_getcsv($row));
+		
+		
+		pr($reports);
+		$mid=$reports[0][1];
+		$mid1=$reports[0][2];
+		$mid2=$reports[0][3];
+		$mid3=$reports[0][4];
+		pr($mid);
+		Pr($mid1);
+		pr($mid2);
+		pr($mid3);
+		
+	
 
-//------------------------------------------------User Looks Function------------------------------
+		 
+
+			
+			
+			 $this->request->data['Linkshares'][$i]['member_id'] = $reports[0][1];
+			$this->request->data['Linkshares'][$i]['merchant_id'] = $reports[0][2];
+			//$this->request->data['Linkshares'][$i]['merchant_name'] = $row[2]; 
+			// $this->request->data['Linkshares'][$i]['order_id'] = $row[3]; 
+			// $this->request->data['Linkshares'][$i]['transaction_date'] = $row[4]; 
+			// $this->request->data['Linkshares'][$i]['transaction_time'] = $row[5]; 
+			// $this->request->data['Linkshares'][$i]['sku_number'] = $row[6]; 
+			// $this->request->data['Linkshares'][$i]['sales'] = $row[7]; 
+			// $this->request->data['Linkshares'][$i]['quantity'] = $row[8]; 
+			// $this->request->data['Linkshares'][$i]['commissions'] = $row[9]; 
+			// $this->request->data['Linkshares'][$i]['process_date'] = $row[10];
+			// $this->request->data['Linkshares'][$i]['process_time'] = $row[11];
+			// pr($this->request->data['Linkshares'][$i]['member_id']);
+			 
+		$i++;
+		}
+		
+		 
+		
+	
+	
+	
+
+	
+	
+	
+		
+   }
+	
+	
+}
+
+
 
  

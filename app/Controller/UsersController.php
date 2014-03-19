@@ -388,6 +388,22 @@
 		}
 	}
 	
+	public function resendNewUserMail($user = array()){
+        if ($user != NULL){
+            $this->Email->to =$user['username'];
+            $this->Email->subject = 'Welcome to Esmees.com';
+            $this->Email->from = 'Esmees <Subodh@blankandco.com>';
+			$this->set('user', $user);
+			$this->Email->template = 'resendmail_user';
+            $this->Email->sendAs = 'html';
+			if ($this->Email->send()) {
+				return true;
+			} else {				
+				return false;	
+			}
+		}
+	}
+	
 	public function resend(){
 	
 		
@@ -395,13 +411,17 @@
 			
 			$username=$this->request->data['User']['username'];
 			$user = $this->User->find('first', array('conditions'=>array('User.username'=>$username)));
-			
 			$token=$user['User']['token'];
 			
 			if ($user['User']['status']==0)
 			{	
-			
-				$email = $this->sendNewUserMail(array_merge($this->request->data['User'],array('username' => $username)));
+				$this->request->data['User']['name'] = $user['User']['name'];
+				$this->request->data['User']['username'] = $user['User']['username'];
+				$this->request->data['User']['token'] = $user['User']['token'];
+				$this->request->data['User']['password'] = $user['User']['password'];
+				
+				$email = $this->sendNewUserMail($this->request->data['User']);
+				
 				$this->Session->setFlash(__('Please verify your email by clicking on verification link'));
 				$this->redirect(array('controller'=>'Pages','action' =>'index'));
 			
@@ -412,9 +432,6 @@
 					$this->redirect(array('controller'=>'Pages', 'action'=>'index'));
 			
 			}
-				
-			
-		
 	}
 		
 	}

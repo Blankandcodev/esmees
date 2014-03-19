@@ -1,7 +1,7 @@
 <?php
-class Commission extends AppModel 
+class LK_commission extends AppModel 
 {
 var $actsAs = array('Containable');
-Public $name = 'Commission';
+Public $name = 'LK_commission';
 }
 ?>
