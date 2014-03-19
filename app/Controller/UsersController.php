@@ -20,7 +20,9 @@
 	}
 	
 	public function index(){
-		
+		$this->User->contain();
+		$user = $this->User->find('first', array('conditions' => array('User.id' => $userId)));
+		$this->set('user', $user);
 		$newlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $this->user['id'], 'Look.cover'=>1),'limit' => 10));	
 		$this->set('userLooks',$newlooks);
 		
