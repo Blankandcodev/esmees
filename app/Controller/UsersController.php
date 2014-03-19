@@ -21,8 +21,8 @@
 	
 	public function index(){
 		$this->User->contain();
-		$user = $this->User->find('first', array('conditions' => array('User.id' => $userId)));
-		$this->set('user', $user);
+		$user = $this->User->find('first', array('conditions' => array('User.id'=>$this->user['id'])));
+		$this->set('user', $user['User']);
 		$newlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $this->user['id'], 'Look.cover'=>1),'limit' => 10));	
 		$this->set('userLooks',$newlooks);
 		
@@ -317,7 +317,7 @@
 			$user = $this->User->findByUsername($this->request->data['User']['username']);
 			if (!empty($user)) {
 				if ($user['User']['status'] == 0){
-					$this->Session->setFlash(__('Your account is not verified, please verify your account'), 'flash_error');
+					$this->Session->setFlash(__('Your email id is not verified, please verify your email id.<br/>Not verification email yet? <a href="/user/resend">click here</a> to send verification email again.'), 'flash_error');
 					
 					$this->redirect($this->referer());
 				}
@@ -391,17 +391,13 @@
 	}
 	
 	public function resend(){
-	
-		
-		 if ($this->request->is('post')){
-			
+		if ($this->request->is('post')){
 			$username=$this->request->data['User']['username'];
 			$user = $this->User->find('first', array('conditions'=>array('User.username'=>$username)));
 			
 			$token=$user['User']['token'];
 			
-			if ($user['User']['status']==0)
-			{	
+			if ($user['User']['status']==0){
 			
 				$email = $this->sendNewUserMail(array_merge($this->request->data['User'],array('username' => $username)));
 				$this->Session->setFlash(__('Please verify your email by clicking on verification link'));

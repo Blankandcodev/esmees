@@ -62,7 +62,7 @@ $cakeDescription = __d('cake_dev', 'Esmees');
                       <div class="rgt_upr">
                          <ul>
 						<?php if(isset($loggeduser) && $loggeduser){ ?>
-                           <li>Welcome <?php echo $loggeduser['name'] ?></li>
+                           <li>Welcome <?php echo $this->Html->link($loggeduser['nickname'], array('controller'=>'Users', 'action'=>'index')) ?></li>
                            <li><a href="<?php echo $this->Html->url(array('controller'=>'users', 'action'=>'logout'),true) ?>">Logout</a></li>
 						<?php }else{?>
                            <li><a href="<?php echo $this->Html->url(array('controller'=>'users', 'action'=>'register'),true) ?>">Join </a></li>
