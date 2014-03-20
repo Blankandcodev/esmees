@@ -1,6 +1,6 @@
 <?php class AdminController extends AppController {
 	
-	var $uses = array('User','Adv','Category','Product','Look','Commission','Page');
+	var $uses = array('User','Adv','Category','Product','Look','Commission','Page','Link');
 	
 	var $helpers = array('Form', 'Country','Paginator' => array('Paginator'));
 	
@@ -518,81 +518,77 @@
 			// unset($this->request->data['Page']['description']);
         }
 	}
+
+public function generate_commissionls()
+{
+
+}
 	
-	
-		public function fetch_commission(){
-			$URI = 'https://reportws.linksynergy.com/downloadreport.php?bdate=20140301&edate=20140319&token=cd4f37dc86a07f7845f3d54a4c594f6fdd45a96355367de7348e3c77971aebd9&nid=1&reportid=12';
-		/*$context = stream_context_create(
-			array(
-				'http' => array(
-					'method' => 'GET',
-					'header' => 'Authorization:'
-				)
-			)
-		);*/
-		//echo $URI;
+public function fetch_commission(){
+		$URI = 'https://reportws.linksynergy.com/downloadreport.php?bdate=20140301&edate=20140319&token=cd4f37dc86a07f7845f3d54a4c594f6fdd45a96355367de7348e3c77971aebd9&nid=1&reportid=12';
+		
 		$querryResult = file_get_contents($URI, false);
 		$Data = str_getcsv($querryResult, "\n");
-		//print_r($Data);
-	
 		
-		
-		
-		
+		$data = array();
+		$array = array();
 		$i = 0;
-		foreach($Data as $row)
-		{
-		
-		
-	
-		
-		//pr(str_getcsv($row)); //parse the items in rows 
-		
-		$reports=array(str_getcsv($row));
-		
-		
-		pr($reports);
-		$mid=$reports[0][1];
-		$mid1=$reports[0][2];
-		$mid2=$reports[0][3];
-		$mid3=$reports[0][4];
-		pr($mid);
-		Pr($mid1);
-		pr($mid2);
-		pr($mid3);
-		
-	
-
-		 
-
+		 foreach ($Data as $key => $val)
+			{
+			if($key!=0)
+			
+			{
+			$array[] = str_getcsv($val);
+			
+			$member_id = $array[$i][0];
+            $merchant_id = $array[$i][1];
+            $merchant_name = $array[$i][2];
+            $order_id = $array[$i][3];
+            $transaction_date = $array[$i][4];
+            $transaction_time = $array[$i][5];
+            $sku_number = $array[$i][6];
+            $sales = $array[$i][7];
+			$quantity = $array[$i][8];
+            $commissions = $array[$i][9];
+            $process_date = $array[$i][10];
+            $process_time =$array[$i][11];
+            
+			$i++;
+            
+			$data['Link']['member_id'] = $member_id;
+			$data['Link']['merchant_id'] = $merchant_id;
+			$data['Link']['merchant_name'] = $merchant_name;
+			$data['Link']['order_id'] = $order_id;
+			$data['Link']['transaction_date'] = $transaction_date;
+			$data['Link']['transaction_time'] = $transaction_time;
+			$data['Link']['sku_number'] = $sku_number;
+			$data['Link']['sales'] = $sales;
+			$data['Link']['quantity'] = $quantity;
+			$data['Link']['commissions'] = $commissions;
+			$data['Link']['process_date'] = $process_date;
+			$data['Link']['process_time'] = $process_time;
+			
+			$this->Link->create();
+			
+			if ($this->Link->save($data)) {
+			 $this->Session->setFlash(__('The Commission has been saved.'), 'flash_success');
+			}
+			else
+			{
+				$this->Session->setFlash(__('The  Commission not be saved. Please, try again.', 'flash_success'));
+			}
 			
 			
-			 $this->request->data['Linkshares'][$i]['member_id'] = $reports[0][1];
-			$this->request->data['Linkshares'][$i]['merchant_id'] = $reports[0][2];
-			//$this->request->data['Linkshares'][$i]['merchant_name'] = $row[2]; 
-			// $this->request->data['Linkshares'][$i]['order_id'] = $row[3]; 
-			// $this->request->data['Linkshares'][$i]['transaction_date'] = $row[4]; 
-			// $this->request->data['Linkshares'][$i]['transaction_time'] = $row[5]; 
-			// $this->request->data['Linkshares'][$i]['sku_number'] = $row[6]; 
-			// $this->request->data['Linkshares'][$i]['sales'] = $row[7]; 
-			// $this->request->data['Linkshares'][$i]['quantity'] = $row[8]; 
-			// $this->request->data['Linkshares'][$i]['commissions'] = $row[9]; 
-			// $this->request->data['Linkshares'][$i]['process_date'] = $row[10];
-			// $this->request->data['Linkshares'][$i]['process_time'] = $row[11];
-			// pr($this->request->data['Linkshares'][$i]['member_id']);
-			 
-		$i++;
-		}
+					
 		
-		 
+					
+			}
+			
+		} 
+			$commission=$this->Link->find('all');
+			$this->set('commissionList', $commission);
 		
-	
-	
-	
-
-	
-	
-	
+		
 		
    }
 	
