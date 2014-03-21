@@ -513,13 +513,9 @@
         }
 	}
 
-public function generate_commissionls()
+public function fetch_commissionls()
 {
-
-}
-	
-public function fetch_commission(){
-		$URI = 'https://reportws.linksynergy.com/downloadreport.php?bdate=20140301&edate=20140319&token=cd4f37dc86a07f7845f3d54a4c594f6fdd45a96355367de7348e3c77971aebd9&nid=1&reportid=12';
+	$URI = 'https://reportws.linksynergy.com/downloadreport.php?bdate=20140301&edate=20140319&token=cd4f37dc86a07f7845f3d54a4c594f6fdd45a96355367de7348e3c77971aebd9&nid=1&reportid=12';
 		
 		$querryResult = file_get_contents($URI, false);
 		$Data = str_getcsv($querryResult, "\n");
@@ -566,19 +562,21 @@ public function fetch_commission(){
 			
 			if ($this->Link->save($data)) {
 			 $this->Session->setFlash(__('The Commission has been saved.'), 'flash_success');
+			 
+			
 			}
 			else
 			{
 				$this->Session->setFlash(__('The  Commission not be saved. Please, try again.', 'flash_success'));
 			}
-			
-			
-					
-		
-					
-			}
+		}
 			
 		} 
+		 $this->redirect(array('action'=>'fetch_commission'));
+}
+	
+	public function fetch_commission(){
+		
 			$commission=$this->Link->find('all');
 			$this->set('commissionList', $commission);
 		
@@ -586,22 +584,12 @@ public function fetch_commission(){
 		
    }
    
+  
    
-   	public function commissionCJ(){
-	$cDevKey = '009a4361d95c8e2bdce29187482ade06d25c54353bcbd8f380a2302f4358784d95be510873a64c2785e4bdd76a0876e68a8e6dfe46f462d5c585e420f2fa2c63c9/1ceeee775a48c02959c579de2b4c21736b25d0263b01a20a4a61473c1667da0523a54c62d9a9fb4fa0e5eaebb5f94f2a134d1d94e05ac90b26e3e27c09ef2801';
-	$cURL = 'https://commission-detail.api.cj.com/v3/commissions?';
-   $cURL .= 'date-type=sale&';
-	$cURL.='Authorization:'.$cDevKey;
-	$querryResult = file_get_contents($cURL, false);
-	$response = json_decode(json_encode((array) simplexml_load_string($querryResult)), 1);
-	pr($response);
-	return $response;
-	die;
-		$URL = 'https://commission-detail.api.cj.com/v3/commissions?';
-		$URL .= 'date-type=posting&start-date=2014-03-1&end-date=2014-03-11&action-types=sale'.
-				'website-id=7386303';	
-			//$query_string;
-		$context = stream_context_create(
+   public function fetch_commission_cj()
+   {
+			$URI = 'https://commission-detail.api.cj.com/v3/commissions?date-type=posting&action-types=sale&website-ids=7386303';
+			$context = stream_context_create(
 			array(
 				'http' => array(
 					'method' => 'GET',
@@ -609,30 +597,16 @@ public function fetch_commission(){
 				)
 			)
 		);
-		
-	    $response = new SimpleXMLElement(file_get_contents($URI, false, $context));
-		
 		$querryResult = file_get_contents($URI, false, $context);
-		pr($querryResult);
-		die;
 		$response = json_decode(json_encode((array) simplexml_load_string($querryResult)), 1);
-		
-		debug($response);
-		die();
-	
-	
- 
-    
-	
-		
-			
-		
-		
-		
-	
-		
+		$this->set('commissionCj', $response);
    }
    
+   
+   public function generate_commission()
+   {
+	
+   }
 	
 	
 }
