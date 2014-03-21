@@ -1,7 +1,7 @@
 <div class="title-row">
 	
 		
-	<a class="button primary title-btn" href="<?php echo $this->Html->url(array('action'=>'view_adversiters'), array('class'=>'add')); ?>">Generate Commission</a>
+	<a class="button primary title-btn" href="<?php echo $this->Html->url(array('action'=>'fetch_commissionls'), array('class'=>'add')); ?>">Generate Commission</a>
 	<h1 class="title">View All Commission</h1>
 
 	
@@ -44,13 +44,13 @@
 		<td><?php echo  $comm['Link']['sku_number']; ?></td>
 		<td><?php echo  $comm['Link']['sales']; ?></td>
 		<td><?php echo  $comm['Link']['quantity']; ?></td>
-		<td><?php echo  $comm['Link']['commissions']; ?></td>
+		<td>$<?php echo  $comm['Link']['commissions']; ?></td>
 		<td><?php echo  $comm['Link']['process_date']; ?></td>
 		<td><?php echo  $comm['Link']['process_time']; ?></td>
         
         <td>
-        <?php echo $this->Html->link('Edit', array('action'=>'edit_adversiters',  $comm['Link']['id']), array('class'=>'edit'));?> 
-        <?php echo $this->Html->link('Delete', array('action' => 'delete_adversiters',  $comm['Link']['id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
+        <?php echo $this->Html->link('Details', array('action'=>'edit_adversiters',  $comm['Link']['id']), array('class'=>'edit'));?> 
+       
 
         </td>
     </tr>
