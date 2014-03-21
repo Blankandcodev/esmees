@@ -59,7 +59,11 @@ $(document).ready(function(){
 				$this.parent().html('<div class="flash flash_error">Product Already Saved</div>')
 			};
 		}, "json")
-	})
+	});
+	$('.editor').redactor({
+		imageUpload: '/esmees/Admin/imgupload',
+		imageGetJson: '/esmees/img/upload/data.json'
+	});
 });
 $(window).resize(function(){
 	$.fancybox.update()

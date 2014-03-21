@@ -53,6 +53,7 @@ class ImageComponent extends Component
 					$error = 0;
 					$tempuploaddir = WWW_ROOT.'img/temp'; // the /temp/ directory, should delete the image after we upload
 					$homeuploaddir = WWW_ROOT."img/".$folderName."/home"; // the /home/ directory
+					$origionaldir = WWW_ROOT."img/".$folderName; // the /home/ directory
 					$biguploaddir = WWW_ROOT."img/".$folderName."/big"; // the /big/ directory
 					$smalluploaddir = WWW_ROOT."img/".$folderName."/small"; // the /small/ directory for thumbnails
 					
@@ -111,6 +112,8 @@ class ImageComponent extends Component
 							 *	Generate the big version of the image with max of $imgscale in either directions
 							 */
 							$this->resizeImage('resize', $tempuploaddir, $filename, $biguploaddir, $filename,800,800, $quality);
+							
+							$this->resizeImage('resize', $tempuploaddir, $filename, $origionaldir, $filename,2000,2000, $quality);
 
 							/*
 							 *	Generate the small thumbnail version of the image with scale of $thumbscalew and $thumbscaleh

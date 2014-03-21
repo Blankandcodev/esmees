@@ -6,6 +6,7 @@
 	
 	var $components = array(
 		'Paginator',
+		'Image',
         'Session',
         'Auth' => array(
             'loginRedirect' => array('controller' => 'admin', 'action' => 'index'),
@@ -455,8 +456,8 @@
 			{
                 $this->Session->setFlash(__('The Pages could not be saved. Please, try again.', 'flash_success'));
             }
+			$this->redirect(array('action' => 'pages'));
         }
-		$this->redirect(array('action' => 'pages'));
 		
 	}
 	Public function edit_page($id = null){
@@ -470,10 +471,11 @@
             if ($this->Page->save($this->request->data)) {
                
 				 	$this->Session->setFlash(__('The Pages Name has been Updated.'), 'flash_success');
-               // $this->redirect(array('action' => 'index'));
+               // 
             } else {
                 $this->Session->setFlash(__('The Pages could not be saved. Please, try again.'), 'flash_error');
             }
+			$this->redirect($this->referer());
         } else {
             //$this->request->data = $this->Category->read(null, $id);
            // unset($this->request->data['Category']['name']);
@@ -483,7 +485,7 @@
 
 	
 	
-	Public function delete_pages($id = null)
+	Public function delete_page($id = null)
 	{
 		$this->Page->delete($id);
       
@@ -491,7 +493,28 @@
         $this->redirect(array('action'=>'view_pages'));
 	}
 	
-	
+	public function imgupload(){
+		if ($this->request->is('post') || $this->request->is('put')) {
+			$param_img = $this->request->params['form']['file'];
+			$image_path = $this->Image->upload_image_and_thumbnail($param_img, "upload");
+			$array = array(
+				'filelink' => '/esmees/img/upload/'.$image_path,
+				'thumb' => '/esmees/img/upload/small/'.$image_path,
+				'image' => '/esmees/img/upload/big/'.$image_path
+			);
+			echo stripslashes(json_encode($array));
+			
+			$fp = WWW_ROOT.'/img/upload/data.json';
+			$file = file_get_contents($fp);
+			$data = json_decode($file);
+			unset($file);
+			$data[] = $array;
+			pr($data);
+			file_put_contents($fp, json_encode($data));
+			unset($data);			
+			exit;
+		}
+	}
 	
 	
 	//--------------------------------------------Banners-----------------------------------
