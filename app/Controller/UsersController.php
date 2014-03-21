@@ -390,6 +390,7 @@
 		}
 	}
 	
+
 	public function resendNewUserMail($user = array()){
         if ($user != NULL){
             $this->Email->to =$user['username'];
@@ -406,12 +407,14 @@
 		}
 	}
 	
+
 	public function resend(){
 		if ($this->request->is('post')){
 			$username=$this->request->data['User']['username'];
 			$user = $this->User->find('first', array('conditions'=>array('User.username'=>$username)));
 			$token=$user['User']['token'];
 			
+
 
 			if ($user['User']['status']==0)
 			{	
@@ -422,6 +425,7 @@
 				
 				$email = $this->sendNewUserMail($this->request->data['User']);
 				
+
 
 			if ($user['User']['status']==0){
 			

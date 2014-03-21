@@ -69,10 +69,9 @@ $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 		</li>
 		
 		<li><?php echo $this->Html->link('Users', array('controller' => 'Admin', 'action' => 'view_user')); ?></li>
-		<li><?php echo $this->Html->link('Reports', array('controller' => 'Admin', 'action' => 'fetch_commission')); ?>
-		
-			
-		</li>
+		<li><?php echo $this->Html->link('Reports', array('controller' => 'Admin', 'action' => 'fetch_commission')); ?></li>
+		<li class=""><?php echo $this->Html->link('Generate Commission CJ', array('controller' => 'Admin', 'action' => 'commissionCJ')); ?></li>
+				
 		
 		<li>
 		
