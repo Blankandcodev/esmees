@@ -441,31 +441,25 @@
 			
 	}
 	
-	public function view_pages()
-	{
+	public function pages(){
 		$this->set('pages', $this->Page->find('all'));
 	}
 	
 	
-	public function add_pages()
-	{
-		if ($this->request->is('post')) {
+	public function add_page(){
+		if ($this->request->is('post')){
 			
             if ($this->Page->save($this->request->data)) {
 				$this->Session->setFlash(__('The Pages has been saved.'), 'flash_success');
-               
-                //$this->redirect(array('action' => 'index'));
             } else 
 			{
                 $this->Session->setFlash(__('The Pages could not be saved. Please, try again.', 'flash_success'));
             }
-			 unset($this->request->data['Page']['name']);
-			 unset($this->request->data['Page']['description']);
         }
+		$this->redirect(array('action' => 'pages'));
 		
 	}
-	Public function edit_pages($id = null)
-	{
+	Public function edit_page($id = null){
 		$this->Page->id = $id;
         if (empty($this->data))
         {
