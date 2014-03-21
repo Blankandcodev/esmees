@@ -111,12 +111,12 @@
 			$data = array_shift($this->request->data);
 			
 			if ($this->Product->save($data)){
-				$this->Session->setFlash(__('The Product has been saved.'), 'flash_success');
 				if ($this->request->is('ajax')){
 					$arr = array('status'=>'success', 'msg'=>'Product has been saved');
 					echo json_encode($arr);
 					exit;
 				}else{
+					$this->Session->setFlash(__('The Product has been saved.'), 'flash_success');
 					$this->redirect($this->referer(array('action' => 'add_cjproduct')));
 				}
 			}else{

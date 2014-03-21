@@ -535,7 +535,8 @@ form legend {
 	font-size: 13px;
 	font-weight: bold;
 	margin: 0 0 15px;
-	padding: 13px 20px;
+	padding: 13px 0px;
+	text-indent:20px;
 	text-shadow: 1px 1px 1px #FFFFFF;
 	text-transform: uppercase;
 	width: 100%;
@@ -559,7 +560,8 @@ form .submit{
 }
 form .radio fieldset{}
 form .radio fieldset legend{background:none; padding:0; display: block; font-size: 13px; font-weight: bold; margin: 0 0 5px; text-transform:none; color:#000;}
-form .radio input{float:left; margin:0 5px 0 0; }
+form .radio input,
+form .checkbox input{float:left; margin:0 5px 0 0; }
 form .radio label{float:left; margin-right:25px; font-weight:normal; color:#333;}
 
 
