@@ -1,11 +1,11 @@
 <?php
-class Commission extends AppModel 
+class Widthdraw extends AppModel 
 {
 var $actsAs = array('Containable');
-Public $name = 'Commission';
+Public $name = 'Widthdraw';
  public $hasMany = array(
-		 'Commission' => array(
-            'className' => 'Commission',
+		 'Widthdraw' => array(
+            'className' => 'Widthdraw',
 			'counterCache' => true,
             'foreignKey' => 'user_id'
         )

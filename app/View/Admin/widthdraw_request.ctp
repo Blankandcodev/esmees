@@ -1,7 +1,7 @@
 
 <div class="title-row">
 	
-	<h1 class="title">User List</h1>
+	<h1 class="title">Widthdraw Request List</h1>
 </div>
 
 <div class="addproduct">
@@ -41,54 +41,46 @@
 		?>
 			
 			</th> 
-			<th>
-			<?php
-			echo $this->Paginator->sort('name',' Name',array('escape' => false));
-		?>
 			
-			</th> 
+		
+			
 			
 			<th>
 			<?php
-			echo $this->Paginator->sort('status','Status',array('escape' => false));
+			echo $this->Paginator->sort('status','Amount',array('escape' => false));
 		?>
 			
 			</th>
 			<th>
 			
 			<?php
-			echo $this->Paginator->sort('created','Join Date',array('escape' => false));
+			echo $this->Paginator->sort('request_date','Status',array('escape' => false));
 		?>
 			
 			</th>
+			<th>Date</th> 
 			<th>Actions</th> 
 		</tr> 
 	</thead>
 				
 
 
-    <?php foreach ($users as $user): ?>
+    <?php foreach ($widthDraws as $user): ?>
     <tr>
         
         <td><?php echo  $user['User']['member_id']; ?></td>
         <td><?php echo  $user['User']['username']; ?></td>
-		<td><?php echo  $user['User']['name']; ?></td>
-
-		<td>
-					   <?php echo 
-						$user['User']['status']; ?></td>
-		<td><?php echo  $user['User']['created']; ?></td>
+	
+		<td>$<?php echo  $user['Widthdraw']['widthdraw_request_amount']; ?></td>
+		<td> <?php echo $user['Widthdraw']['status']; ?></td>
+		<td><?php echo  $user['Widthdraw']['request_date']; ?></td>
+		
+	
       
         <td>
-		  <?php echo $this->Html->link('View Details', array('action'=>'view_looksimage',  $user['User']['id']), array('class'=>'gallery-btn'));?>
-        <?php echo $this->Html->link('View Looks', array('action'=>'view_looksimage',  $user['User']['id']), array('class'=>'gallery-btn'));?>  
-		 <?php echo $this->Html->link('View Commission', array('action'=>'view_looksimage',  $user['User']['id']), array('class'=>'gallery-btn'));?>  
-		  <?php echo $this->Html->link('View Request', array('action'=>'view_looksimage',  $user['User']['id']), array('class'=>'gallery-btn'));?>  
-		
-		
-		
+        <?php echo $this->Html->link('User Details', array('action'=>'user_detail',  $user['User']['id']), array('class'=>'gallery-btn'));?>  
+
         <?php echo $this->Html->link('Delete', array('action' => 'delete', $user['User']['id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
-		
 
 
         </td>

@@ -1,6 +1,6 @@
 <?php class AdminController extends AppController {
 	
-	var $uses = array('User','Adv','Category','Product','Look','Commission','Page','Link');
+	var $uses = array('User','Adv','Category','Product','Look','Commission','Page','Link','Widthdraw');
 	
 	var $helpers = array('Form', 'Country','Paginator' => array('Paginator'));
 	
@@ -62,8 +62,26 @@
         $this->set('users', $this->paginate());
     }
 	 public function view_user() {
-        $this->User->recursive = 0;
-        $this->set('users', $this->paginate());
+        //$this->User->recursive = 0;
+       // $this->set('users', $this->paginate());
+	   
+	   $this->Paginator->settings = array('limit' => 10);
+		$data = $this->Paginator->paginate('User');
+		$this->set('users', $data);
+		if ($this->request->is('post')) 
+		{
+		
+		$this->Paginator->settings = array(
+		'conditions' =>array('OR' =>array('User.name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','User.username LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','User.member_id LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','User.nickname LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%' )
+	
+		));
+		$data = $this->Paginator->paginate('User');
+		$this->set('users',$data);
+		}
+		else
+		{
+		 
+		}
     }
 //---------------------------------------------End User Function-------------------------------------
 	public function sample() {
@@ -238,9 +256,24 @@
     }
 	
 	public function view_products(){
-		$this->Paginator->settings = $this->paginate;
+		
+		$this->Paginator->settings = array('limit' => 50);
 		$data = $this->Paginator->paginate('Product');
 		$this->set('products', $data);
+		if ($this->request->is('post')) 
+		{
+		
+		$this->Paginator->settings = array(
+		'conditions' =>array('OR' =>array('Product.name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','Product.sku LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','Product.advetiser_name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','Product.mnf_name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%' )
+	
+		));
+		$data = $this->Paginator->paginate('Product');
+		$this->set('products',$data);
+		}
+		else
+		{
+		 
+		}
     }
 	
 	public function ConnectToLN($params = array()){
@@ -332,7 +365,28 @@
 	
 
 	function view_adversiters(){
-		$this->set('advs', $this->Adv->find('all'));
+		
+		$this->Paginator->settings = array('limit' => 10);
+		$data = $this->Paginator->paginate('Adv');
+		$this->set('advs',$data);
+		
+		if ($this->request->is('post')) 
+		{
+		
+		$this->Paginator->settings = array(
+		'conditions' => array('Adv.adv_name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%', ),
+		'limit' => 10
+		);
+		$data = $this->Paginator->paginate('Adv');
+		$this->set('advs',$data);
+
+		}
+		else
+		{
+		 
+		}
+		
+		
 	}
 	function add_adversiters(){
 		if ($this->request->is('post')) {
@@ -346,6 +400,8 @@
             }
 			 unset($this->request->data['Adv']['adv_id']);
 			 unset($this->request->data['Adv']['adv_name']);
+			 unset($this->request->data['Adv']['vsetry_peroid']);
+			 unset($this->request->data['Adv']['url']);
         }
     }
 	function edit_adversiters($id = null) {
@@ -630,6 +686,33 @@ public function fetch_commissionls()
    {
 	
    }
+   
+   
+  public function widthdraw_request()
+   {
+		
+	    $this->Paginator->settings = array('limit' => 10);
+		$data = $this->Paginator->paginate('Widthdraw');
+		$this->set('widthDraws', $data);
+		
+		$data = $this->Paginator->paginate('Widthdraw');
+		$this->set('widthDraws',$data);
+	}
+	
+	
+	public function user_detail($id = null)
+	{
+			
+			$userlist = $this->User->find('all', array('conditions' => array('User.id'=>$id)));
+			$this->set('userDetails',$userlist);
+			pr($userlist);
+	
+	 
+	}
+	
+	
+		
+ 
 	
 	
 }

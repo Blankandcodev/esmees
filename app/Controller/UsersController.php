@@ -1,12 +1,12 @@
 <?php class UsersController extends AppController {
-	var $uses = array('User','Product','Look','Wishlist','Order','Follower','Like','Commission');
+	var $uses = array('User','Product','Look','Wishlist','Order','Follower','Like','Commission','Widthdraw');
 	var $helpers = array('Form', 'Country');
 	public $components = array('Image', 'Email');
 	
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->deny();
-        $this->Auth->allow('add', 'login', 'looks', 'resend', 'register', 'verify', 'followers', 'profile', 'sendNewUserMail');
+        $this->Auth->allow('add', 'login', 'looks', 'resend', 'register', 'verify', 'followers', 'profile', 'sendNewUserMail','password_recovery','NewPassword');
     }
 	
     public function isAuthorized($user){
@@ -317,7 +317,7 @@
 			$user = $this->User->findByUsername($this->request->data['User']['username']);
 			if (!empty($user)) {
 				if ($user['User']['status'] == 0){
-					$this->Session->setFlash(__('Your email id is not verified, please verify your email id.<br/>Not verification email yet? <a href="/user/resend">click here</a> to send verification email again.'), 'flash_error');
+					$this->Session->setFlash(__('Your email id is not verified, please verify your email id.<br/>Not verification email yet? <a href="http://www.esmees.blankandco.com/users/resend">click here</a> to send verification email again.'), 'flash_error');
 					
 					$this->redirect($this->referer());
 				}
@@ -540,20 +540,138 @@ public function password()
 }
 	public function commission()
 	{
-			$commission=$this->Commission->find('all');
-			$this->set('commissionList', $commission);
+			//$commission=$this->Commission->find('all');
+			//$this->set('commissionList', $commission);
+			
+			
+			 $comm = $this->Commission->find('first', array('conditions' => array('Commission.user_id'=>$this->user['id'])));
+		
+			
+			
+			 $this->set('commissionDetail',$comm);
+			 $user=$comm['User']['username'];
+			 
+			
+			
+			
+			
 		
 	}
 	
 	
 	public function withdraw($id=null)
 	{
-		 $this->Session->setFlash(__('Please varify your account by clicking on varification link on your mail'), 'flash_success');
+		$comm = $this->Commission->find('first', array('conditions' => array('Commission.user_id'=>$this->user['id'])));
+		$this->set('commissionList',$comm);
+		if ($this->request->is('post')) {
+		$ss_number=$comm['User']['ss_number'];
+		$bankaccount_no=$comm['User']['bankaccount_no'];
+		$bankrouting_no=$comm['User']['bankrouting_no'];
+		$bankname=$comm['User']['bankname'];
+		$totalC = $comm['Commission']['total_commission_earned'];
+		$totalV = $comm['Commission']['total_Amount_vested'];
+		if(!empty($ss_number) && !empty($bankaccount_no) && !empty($bankrouting_no) &&  !empty($bankname))
+		 {
+			
+			
+			$amount= $this->request->data['fetch_request']['amount'];
+			$amountV= $this->request->data['fetch_request']['totalV'];
+			
+			
+			if($totalV < $amountV)
+			{
+				$this->Session->setFlash('Please enter request amount less them vested amount');
+				
+			}
+			else
+			{
+				if ($this->Widthdraw->save(array('widthdraw_request_amount'=>$amount, 'user_id'=>$this->user['id'])))
+				{
+					$this->Session->setFlash('The Widthdraw Request  has sent .', 'flash_success');
+					 $this->redirect(array('controller' => 'Users','action' => 'index'));
+					
+				}
+				else
+				{
+				 $this->Session->setFlash(__('The Widthdraw Request could not be sent. Please, try again.'));
+				}
+			}
+		}
+		
+		else 
+		{
+						$this->Session->setFlash('Paypal Info can not blank! Pls Update Your Paypal info');
+						 $this->redirect(array('controller' => 'Users','action' => 'edit_profile'));
+		}
 		 
 		 
 	}
+	}
 	
+	 public function password_recovery() {
+
+        if ($this->request->is('post')) {
+
+            $email = $this->data['User']['username'];
+            $info = $this->User->find('first', array('conditions' => array('User.username' => $email),
+                'recursive' => -1));
+            
+	    if (!empty($info)) {
+		
+                $data['User']['id'] = $info['User']['id'];
+                $charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@#&!1234567890';
+                $data['User']['password'] = substr(str_shuffle($charset), 0, 10);
+				
+               
+                if ($this->User->save($data)) {
+					
+					
+                    if ($this->NewPassword($email, $data['User']['password']) == TRUE) {
+
+						$this->Session->setFlash(__('Your new password has been generated and Emailed to ' . $email.''), 'flash_success');
+						
+                       
+                    } else {
+						$this->Session->setFlash(__('There was an problem in sending you the recovery password, kindly try-again.'), 'flash_error');
+                   
+                       
+                       // $this->redirect(array('action'=>'PasswordRecovery'));
+                    }
+                } else {
+				    $this->Session->setFlash(__('There was an error in saving your new password, kindly try-again.'), 'flash_error');
+                   
+                   
+                }
+            } else {
+              
+				 $this->Session->setFlash(__('This email address is not registered with us.'), 'flash_error');
+            }
+        }
+    }
+
+    function NewPassword($email = NULL, $code = NULL) {
+
+        if ($email != NULL && $code != NULL) {
+
+            $this->Email->to = $email;
+
+            $this->Email->subject = 'Esmees.com | Password Recovery';
+
+            $this->Email->from = 'Esmees <Subodh@blankandco.com>';
+            $this->set('code', $code);
+            $this->Email->template = 'new_password';
+            $this->Email->sendAs = 'both';
+
+            if ($this->Email->send()) {
+                return TRUE;
+            } else {
+                return false;
+            }
+        }
+    }
+
 	
+	    
 	
 	
 }

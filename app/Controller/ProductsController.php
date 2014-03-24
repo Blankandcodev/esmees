@@ -15,15 +15,9 @@
 		if($cat == null){
 			$this->redirect(array('action'=>'gallery', 'all'));
 		}
-		if($cat == 'all'){
-			$parent = $this->Category->find('first', array('conditions' => array(
-				'Category.id' => 1
-			)));
-		}else{
-			$parent = $this->Category->find('first', array('conditions' => array(
-				'Category.name' => $cat
-			)));
-		}
+		$parent = $this->Category->find('first', array('conditions' => array(
+			'Category.name' => $cat
+		)));
 		if(!empty($parent)){
 			$cats = $this->Category->find('threaded', array('conditions' => array(
 				'Category.lft >' => $parent['Category']['lft'], 
