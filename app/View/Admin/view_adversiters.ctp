@@ -47,7 +47,7 @@
         <td><?php echo  $adv['Adv']['adv_id']; ?></td>
        
 		<td><?php echo  $adv['Adv']['adv_name']; ?></td>
-		<td><?php echo  $adv['Adv']['vsetry_peroid']; ?></td>
+		<td><?php echo  $adv['Adv']['vseted_peroid']; ?></td>
 		<td><?php echo  $adv['Adv']['url']; ?></td>
         
         <td align='right'>

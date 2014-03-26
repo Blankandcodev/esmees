@@ -87,6 +87,18 @@ $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 		
 		</li>
 		
+		<li><?php echo $this->Html->link('Reports', array('controller' => 'Admin', 'action' => 'generate_commission')); ?>
+		
+			<ul>
+					<li class=""><?php echo $this->Html->link('Commission LS', array('controller' => 'Admin', 'action' => 'fetch_commission')); ?></li>
+					<li class=""><?php echo $this->Html->link('Commission CJ', array('controller' => 'Admin', 'action' => 'fetch_commission_cj')); ?></li>
+					<li class=""><?php echo $this->Html->link('Commission', array('controller' => 'Admin', 'action' => 'member_commission')); ?></li>
+			</ul>
+		
+		
+		
+		</li>
+		
 		
 		
 		<li><?php echo $this->Html->link('Logout', array('controller' => 'Admin', 'action' => 'logout'), array('class'=>'left')); ?></li>

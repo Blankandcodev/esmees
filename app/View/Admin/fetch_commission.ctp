@@ -1,7 +1,7 @@
 <div class="title-row">
 	
 		
-	<a class="button primary title-btn" href="<?php echo $this->Html->url(array('action'=>'fetch_commissionls'), array('class'=>'add')); ?>">Generate Commission</a>
+	<a class="button primary title-btn" href="<?php echo $this->Html->url(array('action'=>'generate_commissionls'), array('class'=>'add')); ?>">Generate Commission</a>
 	<h1 class="title">View All Commission</h1>
 
 	
@@ -12,11 +12,11 @@
 				<tr> 
    					 
     				<th>Member ID</th> 
-    				<th>Merchant ID</th> 
-					<th>Merchant Name</th> 
+    				<th>Merc. ID</th> 
+					<th>Merc Name</th> 
 					<th>Order ID</th> 
-					<th>Transaction Date</th> 
-					<th>Transaction Time</th> 
+					<th>Trans Date</th> 
+					<th>Trans Time</th> 
 					<th>SKU Number</th> 
 					<th>Sales</th> 
 					<th>Quantity</th> 
@@ -35,7 +35,7 @@
         
         <td><?php echo  $comm['Link']['member_id']; ?></td>
        
-		<td><?php echo  $comm['Link']['merchant_id']; ?></td>
+		<td><?php echo  $comm['Link']['adv_id']; ?></td>
 		
 		<td><?php echo  $comm['Link']['merchant_name']; ?></td>
 		<td><?php echo  $comm['Link']['order_id']; ?></td>

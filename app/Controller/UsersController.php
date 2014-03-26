@@ -538,26 +538,77 @@ public function password()
 			 
         }
 }
+
+	public function generate_commissionls()
+	{
+			
+		 $linkshare = $this->Link->find('all');
+		 pr($linkshare);
+			
+			
+			
+	}
+
 	public function commission()
 	{
-			//$commission=$this->Commission->find('all');
-			//$this->set('commissionList', $commission);
-			
-			
-			 $comm = $this->Commission->find('first', array('conditions' => array('Commission.user_id'=>$this->user['id'])));
-		
-			
-			
-			 $this->set('commissionDetail',$comm);
-			 $user=$comm['User']['username'];
-			 
-			
-			
-			
-			
-		
-	}
 	
+	 $member_id = $this->user['member_id'];
+	 if(!empty($member_id ))
+	 {
+	
+		
+		$total_vested = $this->Commission->find('all', array('conditions' => array(
+			'Commission.member_id' => $member_id,
+			'Commission.v_date <=' => date('Y-m-d')
+		),'fields' => array('sum(Commission.total_commission_earned) as total_vested')));
+		$this->set('vestedCommission',$total_vested);
+		
+		
+		 
+		
+		$total_commision = $this->Commission->find('all', array('conditions' => array('Commission.member_id' => $member_id),'fields' => array('sum(Commission.total_commission_earned) as total'
+            )
+        )
+		);
+		$this->set('totalCommission',$total_commision);
+		
+		$user = $this->User->find('first', array('conditions' => array('User.id'=>$this->user['id'])));
+		if ($this->request->is('post')) {
+		$ss_number=$user['User']['ss_number'];
+		$bankaccount_no=$user['User']['bankaccount_no'];
+		$bankrouting_no=$user['User']['bankrouting_no'];
+		$bankname=$user['User']['bankname'];
+		$amount= $this->request->data['fetch_requset']['amount'];
+		$vamount= $this->request->data['fetch_requset']['vamount'];
+		
+	
+		
+		if(!empty($ss_number) && !empty($bankaccount_no) && !empty($bankrouting_no) &&  !empty($bankname))
+		 {
+		 if ($this->Widthdraw->save(array('widthdraw_request_amount'=>$amount, 'user_id'=>$this->user['id'])))
+				{
+					
+					$this->Session->setFlash('The Widthdraw Request  has sent .', 'flash_success');
+					 $this->redirect(array('controller' => 'Users','action' => 'commission'));
+					 
+					
+				}
+				else
+				{
+				 $this->Session->setFlash(__('The Widthdraw Request could not be sent. Please, try again.'));
+				}
+			
+		 }
+		
+		 else
+		 {
+				$this->Session->setFlash('Bank details should not blank ! please fill bank details');
+				$this->redirect(array('controller' => 'Users','action' => 'edit_profile'));
+		 }
+		}
+	
+	}
+	}
 	
 	public function withdraw($id=null)
 	{
@@ -576,6 +627,7 @@ public function password()
 			
 			$amount= $this->request->data['fetch_request']['amount'];
 			$amountV= $this->request->data['fetch_request']['totalV'];
+			$currency=$this->request->data['fetch_request']['currency'];
 			
 			
 			if($totalV < $amountV)
@@ -585,7 +637,7 @@ public function password()
 			}
 			else
 			{
-				if ($this->Widthdraw->save(array('widthdraw_request_amount'=>$amount, 'user_id'=>$this->user['id'])))
+				if ($this->Widthdraw->save(array('widthdraw_request_amount'=>$amount, 'currency'=>$currency ,'user_id'=>$this->user['id'])))
 				{
 					$this->Session->setFlash('The Widthdraw Request  has sent .', 'flash_success');
 					 $this->redirect(array('controller' => 'Users','action' => 'index'));

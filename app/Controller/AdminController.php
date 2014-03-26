@@ -625,7 +625,7 @@ public function fetch_commissionls()
 			$i++;
             
 			$data['Link']['member_id'] = $member_id;
-			$data['Link']['merchant_id'] = $merchant_id;
+			$data['Link']['adv_id'] = $merchant_id;
 			$data['Link']['merchant_name'] = $merchant_name;
 			$data['Link']['order_id'] = $order_id;
 			$data['Link']['transaction_date'] = $transaction_date;
@@ -682,9 +682,80 @@ public function fetch_commissionls()
    }
    
    
-   public function generate_commission()
+   public function generate_commissionls()
    {
-	
+			
+			$data=$this->Link->find('all');
+			$this->set('links', $data);
+		
+			$array = array();
+			$i = 0;
+			foreach ($data as $key => $val){
+			$id = $val['Link']['id'];
+			$member_id = $val['Link']['member_id'];
+			$merchant_id= $val['Link']['adv_id'];
+			$merchant_name= $val['Link']['merchant_name'];
+			$order_id= $val['Link']['order_id'];
+			$transaction_date= $val['Link']['transaction_date'];
+			$transaction_time= $val['Link']['transaction_time'];
+            $sku_number= $val['Link']['sku_number'];
+			$sales= $val['Link']['sales'];
+			$quantity= $val['Link']['quantity'];
+			$process_date= $val['Link']['process_date'];
+			$commissions= $val['Link']['commissions'];
+			$process_time= $val['Link']['process_time'];
+			$status= $val['Link']['status'];
+			
+			$i++;
+			$member = preg_split("/[\s,-]+/", "$member_id");
+
+			$data['Commission']['member_id'] = $member['1'];
+			$data['Commission']['adversiter_id'] = $merchant_id;
+			$data['Commission']['order_id'] = $order_id;
+			$data['Commission']['transaction_date'] = $transaction_date;
+			$data['Commission']['total_commission_earned'] = $commissions;
+			if($status==0)
+			{
+			
+				$adv=$this->Adv->find('all',array('conditions' => array('Adv.adv_id' => $merchant_id),'recursive' => 1));
+				
+				foreach ($adv as $key => $val)
+				{
+					$day = $val['Adv']['vseted_peroid'];
+					$trans_date = $transaction_date;
+					pr($day);
+					
+					$date = date_create($transaction_date);
+					date_add($date, date_interval_create_from_date_string($day));
+					$data['Commission']['v_date']= date_format($date, 'Y-m-d');
+				
+			
+			
+				$this->Commission->create();
+				
+				if ($this->Commission->save($data)) {
+				
+					
+				
+					$this->Link->id    = $id;
+					$this->Link->saveField('status', '1');
+					$this->Session->setFlash(__('The Commission has been saved.'), 'flash_success');
+			 
+				}
+				else
+				{
+					$this->Session->setFlash(__('The  Commission not be saved. Please, try again.', 'flash_success'));
+				}
+				}
+			}
+			else
+			{
+				$this->Session->setFlash(__('The  Commission allready generated.', 'flash_success'));
+			}
+			
+		}
+		
+			
    }
    
    
@@ -697,19 +768,54 @@ public function fetch_commissionls()
 		
 		$data = $this->Paginator->paginate('Widthdraw');
 		$this->set('widthDraws',$data);
+		
+		
+		
+		
 	}
 	
 	
 	public function user_detail($id = null)
 	{
 			
-			$userlist = $this->User->find('all', array('conditions' => array('User.id'=>$id)));
-			$this->set('userDetails',$userlist);
-			pr($userlist);
-	
-	 
+		$userlist = $this->User->find('all', array('conditions' => array('User.id'=>$id)));
+		$this->set('userDetails',$userlist);
+		
+		
+		
+		$member_id=$userlist[0]['User']['member_id'];
+			
+			
+			
+		$total_vested = $this->Commission->find('all', array('conditions' => array(
+			'Commission.member_id' => $member_id,
+			'Commission.v_date <=' => date('Y-m-d')
+		),'fields' => array('sum(Commission.total_commission_earned) as total_vested')));
+		$this->set('vestedCommission',$total_vested);
+		
+		
+		
+		
+		 
+		
+		$total_commision = $this->Commission->find('all', array('conditions' => array('Commission.member_id' => $member_id),'fields' => array('sum(Commission.total_commission_earned) as total'
+            )
+        )
+		);
+		$this->set('totalCommission',$total_commision);
+		
+		
+			$resuest_amount = $this->Widthdraw->find('first', array('conditions' => array('User.id'=>$id)));
+			$this->set('drowList',$resuest_amount);
+			
 	}
 	
+	public function member_commission()
+	{
+		$this->Paginator->settings = array('limit' => 10);
+		$data = $this->Paginator->paginate('Commission');
+		$this->set('commissionList', $data);
+	}
 	
 		
  

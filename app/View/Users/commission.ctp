@@ -1,3 +1,15 @@
+<?php
+	
+		 foreach ($vestedCommission as $key => $val){
+		  $total_vested= $this->Number->format($val[0]['total_vested'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+	}
+	
+	 foreach ($totalCommission as $key => $val){
+		  $total_commission= $this->Number->format($val[0]['total'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+	}
+?>
+
+
 
    <div align="center">
         <div class="container">
@@ -12,17 +24,26 @@
 				
                     <div class="txt7">Commissions</div>
                     <div class="div3">
-					
+						
                        <div class="div4">
                        <div class="div4_a">
                           <div class="div4_lft">Total Commission Earned : </div>
-                          <div class="div4_rgt">$ <?php echo $commissionDetail['Commission']['total_commission_earned'] ;?> </div>
+						 
+						 
+                          <div class="div4_rgt"><?php echo $total_commission ;?>
+
+						  </div>
+						 
+						  
                        </div>
                        </div>
                        <div class="div4">
                        <div class="div4_a">
                           <div class="div4_lft">Total Amount Vested :   </div>
-                          <div class="div4_rgt1">$<?php echo $commissionDetail['Commission']['total_Amount_vested'] ;?></div>
+                          <div class="div4_rgt1">
+						  <?php echo $total_vested ;?>
+						  
+						</div>
                        </div>
 					   
                        </div>
@@ -32,8 +53,25 @@
 					   
                           <div class="div4_lft">
 						  
-							<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'withdraw', $commissionDetail['Commission']['user_id'])); ?>" class="button primary med">Withdraw</a>
+						 
+							
+	<?php echo $this->Form->create('fetch_requset'); ?>
+   
+        
+    <?php
+		echo $this->Form->input('role', array('value'=>'0', 'type'=>'hidden'));
+		echo $this->Form->input('vamount', array('type'=>'hidden', 'value'=>$total_vested ));
+		echo $this->Form->input('currency', array('label'=>'Select Currency', 'type'=>'select', 'options' => array('USD' => 'USD','EUR' => 'EUR'
+        )));
+		echo $this->Form->input('amount', array('label'=>'Amount','maxLength'=>'200', 'type'=>'number'),array('class'=>'div4_rgt1'));
+		
+    ?>
+	<?php echo $this->Form->submit('withdraw', array('class'=>'primary button med')) ?>
+  
+	<?php echo $this->Form->end(); ?>
+							
 						  
+						
 						 
 						  
 						  </div>

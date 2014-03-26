@@ -52,6 +52,12 @@
 			
 			</th>
 			<th>
+			<?php
+			echo $this->Paginator->sort('status','Currency',array('escape' => false));
+		?>
+			
+			</th>
+			<th>
 			
 			<?php
 			echo $this->Paginator->sort('request_date','Status',array('escape' => false));
@@ -71,14 +77,16 @@
         <td><?php echo  $user['User']['member_id']; ?></td>
         <td><?php echo  $user['User']['username']; ?></td>
 	
-		<td>$<?php echo  $user['Widthdraw']['widthdraw_request_amount']; ?></td>
+		<td><?php echo  $user['Widthdraw']['widthdraw_request_amount']; ?></td>
+		<td><?php echo  $user['Widthdraw']['currency']; ?></td>
 		<td> <?php echo $user['Widthdraw']['status']; ?></td>
 		<td><?php echo  $user['Widthdraw']['request_date']; ?></td>
 		
 	
       
-        <td>
-        <?php echo $this->Html->link('User Details', array('action'=>'user_detail',  $user['User']['id']), array('class'=>'gallery-btn'));?>  
+        <td align='right'>
+        <?php echo $this->Html->link('Widthdraw', array('action'=>'user_detail',  $user['User']['id']), array('class'=>'gallery-btn'));?>  
+		
 
         <?php echo $this->Html->link('Delete', array('action' => 'delete', $user['User']['id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
 
