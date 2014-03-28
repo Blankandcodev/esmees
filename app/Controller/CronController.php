@@ -18,8 +18,8 @@ class CronController extends AppController{
 		exit;
 	}
 	
-	public function fetchsavedata(){
-		$this->fatchlsdata();
+	public function fetchsavedata($date = null){
+		$this->fatchlsdata($date);
 		$this->saveorder();
 		$this->savelscommission();
 		echo $this->caronStatus;
