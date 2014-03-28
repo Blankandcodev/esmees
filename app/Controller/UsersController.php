@@ -229,10 +229,9 @@
 		$portfolio = $this->Look->find('first', array('conditions' => array('Look.id' => $id)));
         if ($this->request->is('post') || $this->request->is('put')) 
 		{
-				$userId=$this->request->data['Look']['user_id'];
-				$name=$this->request->data['Look']['caption_name'];
-				$orderid=$this->request->data['Look']['order_id'];
-				$productid=$this->request->data['Look']['product_id'];
+			
+			$name= $this->request->data['Look']['caption_name'];
+				
 			  if (empty($this->data['Look']['image']['name'])) {
 
                   $image_path = $portfolio['Look']['image'];
@@ -242,10 +241,10 @@
                     $image_path = $this->Image->upload_image_and_thumbnail($this->data['Look']['image'], "Looks");
                 }
 				
-				if ($this->Look->save(array('order_id'=>$orderid,'product_id'=>$productid,'caption_name'=>$name,'image'=>$image_path, 'user_id'=>$this->user['id'])))
+				if ($this->Look->save(array('caption_name'=>$name,'image'=>$image_path, 'id'=>$id)))
 				{
-				$this->Session->setFlash('The Looks Image has saved .', 'flash_success');
-				$this->redirect(array('controller'=>'Users', 'action' => 'view_newlooks',$orderid));
+					$this->Session->setFlash('The Looks Image has saved .', 'flash_success');
+					$this->redirect(array('controller'=>'Users', 'action' => 'portfolio'));
 				}
         }
     }
@@ -272,8 +271,8 @@
 					$product = $this->Product->find('first', array('conditions'=>array('product.id'=>$this->request->data['lookupload']['product_id'])));
 					$image_path = $this->Image->upload_image_and_thumbnail($this->request->data['lookupload']['image'], "Looks");
 					if($image_path){
-						//$this->request->data['lookupload']['category_id'] = $product['Product']['parent_id'];
-					//	$this->request->data['lookupload']['brand'] = $product['Product']['mnf_name'];
+						$this->request->data['lookupload']['category_id'] = $product['Product']['parent_id'];
+						$this->request->data['lookupload']['brand'] = $product['Product']['mnf_name'];
 						$this->request->data['lookupload']['image'] = $image_path;
 						$this->Look->contain();
 						$checkCover = $this->Look->find('first', array('conditions' => array(
