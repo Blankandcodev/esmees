@@ -32,7 +32,7 @@
 		$flowCount = $this->Follower->find('count', array('conditions' => array('Follower.follow_id' => $this->user['id'])));		
 		$this->set('flowCounts',$flowCount);
 		
-		$total_commision = $this->Commission->find('all', array('conditions' => array('Commission.member_id' => $this->user['member_id']),'fields' => array('sum(Commission.total_commission_earned) as total' )));
+		$total_commision = $this->Commission->find('first', array('conditions' => array('Commission.user_id' => $this->user['id']),'fields' => array('sum(Commission.commissions) as total' )));
 		$this->set('totalCommission',$total_commision);
 		
 		
@@ -545,27 +545,28 @@ public function password()
 	public function commission()
 	{
 	
-	 $member_id = $this->user['member_id'];
-	 if(!empty($member_id ))
+	 $userid = $this->user['id'];
+	 if(!empty($userid))
 	 {
-		$total_commision = $this->Commission->find('all', array('conditions' => array('Commission.member_id' => $member_id),'fields' => array('sum(Commission.total_commission_earned) as total' )));
+		$total_commision = $this->Commission->find('first', array('conditions' => array('Commission.user_id' => $userid),'fields' => array('sum(Commission.commissions) as total' )));
 		$this->set('totalCommission',$total_commision);
 		
-		$total_vested = $this->Commission->find('all', array('conditions' => array(
-			'Commission.member_id' => $member_id,
-			'Commission.v_date <=' => date('Y-m-d')
-		),'fields' => array('sum(Commission.total_commission_earned) as total_vested')));
+		$total_vested = $this->Commission->find('first', array('conditions' => array(
+			'Commission.user_id' => $userid,
+			'Commission.vesting_date <=' => date('Y-m-d')
+		),'fields' => array('sum(Commission.commissions) as total_vested')));
 		$this->set('vestedCommission',$total_vested);
+		
 		foreach ($total_vested as $key => $val){
 	
-			$total_comm=$val[0]['total_vested'];
+			$total_comm=isset($val[0]['total_vested']);
 		
 		 }
-		$widthdraw_amount = $this->Payment->find('all', array('conditions' => array('Payment.member_id' => $member_id)));
+		$widthdraw_amount = $this->Payment->find('all', array('conditions' => array('Payment.user_id' =>$userid )));
 		
 		foreach ($widthdraw_amount as $key => $val){
 			$val = array_shift($val);
-			$payment=$val['amount'];
+			$payment=isset($val['amount']);
 		
 		 }
 			
@@ -578,42 +579,30 @@ public function password()
 		
 		
 		$user = $this->User->find('first', array('conditions' => array('User.id'=>$this->user['id'])));
-		if ($this->request->is('post')) {
+		
 		$ss_number=$user['User']['ss_number'];
 		$bankaccount_no=$user['User']['bankaccount_no'];
 		$bankrouting_no=$user['User']['bankrouting_no'];
 		$bankname=$user['User']['bankname'];
-		$amount= $this->request->data['fetch_requset']['amount'];
-		$vamount= $this->request->data['fetch_requset']['vamount'];
-		
-	
-		
-		if(!empty($ss_number) && !empty($bankaccount_no) && !empty($bankrouting_no) &&  !empty($bankname))
+		if(empty($ss_number) && empty($bankaccount_no) && empty($bankrouting_no) &&  empty($bankname))
 		 {
-		 if ($this->Widthdraw->save(array('widthdraw_request_amount'=>$amount, 'user_id'=>$this->user['id'])))
-				{
-					
-					$this->Session->setFlash('The Widthdraw Request  has sent .', 'flash_success');
-					 $this->redirect(array('controller' => 'Users','action' => 'commission'));
-					 
-					
-				}
-				else
-				{
-				 $this->Session->setFlash(__('The Widthdraw Request could not be sent. Please, try again.'));
-				}
-			
+			$this->Session->setFlash('Banking Details can not blank!');
 		 }
-		
 		 else
 		 {
-				$this->Session->setFlash('Bank details should not blank ! please fill bank details');
-				$this->redirect(array('controller' => 'Users','action' => 'edit_profile'));
+		
+		if ($this->request->is('post'))
+		 {
+		
+				echo "hello";
+		
 		 }
+		
+		}
 		}
 	
 	}
-	}
+	
 	
 	public function withdraw($id=null)
 	{
@@ -679,9 +668,9 @@ public function password()
                 $charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@#&!1234567890';
                 $data['User']['password'] = substr(str_shuffle($charset), 0, 10);
 				
+
                
                 if ($this->User->save($data)) {
-					
 					
                     if ($this->NewPassword($email, $data['User']['password']) == TRUE) {
 

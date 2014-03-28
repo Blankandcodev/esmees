@@ -1,6 +1,6 @@
  <?php
  foreach ($totalCommission as $key => $val){
-		  $total_commission= $this->Number->format($val[0]['total'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+		  $total_commission= $this->Number->format($val['total'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
 		 
 	}
 ?>
