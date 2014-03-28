@@ -37,8 +37,6 @@ class CronController extends AppController{
 		$data = array();
 		$array = array();
 		$i = 0;
-		pr($Data);
-		die;
 		foreach ($Data as $key => $val){
 			if($i > 0){
 				$array = str_getcsv($val);				
