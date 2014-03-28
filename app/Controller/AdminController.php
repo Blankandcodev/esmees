@@ -1,6 +1,6 @@
 <?php class AdminController extends AppController {
 	
-	var $uses = array('User','Adv','Category','Product','Look','Commission','Page','Link','Widthdraw');
+	var $uses = array('User','Adv','Category','Product','Look','Commission','Page','Link','Widthdraw','Payment');
 	
 	var $helpers = array('Form', 'Country','Paginator' => array('Paginator'));
 	
@@ -721,13 +721,13 @@ public function fetch_commissionls()
 				
 				foreach ($adv as $key => $val)
 				{
-					$day = $val['Adv']['vseted_peroid'];
+					$day = $val['Adv']['vested_period'];
 					$trans_date = $transaction_date;
-					pr($day);
+				
 					
 					$date = date_create($transaction_date);
-					date_add($date, date_interval_create_from_date_string($day));
-					$data['Commission']['v_date']= date_format($date, 'Y-m-d');
+					date_modify($date, "+".$day." days");
+					$data['Commission']['v_date'] = date_format($date, 'Y-m-d');
 				
 			
 			
@@ -740,6 +740,10 @@ public function fetch_commissionls()
 					$this->Link->id    = $id;
 					$this->Link->saveField('status', '1');
 					$this->Session->setFlash(__('The Commission has been saved.'), 'flash_success');
+					//$this->redirect(array('action' => 'fetch_commission'));
+					$this->redirect($this->referer(array('action' => 'fetch_commission')));
+					
+					
 			 
 				}
 				else
@@ -750,7 +754,8 @@ public function fetch_commissionls()
 			}
 			else
 			{
-				$this->Session->setFlash(__('The  Commission allready generated.', 'flash_success'));
+				//$this->Session->setFlash(__('The  Commission allready generated.', 'flash_success'));
+				$this->Session->setFlash(__('The  Commission allready generated.'), 'flash_success');
 			}
 			
 		}
@@ -780,35 +785,68 @@ public function fetch_commissionls()
 			
 		$userlist = $this->User->find('all', array('conditions' => array('User.id'=>$id)));
 		$this->set('userDetails',$userlist);
-		
-		
-		
-		$member_id=$userlist[0]['User']['member_id'];
-			
-			
-			
+		$member_id=$userlist[0]['User']['member_id'];	
 		$total_vested = $this->Commission->find('all', array('conditions' => array(
 			'Commission.member_id' => $member_id,
 			'Commission.v_date <=' => date('Y-m-d')
 		),'fields' => array('sum(Commission.total_commission_earned) as total_vested')));
 		$this->set('vestedCommission',$total_vested);
+		foreach ($total_vested as $key => $val){
+	
+			$vested_amount=$val[0]['total_vested'];
 		
-		
-		
-		
-		 
-		
-		$total_commision = $this->Commission->find('all', array('conditions' => array('Commission.member_id' => $member_id),'fields' => array('sum(Commission.total_commission_earned) as total'
-            )
-        )
-		);
-		$this->set('totalCommission',$total_commision);
-		
-		
-			$resuest_amount = $this->Widthdraw->find('first', array('conditions' => array('User.id'=>$id)));
-			$this->set('drowList',$resuest_amount);
+		 }
+		$widthdraw_amount = $this->Payment->find('all', array('conditions' => array('Payment.member_id' => $member_id)));
+		foreach ($widthdraw_amount as $key => $val){
 			
-	}
+			$payment=$val['Payment']['amount'];
+		 }
+			$avl_comm= $vested_amount - $payment;
+			
+			$sample_arr = array($avl_comm);
+			$this->set('sample_arr',$sample_arr);
+		
+		
+		$total_commision = $this->Commission->find('all', array('conditions' => array('Commission.member_id' => $member_id),'fields' => array('sum(Commission.total_commission_earned) as total')));
+		$this->set('totalCommission',$total_commision);
+		if ($this->request->is('post')) {
+			
+			$amount= $this->request->data['fetch_requset']['amount'];
+			$remark= $this->request->data['fetch_requset']['remark'];
+			
+			
+			 if($vested_amount <= $amount )
+			 {
+				 $this->Session->setFlash('The Widthdraw Amount could  be less then vesting Amount.', 'flash_success');
+			 }
+			 else
+			 {
+			
+			
+			
+			 if ($this->Payment->save(array('amount'=>$amount,'remark'=>$remark, 'member_id'=>$member_id)))
+				{
+					
+					
+					 $this->Session->setFlash('The Widthdraw amount   .', 'flash_success');
+					 
+					 
+					
+				}
+				else
+				{
+				 $this->Session->setFlash(__('The Widthdraw Request could not be sent. Please, try again.'));
+				}
+			}
+		 }
+		
+		 }
+		
+           
+     
+		
+		
+
 	
 	public function member_commission()
 	{
@@ -816,6 +854,8 @@ public function fetch_commissionls()
 		$data = $this->Paginator->paginate('Commission');
 		$this->set('commissionList', $data);
 	}
+	
+	
 	
 		
  

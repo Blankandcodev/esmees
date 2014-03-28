@@ -24,7 +24,7 @@
 					<th>Process Date</th> 
 					<th>Process Time</th> 
     				
-    				<th>Actions</th> 
+    				
 				</tr> 
 			</thead> 
 				
@@ -48,11 +48,7 @@
 		<td><?php echo  $comm['Link']['process_date']; ?></td>
 		<td><?php echo  $comm['Link']['process_time']; ?></td>
         
-        <td>
-        <?php echo $this->Html->link('Details', array('action'=>'edit_adversiters',  $comm['Link']['id']), array('class'=>'edit'));?> 
        
-
-        </td>
     </tr>
     <?php endforeach; ?>
 

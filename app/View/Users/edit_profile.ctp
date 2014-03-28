@@ -24,6 +24,7 @@
 						<?php echo $this->Form->input('name',array('label'=>'First Name', 'type'=>'text', 'required')); ?>
 						<?php echo $this->Form->input('middle_name',array('label'=>' Middle Name', 'type'=>'text', 'required')); ?>
 						<?php echo $this->Form->input('last_name',array('label'=>' Last Name', 'type'=>'text', 'required')); ?>
+						<?php echo $this->Form->input('dob',array('label'=>' Date Of Birth', 'type'=>'text', 'required')); ?>
 						<?php echo $this->Form->input('username', array('label'=>' Email Address', 'type'=>'text', 'required')); ?>
 						<?php echo $this->Form->input('address',array('label'=>'Address Line 1', 'type'=>'text', 'required')); ?>
 						<?php echo $this->Form->input('address1',array('label'=>'Address Line 2', 'type'=>'text', 'required')); ?>
@@ -41,10 +42,7 @@
 							<?php echo $this->Form->file('image',array('label'=>'Profile Image', 'type'=>'text')); ?>
 						</div>
 						<?php 	echo $this->Country->select('country', array('label'=>'Selct your Country')); ?></li>
-						<?php echo $this->Form->input('ss_number', array('label'=>'Social Security Number', 'type'=>'text')); ?>
-						<?php echo $this->Form->input('bankname', array('label'=>'Bank Name', 'type'=>'text')); ?>
-						<?php echo $this->Form->input('bankaccount_no', array('label'=>'Bank Account Number', 'type'=>'text')); ?>
-						<?php echo $this->Form->input('bankrouting_no', array('label'=>'Bank Routing Number', 'type'=>'text')); ?>
+						
 						
 						<?php echo $this->Form->submit('Update', array('class'=>'button primary')); ?>
 					</fieldset>

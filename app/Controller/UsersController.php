@@ -1,12 +1,12 @@
 <?php class UsersController extends AppController {
-	var $uses = array('User','Product','Look','Wishlist','Order','Follower','Like','Commission','Widthdraw');
+	var $uses = array('User','Product','Look','Wishlist','Order','Follower','Like','Commission','Widthdraw','Payment');
 	var $helpers = array('Form', 'Country');
 	public $components = array('Image', 'Email');
 	
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->deny();
-        $this->Auth->allow('add', 'login', 'looks', 'resend', 'register', 'verify', 'followers', 'profile', 'sendNewUserMail','password_recovery','NewPassword');
+        $this->Auth->allow('add', 'login', 'looks', 'resend', 'register', 'verify', 'followers', 'profile', 'sendNewUserMail','password_recovery','NewPassword','commission');
     }
 	
     public function isAuthorized($user){
@@ -412,26 +412,15 @@
 		if ($this->request->is('post')){
 			$username=$this->request->data['User']['username'];
 			$user = $this->User->find('first', array('conditions'=>array('User.username'=>$username)));
-			$token=$user['User']['token'];
-			
-
-
-			if ($user['User']['status']==0)
-			{	
-				$this->request->data['User']['name'] = $user['User']['name'];
-				$this->request->data['User']['username'] = $user['User']['username'];
-				$this->request->data['User']['token'] = $user['User']['token'];
-				$this->request->data['User']['password'] = $user['User']['password'];
-				
-				$email = $this->sendNewUserMail($this->request->data['User']);
-				
-
-
+			$token=$user['User']['token'];	
+			$this->request->data['User']['name'] = $user['User']['name'];
+			$this->request->data['User']['username'] = $user['User']['username'];
+			$this->request->data['User']['token'] = $user['User']['token'];
+			$this->request->data['User']['password'] = $user['User']['password'];
 			if ($user['User']['status']==0){
 			
 				$email = $this->sendNewUserMail(array_merge($this->request->data['User'],array('username' => $username)));
-
-				$this->Session->setFlash(__('Please verify your email by clicking on verification link'));
+				$this->Session->setFlash(__('Your verification code has been generated and Emailed to ' . $username.''), 'flash_success');
 				$this->redirect(array('controller'=>'Pages','action' =>'index'));
 			
 			}
@@ -444,7 +433,7 @@
 	}
 		
 	}
-	}
+
 	
 	public function verify(){
 		if (!empty($this->passedArgs['t']) && !empty($this->passedArgs['u'])){
@@ -555,22 +544,34 @@ public function password()
 	 $member_id = $this->user['member_id'];
 	 if(!empty($member_id ))
 	 {
-	
+		$total_commision = $this->Commission->find('all', array('conditions' => array('Commission.member_id' => $member_id),'fields' => array('sum(Commission.total_commission_earned) as total' )));
+		$this->set('totalCommission',$total_commision);
 		
 		$total_vested = $this->Commission->find('all', array('conditions' => array(
 			'Commission.member_id' => $member_id,
 			'Commission.v_date <=' => date('Y-m-d')
 		),'fields' => array('sum(Commission.total_commission_earned) as total_vested')));
 		$this->set('vestedCommission',$total_vested);
+		foreach ($total_vested as $key => $val){
+	
+			$total_comm=$val[0]['total_vested'];
+		
+		 }
+		$widthdraw_amount = $this->Payment->find('all', array('conditions' => array('Payment.member_id' => $member_id)));
+		
+		foreach ($widthdraw_amount as $key => $val){
+			$val = array_shift($val);
+			$payment=$val['amount'];
+		
+		 }
+			
+			$avl_comm= $total_comm - $payment;
+			
+			$sample_arr = array(isset($avl_comm));
+			$this->set('sample_arr',$sample_arr);
 		
 		
-		 
 		
-		$total_commision = $this->Commission->find('all', array('conditions' => array('Commission.member_id' => $member_id),'fields' => array('sum(Commission.total_commission_earned) as total'
-            )
-        )
-		);
-		$this->set('totalCommission',$total_commision);
 		
 		$user = $this->User->find('first', array('conditions' => array('User.id'=>$this->user['id'])));
 		if ($this->request->is('post')) {

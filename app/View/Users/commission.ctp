@@ -7,7 +7,18 @@
 	 foreach ($totalCommission as $key => $val){
 		  $total_commission= $this->Number->format($val[0]['total'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
 	}
+	
+	 foreach ($sample_arr as $a){
+		  $aval_commission= $this->Number->format($a, array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+
+	}
+	
+	
+	
+	
+	
 ?>
+
 
 
 
@@ -39,9 +50,17 @@
                        </div>
                        <div class="div4">
                        <div class="div4_a">
-                          <div class="div4_lft">Total Amount Vested :   </div>
+                          <div class="div4_lft">Total Vested Amount :   </div>
                           <div class="div4_rgt1">
 						  <?php echo $total_vested ;?>
+						  
+						</div>
+                       </div>
+					   <div class="div4">
+                       <div class="div4_a">
+                          <div class="div4_lft">Available Vested Amount :   </div>
+                          <div class="div4_rgt1">
+						  <?php echo $aval_commission ;?>
 						  
 						</div>
                        </div>
@@ -55,19 +74,23 @@
 						  
 						 
 							
-	<?php echo $this->Form->create('fetch_requset'); ?>
-   
+	<?php echo $this->Form->create('fetch_requset', 'class'=>'hform'); ?>
+   <fieldset>
         
     <?php
+		
 		echo $this->Form->input('role', array('value'=>'0', 'type'=>'hidden'));
 		echo $this->Form->input('vamount', array('type'=>'hidden', 'value'=>$total_vested ));
-		echo $this->Form->input('currency', array('label'=>'Select Currency', 'type'=>'select', 'options' => array('USD' => 'USD','EUR' => 'EUR'
-        )));
+		
 		echo $this->Form->input('amount', array('label'=>'Amount','maxLength'=>'200', 'type'=>'number'),array('class'=>'div4_rgt1'));
+		 echo $this->Form->input('ss_number', array('label'=>'Social Security Number', 'type'=>'text'));
+		echo $this->Form->input('bankname', array('label'=>'Bank Name', 'type'=>'text')); 
+		 echo $this->Form->input('bankaccount_no', array('label'=>'Bank Account Number', 'type'=>'text')); 
+	 echo $this->Form->input('bankrouting_no', array('label'=>'Bank Routing Number', 'type'=>'text'));
 		
     ?>
 	<?php echo $this->Form->submit('withdraw', array('class'=>'primary button med')) ?>
-  
+ </fieldset>
 	<?php echo $this->Form->end(); ?>
 							
 						  

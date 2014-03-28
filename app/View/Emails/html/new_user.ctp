@@ -1,6 +1,5 @@
 
-<a href="<?php echo $this->webroot.'/Users/verify/u:'.$data['username'].'/t:'.$data['token']; ?>">Click to Verify</a>
-
+	
 <html>
 <body style="background:#ccc; margin:0; padding:0;">
 <?php 
