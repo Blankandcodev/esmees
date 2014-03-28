@@ -1,13 +1,12 @@
 <?php
 	
 		 foreach ($vestedCommission as $key => $val){
-		  $total_vested= $this->Number->format($val[0]['total_vested'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+		  $total_vested= $this->Number->format($val['total_vested'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
 	}
 	
 	 foreach ($totalCommission as $key => $val){
-		  $total_commission= $this->Number->format($val[0]['total'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+		  $total_commission= $this->Number->format($val['total'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
 	}
-	
 	 foreach ($sample_arr as $a){
 		  $aval_commission= $this->Number->format($a, array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
 
@@ -71,8 +70,29 @@
                        <div class="div4_a">
 					   
                           <div class="div4_lft">
-						  
 						 
+						
+						 <div class="users form">
+<?php echo $this->Form->create('User', array('class'=>'cform')); ?>
+    <fieldset>
+        <legend><?php echo __('Bank Info'); ?></legend>
+    <?php
+       
+       
+        echo $this->Form->input('bname',  array('type'=>'text', 'maxLength'=>'250','label'=>'Amount',  'class'=>'required '));
+		echo $this->Form->input('bname',  array('type'=>'text', 'maxLength'=>'250','label'=>'Bank Name',  'class'=>'required '));
+		echo $this->Form->input('bank_account',  array('type'=>'text', 'maxLength'=>'250','label'=>'Bank Account Number', 'class'=>'required'));
+        echo $this->Form->input('bank_ssnumber',  array('type'=>'text', 'maxLength'=>'250','label'=>'Social Security Number', 'class'=>'required'));
+        echo $this->Form->input('bank_rounting',  array('type'=>'text', 'maxLength'=>'250','label'=>'Bank Routing Number', 'class'=>'required'));
+	
+		
+		echo $this->Country->select('country', array('label'=>'Country', 'maxLength'=>'15', 'type'=>'text'));
+		
+    ?>
+	<?php echo $this->Form->submit('Widthdraw', array('class'=>'primary button med')) ?>
+    </fieldset>
+<?php echo $this->Form->end(); ?>
+</div>
 							
 
 							
@@ -105,5 +125,6 @@
         </div>
    
    </div>
+   
 
 
