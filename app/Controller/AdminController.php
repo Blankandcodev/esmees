@@ -653,6 +653,8 @@ public function fetch_commissionls()
 		} 
 		 $this->redirect(array('action'=>'fetch_commission'));
 }
+
+
 	
 	public function fetch_commission(){
 		
@@ -712,6 +714,7 @@ public function fetch_commissionls()
 			$data['Commission']['member_id'] = $member['1'];
 			$data['Commission']['adversiter_id'] = $merchant_id;
 			$data['Commission']['order_id'] = $order_id;
+			
 			$data['Commission']['transaction_date'] = $transaction_date;
 			$data['Commission']['total_commission_earned'] = $commissions;
 			if($status==0)
@@ -762,6 +765,89 @@ public function fetch_commissionls()
 		
 			
    }
+   
+    public function generate_order()
+   {
+			
+			$data=$this->Link->find('all');
+			$this->set('links', $data);
+		
+			$array = array();
+			$i = 0;
+			foreach ($data as $key => $val){
+			$id = $val['Link']['id'];
+			$member_id = $val['Link']['member_id'];
+			$merchant_id= $val['Link']['adv_id'];
+			$merchant_name= $val['Link']['merchant_name'];
+			$order_id= $val['Link']['order_id'];
+			$transaction_date= $val['Link']['transaction_date'];
+			$transaction_time= $val['Link']['transaction_time'];
+            $sku_number= $val['Link']['sku_number'];
+			$sales= $val['Link']['sales'];
+			$quantity= $val['Link']['quantity'];
+			$process_date= $val['Link']['process_date'];
+			$commissions= $val['Link']['commissions'];
+			$process_time= $val['Link']['process_time'];
+			$status= $val['Link']['status'];
+			
+			$i++;
+			$member = preg_split("/[\s,-]+/", "$member_id");
+
+			$data['Commission']['member_id'] = $member['1'];
+			$data['Commission']['adversiter_id'] = $merchant_id;
+			$data['Commission']['order_id'] = $order_id;
+			
+			$data['Commission']['transaction_date'] = $transaction_date;
+			$data['Commission']['total_commission_earned'] = $commissions;
+			if($status==0)
+			{
+			
+				$adv=$this->Adv->find('all',array('conditions' => array('Adv.adv_id' => $merchant_id),'recursive' => 1));
+				
+				foreach ($adv as $key => $val)
+				{
+					$day = $val['Adv']['vested_period'];
+					$trans_date = $transaction_date;
+				
+					
+					$date = date_create($transaction_date);
+					date_modify($date, "+".$day." days");
+					$data['Commission']['v_date'] = date_format($date, 'Y-m-d');
+				
+			
+			
+				$this->Order->create();
+				
+				if ($this->Commission->save($data)) {
+				
+					
+				
+					$this->Link->id    = $id;
+					$this->Link->saveField('status', '1');
+					$this->Session->setFlash(__('The Commission has been saved.'), 'flash_success');
+					//$this->redirect(array('action' => 'fetch_commission'));
+					$this->redirect($this->referer(array('action' => 'fetch_commission')));
+					
+					
+			 
+				}
+				else
+				{
+					$this->Session->setFlash(__('The  Commission not be saved. Please, try again.', 'flash_success'));
+				}
+				}
+			}
+			else
+			{
+				//$this->Session->setFlash(__('The  Commission allready generated.', 'flash_success'));
+				$this->Session->setFlash(__('The  Commission allready generated.'), 'flash_success');
+			}
+			
+		}
+		
+			
+   }
+   
    
    
   public function widthdraw_request()
