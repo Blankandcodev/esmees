@@ -5,7 +5,8 @@
 	</div>
 	
 	<div class="portfolio">
-	<?php foreach($orderLists as $order){
+	<?php if(!empty($orderLists)){
+	foreach($orderLists as $order){
 		$_product = $order['Product'];
 		$looks = $order['Look'];
 	?>
@@ -35,6 +36,9 @@
 				</div>
 			<?php } ?>
 		</div>
+   <?php }
+   }else{ ?>
+		<div class="flash">No Item here!</div>
    <?php } ?>
 	</div>	
 </div>

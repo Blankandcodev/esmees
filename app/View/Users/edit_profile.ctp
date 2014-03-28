@@ -32,7 +32,7 @@
 						<?php echo $this->Form->input('city',array('label'=>'City', 'type'=>'text', 'required')); ?>
 						<?php echo $this->Form->input('state',array('label'=>'State', 'type'=>'text', 'required')); ?>
 						<?php echo $this->Form->input('zip', array('label'=>'Zip Code', 'type'=>'text', 'required')); ?>
-						<div class="profile-image">
+						<div class="profile-image input">
 							<?php if($userProfile['image']!=NULL){
 								$image='Users/home/'.$userProfile['image'];
 								}else{
