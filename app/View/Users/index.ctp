@@ -1,3 +1,10 @@
+ <?php
+ foreach ($totalCommission as $key => $val){
+		  $total_commission= $this->Number->format($val[0]['total'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+		 
+	}
+?>
+
 <div class="page-container">
 	<div class="title">
 		<h1>My Dashboard</h1>
@@ -62,7 +69,7 @@
 						<span>Likes :</span> <span class="num"><?php echo $user['likes'] ?></span>
 					</div>
 					<div class="pop-box">
-						<span>Commission :</span> <span class="num">999</span>
+						<span>Commission :</span> <span class="num"><?php echo $total_commission ;?></span>
 					</div>
 				</div>
 			</div>

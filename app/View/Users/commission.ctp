@@ -74,24 +74,7 @@
 						  
 						 
 							
-	<?php echo $this->Form->create('fetch_requset', 'class'=>'hform'); ?>
-   <fieldset>
-        
-    <?php
-		
-		echo $this->Form->input('role', array('value'=>'0', 'type'=>'hidden'));
-		echo $this->Form->input('vamount', array('type'=>'hidden', 'value'=>$total_vested ));
-		
-		echo $this->Form->input('amount', array('label'=>'Amount','maxLength'=>'200', 'type'=>'number'),array('class'=>'div4_rgt1'));
-		 echo $this->Form->input('ss_number', array('label'=>'Social Security Number', 'type'=>'text'));
-		echo $this->Form->input('bankname', array('label'=>'Bank Name', 'type'=>'text')); 
-		 echo $this->Form->input('bankaccount_no', array('label'=>'Bank Account Number', 'type'=>'text')); 
-	 echo $this->Form->input('bankrouting_no', array('label'=>'Bank Routing Number', 'type'=>'text'));
-		
-    ?>
-	<?php echo $this->Form->submit('withdraw', array('class'=>'primary button med')) ?>
- </fieldset>
-	<?php echo $this->Form->end(); ?>
+
 							
 						  
 						

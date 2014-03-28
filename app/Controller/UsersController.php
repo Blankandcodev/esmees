@@ -31,6 +31,11 @@
 		
 		$flowCount = $this->Follower->find('count', array('conditions' => array('Follower.follow_id' => $this->user['id'])));		
 		$this->set('flowCounts',$flowCount);
+		
+		$total_commision = $this->Commission->find('all', array('conditions' => array('Commission.member_id' => $this->user['member_id']),'fields' => array('sum(Commission.total_commission_earned) as total' )));
+		$this->set('totalCommission',$total_commision);
+		
+		
 	}
 	public function portfolio(){
 		$orders = $this->Order->find('all', array(
