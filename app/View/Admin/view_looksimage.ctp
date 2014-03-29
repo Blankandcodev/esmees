@@ -32,7 +32,8 @@
     				<th>Caption </th> 
     				<th>Image</th> 
     				
-    				<th>Actions</th> 
+    				<th></th> 
+					<th>Actions</th> 
 				</tr> 
 			</thead> 
 			<tbody> 
@@ -52,6 +53,13 @@
 		echo $this->Html->image('Looks/big/'.$look['Look']['image'], array('width'=>'100', 'height'=>'136'));?>
 		
 		<td>
+		 <td>
+       
+
+        <?php echo $this->Html->link('Delete', array('action' => 'delete_looks', $look['Look']['id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
+
+
+        </td>
 		
         
       
@@ -61,6 +69,17 @@
   
 
 </table>
+<div class="paginate">
+<?php	
+echo $this->Paginator->numbers(array(
+  //'modulus' => 4,   /* Controls the number of page links to display */
+  'first' => '< First',
+  'last' => 'Last >',
+  'separator'=>'</li><li>',
+  'before' => '<ul><li>', 'after' => '</li></ul>')
+);
+?>
+</div>
  
 </fieldset>
 </div>

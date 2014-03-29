@@ -444,7 +444,7 @@
 		$AllCats = $this->Category->generateTreeList(null, null, null, '-- ');
 		$catalist = array();
 		foreach($AllCats as $id=>$cat){
-			$catalist[$id] = $cat;
+		$catalist[$id] = $cat;
 		}
 		$this->set('categoryList', $catalist);
 		
@@ -484,10 +484,29 @@
         $this->redirect(array('action'=>'view_category'));
     }
 	
-	function view_looksimage($id)
+	function view_looksimage()
 	{
-			$looks=$this->Look->find('all', array('conditions' => array('Look.status' => 0,'Look.user_id' => $id )));
-			$this->set('looks', $looks);
+		
+		
+		$this->Paginator->settings = array('limit' => 10);
+		$looks = $this->Paginator->paginate('Look');
+		$this->set('looks',$looks);
+		
+		if ($this->request->is('post')) 
+		{
+		
+		$this->Paginator->settings = array(
+		'conditions' => array('Look.caption_name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%', ),
+		'limit' => 10
+		);
+		$looks = $this->Paginator->paginate('Look');
+		$this->set('looks',$looks);
+
+		}
+		else
+		{
+		 
+		}
 		
 	}
 	
@@ -496,6 +515,39 @@
 			$commission=$this->Commission->find('all');
 			$this->set('commissionList', $commission);
 			
+	}
+	
+	public function distributed_commission()
+	{
+		$this->Paginator->settings = array('limit' => 10);
+		$payment = $this->Paginator->paginate('Payment');
+		$this->set('payments',$payment);
+		
+		if ($this->request->is('post')) 
+		{
+		
+		$this->Paginator->settings = array(
+		'conditions' => array('User.name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%', ),
+		'limit' => 10
+		);
+		$payment = $this->Paginator->paginate('Payment');
+		$this->set('payments',$payment);
+		
+
+		}
+		else
+		{
+		 
+		}
+			
+	}
+	
+	Public function delete_payment($id = null)
+	{
+		$this->Payment->delete($id);
+      
+		$this->Session->setFlash(__('The payment with id: '.$id.' has been deleted.'), 'flash_success');
+        $this->redirect(array('action'=>'distributed_commission'));
 	}
 	
 	public function pages(){
@@ -548,6 +600,18 @@
 		$this->Session->setFlash(__('The Pages with id: '.$id.' has been deleted.'), 'flash_success');
         $this->redirect(array('action'=>'view_pages'));
 	}
+	
+		
+	Public function delete_looks($id = null)
+	{
+		$this->Look->delete($id);
+      
+		$this->Session->setFlash(__('The Look with id: '.$id.' has been deleted.'), 'flash_success');
+        $this->redirect(array('action'=>'view_looksimage'));
+	}
+	
+	
+	
 	
 	public function imgupload(){
 		if ($this->request->is('post') || $this->request->is('put')) {
@@ -868,53 +932,51 @@ public function fetch_commissionls()
 	
 	public function user_detail($id = null)
 	{
-			
-		$userlist = $this->User->find('all', array('conditions' => array('User.id'=>$id)));
-		$this->set('userDetails',$userlist);
-		$member_id=$userlist[0]['User']['member_id'];	
-		$total_vested = $this->Commission->find('all', array('conditions' => array(
-			'Commission.member_id' => $member_id,
-			'Commission.v_date <=' => date('Y-m-d')
-		),'fields' => array('sum(Commission.total_commission_earned) as total_vested')));
-		$this->set('vestedCommission',$total_vested);
-		foreach ($total_vested as $key => $val){
-	
-			$vested_amount=$val[0]['total_vested'];
-		
-		 }
-		$widthdraw_amount = $this->Payment->find('all', array('conditions' => array('Payment.member_id' => $member_id)));
-		foreach ($widthdraw_amount as $key => $val){
-			
-			$payment=$val['Payment']['amount'];
-		 }
-			$avl_comm= $vested_amount - $payment;
-			
-			$sample_arr = array($avl_comm);
-			$this->set('sample_arr',$sample_arr);
-		
-		
-		$total_commision = $this->Commission->find('all', array('conditions' => array('Commission.member_id' => $member_id),'fields' => array('sum(Commission.total_commission_earned) as total')));
+		if(!empty($id))
+		{
+		$total_commision = $this->Commission->find('first', array('conditions' => array('Commission.user_id' => $id),'fields' => array('sum(Commission.user_commission) as total' )));
 		$this->set('totalCommission',$total_commision);
+		
+		
+		$total_vested = $this->Commission->find('first', array('conditions' => array(
+			'Commission.user_id' => $id,
+			'Commission.vesting_date <=' => date('Y-m-d')
+		),'fields' => array('sum(Commission.user_commission) as total_vested')));
+		$this->set('vestedCommission',$total_vested);
+		
+		
+		$paid_commission = $this->Payment->find('first', array('conditions' => array('Payment.user_id' => $id),'fields' => array('sum(Payment.amount) as total_paid' )));
+		$this->set('paidCommission',$paid_commission);
+		
+		$this->User->contain();
+		$user = $this->User->find('first', array('conditions' => array('User.id'=>$id)));
+		$this->set('user', $user['User']);
+		
+		
+		
 		if ($this->request->is('post')) {
 			
+			$vamount= $this->request->data['fetch_requset']['vamount'];
 			$amount= $this->request->data['fetch_requset']['amount'];
 			$remark= $this->request->data['fetch_requset']['remark'];
 			
+		
 			
-			 if($vested_amount <= $amount )
+			 if($vamount <= $amount )
 			 {
-				 $this->Session->setFlash('The Widthdraw Amount could  be less then vesting Amount.', 'flash_success');
+				 $this->Session->setFlash('The Widthdraw amount should  be Less  then or Equal to Available Vested Amount  . Please, try again', 'flash_success');
 			 }
 			 else
 			 {
 			
 			
 			
-			 if ($this->Payment->save(array('amount'=>$amount,'remark'=>$remark, 'member_id'=>$member_id)))
+			 if ($this->Payment->save(array('amount'=>$amount,'remark'=>$remark, 'user_id'=>$id)))
 				{
 					
 					
-					 $this->Session->setFlash('The Widthdraw amount   .', 'flash_success');
+					 $this->Session->setFlash('The Widthdraw amount transfer successfully', 'flash_success');
+					 $this->Widthdraw->updateAll(array('status'=>1),array('user_id'=>$id));
 					 
 					 
 					
@@ -925,7 +987,7 @@ public function fetch_commissionls()
 				}
 			}
 		 }
-		
+		}
 		 }
 		
            

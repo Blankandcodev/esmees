@@ -252,10 +252,6 @@
 					$this->redirect(array('controller'=>'Users', 'action' => 'portfolio'));
 				}
         }
-		
-		$this->data = $portfolio;
-		$this->set('userLook',$portfolio['Look']);
-		
     }
 	
 	
@@ -275,16 +271,9 @@
 				'Look.product_id'=>$proId
 			)));
 			$this->set('order',$order);
-			
-			
 			if($countLooks < 3){
 				if ($this->request->is('post') || $this->request->is('put')) {
-					
-					
-					
-					$product = $this->Product->find('first', array('conditions'=>array('Product.id'=>$proId)));
-					
-					
+					$product = $this->Product->find('first', array('conditions'=>array('product.id'=>$this->request->data['lookupload']['product_id'])));
 					$image_path = $this->Image->upload_image_and_thumbnail($this->request->data['lookupload']['image'], "Looks");
 					if($image_path){
 						$this->request->data['lookupload']['category_id'] = $product['Product']['parent_id'];
@@ -306,7 +295,6 @@
 								echo "no-conflict";
 						}
 						if ($this->Look->save($this->request->data['lookupload'])){
-						
 							$this->Session->setFlash('The Looks Image has saved .', 'flash_success');
 						}else{
 							$this->Session->setFlash('Look could not saved .', 'flash_error');
@@ -560,34 +548,38 @@ public function password()
 	 $userid = $this->user['id'];
 	 if(!empty($userid))
 	 {
-		$total_commision = $this->Commission->find('first', array('conditions' => array('Commission.user_id' => $userid),'fields' => array('sum(Commission.user_commission) as total' )));
+		$total_commision = $this->Commission->find('first', array('conditions' => array('Commission.user_id' => $userid),'fields' => array('sum(Commission.commissions) as total' )));
 		$this->set('totalCommission',$total_commision);
-		
 		
 		$total_vested = $this->Commission->find('first', array('conditions' => array(
 			'Commission.user_id' => $userid,
 			'Commission.vesting_date <=' => date('Y-m-d')
-		),'fields' => array('sum(Commission.user_commission) as total_vested')));
+		),'fields' => array('sum(Commission.commissions) as total_vested')));
 		$this->set('vestedCommission',$total_vested);
 		
+		foreach ($total_vested as $key => $val){
+	
+			$total_comm=isset($val[0]['total_vested']);
 		
-		$paid_commission = $this->Payment->find('first', array('conditions' => array('Payment.user_id' => $userid),'fields' => array('sum(Payment.amount) as total_paid' )));
-		$this->set('paidCommission',$paid_commission);
+		 }
+		$widthdraw_amount = $this->Payment->find('all', array('conditions' => array('Payment.user_id' =>$userid )));
 		
+		foreach ($widthdraw_amount as $key => $val){
+			$val = array_shift($val);
+			$payment=isset($val['amount']);
 		
+		 }
+			
+			$avl_comm= $total_comm - $payment;
+			
+			$sample_arr = array(isset($avl_comm));
+			$this->set('sample_arr',$sample_arr);
 		
 		
 		
 		
 		$user = $this->User->find('first', array('conditions' => array('User.id'=>$this->user['id'])));
 		
-		
-		
-		if ($this->request->is('post'))
-		 {
-		
-		
-				
 		$ss_number=$user['User']['ss_number'];
 		$bankaccount_no=$user['User']['bankaccount_no'];
 		$bankrouting_no=$user['User']['bankrouting_no'];
@@ -595,38 +587,22 @@ public function password()
 		if(empty($ss_number) && empty($bankaccount_no) && empty($bankrouting_no) &&  empty($bankname))
 		 {
 			$this->Session->setFlash('Banking Details can not blank!');
-			$this->redirect(array('controller' => 'Users','action' => 'bank_details'));
 		 }
 		 else
 		 {
-			$amount= $this->request->data['fetch_request']['amount'];
-			$vamount= $this->request->data['fetch_request']['vamount'];
-			if($vamount  <= $amount )
-			{
-				$this->Session->setFlash('The Widthdraw Request should  be Less  then or Equal to Available Vested Amount  . Please, try again', 'flash_success');
-			
-			
-			}
-		 else
+		
+		if ($this->request->is('post'))
 		 {
-			if ($this->Widthdraw->save(array('widthdraw_request_amount'=>$amount ,'user_id'=>$this->user['id'])))
-				{
-					$this->Session->setFlash('The Widthdraw Request  has sent .', 'flash_success');
-					 $this->redirect(array('controller' => 'Users','action' => 'index'));
-					
-				}
-				else
-				{
-				 $this->Session->setFlash(__('The Widthdraw Request could not be sent. Please, try again.'));
-				}
-		 }
+		
+				echo "hello";
+		
 		 }
 		
-		
+		}
 		}
 	
 	}
-	}
+	
 	
 	public function withdraw($id=null)
 	{
@@ -685,11 +661,8 @@ public function password()
             $email = $this->data['User']['username'];
             $info = $this->User->find('first', array('conditions' => array('User.username' => $email),
                 'recursive' => -1));
-			$status=$info['User']['status'];
-			
             
-	    if ($status==1) 
-		{
+	    if (!empty($info)) {
 		
                 $data['User']['id'] = $info['User']['id'];
                 $charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@#&!1234567890';
@@ -716,20 +689,10 @@ public function password()
                    
                 }
             } else {
-			
-				$this->Session->setFlash(__('Your email id is not verified, please verify your email id.<br/>Not verification email yet? <a href="http://www.esmees.blankandco.com/users/resend">click here</a> to send verification email again.'), 'flash_error');
-					
-					$this->redirect($this->referer());
               
-				// $this->Session->setFlash(__('This email address is not registered with us.'), 'flash_error');
+				 $this->Session->setFlash(__('This email address is not registered with us.'), 'flash_error');
             }
         }
-		else
-		{
-			
-					
-				
-		}
     }
 
     function NewPassword($email = NULL, $code = NULL) {
@@ -752,33 +715,6 @@ public function password()
             }
         }
     }
-	
-	public function bank_details()
-	{
-		if ($this->request->is('post'))
-		 {
-			$userid = $this->user['id'];
-			$bankname= $this->request->data['bank']['bankname'];
-			$acnumber= $this->request->data['bank']['acnumber'];
-			$ssnumber=$this->request->data['bank']['ssnumber'];
-			$brtnumber=$this->request->data['bank']['brtnumber'];
-			if ($this->User->save(array('bankname'=>$bankname, 'bankaccount_no'=>$acnumber,'ss_number'=>$ssnumber,'bankaccount_no'=>$brtnumber ,'id'=>$userid)))
-				{
-					$this->Session->setFlash('The bank details saved .', 'flash_success');
-					 $this->redirect(array('controller' => 'Users','action' => 'commission'));
-					
-				}
-				else
-				{
-				 $this->Session->setFlash(__('The bank details could not be saved. Please, try again.'));
-				}
-			
-			
-			
-		
-		 }
-		
-	}
 
 	
 	    

@@ -30,6 +30,7 @@ class CronController extends AppController{
 			$date = date('Ymd');
 		}
 		$URI = 'https://reportws.linksynergy.com/downloadreport.php?bdate='.$date.'&edate='.$date.'&token=cd4f37dc86a07f7845f3d54a4c594f6fdd45a96355367de7348e3c77971aebd9&nid=1&reportid=12';
+	
 		
 		$querryResult = file_get_contents($URI, false);
 		$Data = str_getcsv($querryResult, "\n");
@@ -125,7 +126,7 @@ class CronController extends AppController{
 	
 	public function savelscommission(){
 		$status = 'SUCCESS';
-		$lorders = $this->Lsorder->find('all', array('conditions'=>array('Lsorder.status' => 1)));
+		$lorders = $this->Lsorder->find('all', array('conditions'=>array('Lsorder.status' => 2)));
 		$i = 0;
 		foreach($lorders as $order){
 			$maray = explode("-", $order['Lsorder']['member_id']);
@@ -167,7 +168,7 @@ class CronController extends AppController{
 				$this->Commission->create();
 				if ($this->Commission->save($data)){
 					$this->Lsorder->id = $order['Lsorder']['id'];
-					$this->Lsorder->saveField('status', '2');
+					$this->Lsorder->saveField('status', '1');
 					$this->caronStatus .= "<br/>Commission $i saved<br/>";
 				}else{
 					$this->caronStatus .= "ERROR";

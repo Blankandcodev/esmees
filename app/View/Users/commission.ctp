@@ -1,18 +1,35 @@
 <?php
+	if (!empty($vestedCommission))
+					{
 	
 		 foreach ($vestedCommission as $key => $val){
+		
+		  $vesting_amount =$val['total_vested'];
 		  $total_vested= $this->Number->format($val['total_vested'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
-	}
+	}}
 	
+	if (!empty($totalCommission))
+					{
 	 foreach ($totalCommission as $key => $val){
 		  $total_commission= $this->Number->format($val['total'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
 	}
-	 foreach ($sample_arr as $a){
-		  $aval_commission= $this->Number->format($a, array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+	}
+	if (!empty($paidCommission))
+	{
+	 foreach ($paidCommission as $paid){
+		
+		  $paid_commission =$paid['total_paid'];
+		  $aval_commission= $this->Number->format($paid['total_paid'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
 
 	}
+	}
+	
+	$bal_comm = $vesting_amount - $paid_commission;
+	
+	$hidden=$bal_comm ;
 	
 	
+	$aval_commission=$this->Number->format($bal_comm, array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
 	
 	
 	
@@ -73,24 +90,18 @@
 						 
 						
 						 <div class="users form">
-<?php echo $this->Form->create('User', array('class'=>'cform')); ?>
-    <fieldset>
-        <legend><?php echo __('Bank Info'); ?></legend>
+<?php echo $this->Form->create('fetch_request', array('class'=>'cform')); ?>
+  <?php   echo $this->Form->input('vamount', array('value'=>'0', 'type'=>'hidden','value'=>
+	$hidden));?>
     <?php
        
        
-        echo $this->Form->input('bname',  array('type'=>'text', 'maxLength'=>'250','label'=>'Amount',  'class'=>'required '));
-		echo $this->Form->input('bname',  array('type'=>'text', 'maxLength'=>'250','label'=>'Bank Name',  'class'=>'required '));
-		echo $this->Form->input('bank_account',  array('type'=>'text', 'maxLength'=>'250','label'=>'Bank Account Number', 'class'=>'required'));
-        echo $this->Form->input('bank_ssnumber',  array('type'=>'text', 'maxLength'=>'250','label'=>'Social Security Number', 'class'=>'required'));
-        echo $this->Form->input('bank_rounting',  array('type'=>'text', 'maxLength'=>'250','label'=>'Bank Routing Number', 'class'=>'required'));
-	
+     echo $this->Form->input('amount',  array('type'=>'number', 'maxLength'=>'5','label'=>'Amount($)',  'class'=>'required '));
 		
-		echo $this->Country->select('country', array('label'=>'Country', 'maxLength'=>'15', 'type'=>'text'));
 		
     ?>
 	<?php echo $this->Form->submit('Widthdraw', array('class'=>'primary button med')) ?>
-    </fieldset>
+ 
 <?php echo $this->Form->end(); ?>
 </div>
 							

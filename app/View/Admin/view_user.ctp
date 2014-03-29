@@ -1,6 +1,6 @@
 
 <div class="title-row">
-	
+	<a class="button primary title-btn" href="<?php echo $this->Html->url(array('action'=>'view_looksimage'), array('class'=>'add')); ?>">View all Looks</a>
 	<h1 class="title">User List</h1>
 </div>
 
@@ -101,7 +101,7 @@
 		<td><?php echo  $user['User']['created']; ?></td>
       
         <td>
-        <?php echo $this->Html->link('User looks', array('action'=>'view_looksimage',  $user['User']['id']), array('class'=>'gallery-btn'));?>  
+        
 
         <?php echo $this->Html->link('Delete', array('action' => 'delete', $user['User']['id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
 

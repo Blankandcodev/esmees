@@ -1,24 +1,37 @@
 <?php
+	if (!empty($vestedCommission))
+					{
 	
 		 foreach ($vestedCommission as $key => $val){
-		  $total_vested= $this->Number->format($val[0]['total_vested'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
-	}
+		
+		  $vesting_amount =$val['total_vested'];
+		  $total_vested= $this->Number->format($val['total_vested'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+	}}
 	
+	if (!empty($totalCommission))
+					{
 	 foreach ($totalCommission as $key => $val){
-		  $total_commission= $this->Number->format($val[0]['total'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
-		  
-		  
+		  $total_commission= $this->Number->format($val['total'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
 	}
-	
-	 foreach ($sample_arr as $a){
-		  $aval_commission= $this->Number->format($a, array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+	}
+	if (!empty($paidCommission))
+	{
+	 foreach ($paidCommission as $paid){
+		
+		  $paid_commission =$paid['total_paid'];
+		  $aval_commission= $this->Number->format($paid['total_paid'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
 
 	}
+	}
+	
+	$bal_comm = $vesting_amount - $paid_commission;
+	
+	$hidden=$bal_comm ;
+	$aval_commission=$this->Number->format($bal_comm, array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
 	
 	
 	
 ?>
-
 
 
 	
@@ -29,39 +42,17 @@
 	<h1 class="title">WidthDraw Commission</h1>
 </div>
 	
-	<div class="account-info">
-					
-					<h2 class="sub-title bordered">Commission Info</h2>
-					<ul class="info-list">
-					
-						
-						<li><span>Total Commission Earned:  </span><?php echo  $total_commission; ?> </li>
-						<li><span>Total Amount Vested:  </span><?php echo  $total_vested; ?> </li>
-						<li><span>Available Vested Amount:  </span><?php echo  $aval_commission; ?> </li>
-						
-						
-							
-					
-					</ul>
-					
 	
-	</div>
+	<table width="100%">
 	
-					 
-				</div>
-	<div>
+	<tr>
+			<td>
+				<div>
 
 	<?php echo $this->Form->create('fetch_requset'); ?>
-
-
-
-	
-
-    
-   
-	
-	
-	<?php echo $this->Form->input('amount', array('label'=>'WidthDraw Amount', 'type'=>'text', 'class'=>'required'));?>
+	<?php   echo $this->Form->input('vamount', array('value'=>'0', 'type'=>'hidden','value'=>
+	$hidden));?>
+	<?php echo $this->Form->input('amount', array('label'=>'WidthDraw Amount($)', 'type'=>'number', 'class'=>'required'));?>
 	
 	<?php echo $this->Form->input('remark', array('label'=>'Remark', 'type'=>'textarea', 'class'=>'required'));?>
 	
@@ -70,39 +61,69 @@
 	
 	<?php echo $this->Form->end(); ?>
   
-
+	</div>
 	
-	<br>
-	
-	<div class="account-info">
+			</td>
+			<td>
+				<div class="account-info">
+					<?php if(isset($user) && $user){ ?>
 					
-					<h2 class="sub-title bordered">Account Info</h2>
+					<h2 class="sub-title bordered">Commission  Info</h2>
 					<ul class="info-list">
-					<?php foreach ($userDetails as $user): ?>
-						<li>
-
-						<span>Email Address :</span> <?php echo  $user['User']['username']; ?>
-						</li>
+					
+						<li><span>Total Commission Earned:  </span><?php echo  $total_commission; ?> </li>
+						<li><span>Total Vested Amount:  </span><?php echo $total_vested; ?> </li>
+						<li><span>Available Vested Amount:  </span><?php echo  $aval_commission; ?></li>
 						
-						<li><span>First Name:  </span><?php echo  $user['User']['name']; ?> </li>
-						<li><span>Middle Name:  </span><?php echo  $user['User']['middle_name']; ?> </li>
-						<li><span>Last Name:  </span><?php echo  $user['User']['last_name']; ?> </li>
-						<li><span>Gender:  </span><?php echo  $user['User']['last_name']; ?> </li>
-						<li><span>Date Of Birth:  </span><?php echo  $user['User']['dob']; ?> </li>
-						<li><span>City:  </span><?php echo $user['User']['city']; ?> </li>
-						<li><span>State:  </span><?php echo  $user['User']['state']; ?></li>
-						<li><span>Zip Code: </span> <?php echo  $user['User']['zip']; ?></li>
-						<li><span>Country:  </span><?php echo $user['User']['country']; ?></li>
-						<li><span>Social Security Number:  </span><?php echo $user['User']['ss_number']; ?></li>
-						<li><span>Bank Name:  </span><?php echo $user['User']['bankname']; ?></li>
-						<li><span>Bank Account Number:  </span><?php echo $user['User']['bankaccount_no']; ?></li>
-						<li><span>Bank Routing Number:  </span><?php echo $user['User']['bankrouting_no']; ?></li>
-						
-							
 					
 					</ul>
-					 <?php endforeach; ?>
+					
+					<h2 class="sub-title bordered">Account Info</h2>
+				
+					<ul class="info-list">
+					
+						<li><span>First Name:  </span><?php echo  $user['name']; ?> </li>
+						<li><span>Middle Name:  </span><?php echo $user['middle_name']; ?> </li>
+						<li><span>Last Name:  </span><?php echo  $user['last_name']; ?></li>
+						<li><span>Date of Birth: </span> <?php echo  $user['dob']; ?></li>
+						<li><span>Address Line 1:  </span><?php echo $user['address']; ?></li>
+						<li><span>Address Line 2:  </span><?php echo  $user['address1']; ?> </li>
+						<li><span>City:  </span><?php echo $user['city']; ?> </li>
+						<li><span>State:  </span><?php echo  $user['state']; ?></li>
+						<li><span>Zip Code: </span> <?php echo  $user['zip']; ?></li>
+						<li><span>Country:  </span><?php echo $user['country']; ?></li>
+					
+					</ul>
+					
+					<h2 class="sub-title bordered">Bank Info </h2>
+					<ul class="info-list">
+					
+						<li><span>Bank Name:  </span><?php echo  $user['bankname']; ?> </li>
+						<li><span>Bank Account Number:  </span><?php echo $user['bankaccount_no']; ?> </li>
+						<li><span>Social Security Number:  </span><?php echo  $user['ss_number']; ?></li>
+						<li><span>Bank Routing Number: </span> <?php echo  $user['bankrouting_no']; ?></li>
+						
+					
+					</ul>
+					
+					<?php } ?>
 				</div>
+			</td>
+	</tr>
+	
+	</table>
+	<div>
+	
+
+	
+  
+	</div>
+			 
+			
+	
+	
+	
+				
 
 	
 	

@@ -66,7 +66,12 @@
 				
 
 
-    <?php foreach ($widthDraws as $user): ?>
+    <?php foreach ($widthDraws as $user):
+	
+				
+	
+
+	?>
     <tr>
         
         <td><?php echo  $user['User']['member_id']; ?></td>
@@ -74,7 +79,19 @@
 	
 		<td>$<?php echo  $user['Widthdraw']['widthdraw_request_amount']; ?></td>
 		
-		<td> <?php echo $user['Widthdraw']['status']; ?></td>
+		<td> 
+		<?php 
+			$status=$user['User']['status'];
+			if($status==0)
+			{
+				echo "Unpaid";
+			}
+			else 
+			{
+				echo "Unpaid";
+			}
+
+		?></td>
 		<td><?php echo  $user['Widthdraw']['request_date']; ?></td>
 		
 	

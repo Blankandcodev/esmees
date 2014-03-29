@@ -44,7 +44,11 @@
 					Order ID
 			</th>
 			<th>
-					Total Commission
+					 Commission
+			
+			</th>
+			<th>
+				Member Commission(50%)
 			
 			</th>
 			<th>
@@ -64,12 +68,13 @@
     <?php foreach ($commissionList as $comm): ?>
     <tr>
         
-        <td><?php echo  $comm['Commission']['adversiter_id']; ?></td>
+        <td><?php echo  $comm['Commission']['adv_id']; ?></td>
         <td><?php echo  $comm['Commission']['member_id']; ?></td>
 		 <td><?php echo  $comm['Commission']['order_id']; ?></td>
-		  <td>$<?php echo  $comm['Commission']['total_commission_earned']; ?></td>
-		   <td><?php echo  $comm['Commission']['transaction_date']; ?></td>
-		    <td><?php echo  $comm['Commission']['v_date']; ?></td>
+		  <td>$<?php echo  $comm['Commission']['commissions']; ?></td>
+		   <td>$<?php echo  $comm['Commission']['user_commission']; ?></td>
+		    <td><?php echo  $comm['Commission']['transaction_date']; ?></td>
+		    <td><?php echo  $comm['Commission']['vesting_date']; ?></td>
 	
 		
 		

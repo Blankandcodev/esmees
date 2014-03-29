@@ -12,7 +12,7 @@
         echo $this->Form->input('username',  array('type'=>'email', 'maxLength'=>'250','label'=>'Email Address', 'placeholder'=>'email@example.com', 'class'=>'required email'));
         echo $this->Form->input('password',array('class'=>'required', 'id'=>'pwd'));
         echo $this->Form->input('gender', array('label'=>'Gender', 'type'=>'radio', 'options' => array('0' => 'Male', '1' => 'Female')));
-		echo $this->Form->input('dob',   array('label'=>'Date Of Birth','maxLength'=>'100', 'type'=>'text', 'required'));
+		echo $this->Form->input('dob',   array('label'=>'Date Of Birth(dd/mm/yyyy)','maxLength'=>'100', 'type'=>'text', 'required'));
 		
         echo $this->Form->input('city',   array('label'=>'City','maxLength'=>'100', 'type'=>'text', 'required'));
         
