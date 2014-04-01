@@ -114,7 +114,58 @@
 	</table>
 	<div>
 	
+	
+<table class="dtable" cellspacing="0"> 
+	<thead> 
+		<tr> 
+			 
+			<th>
+				
+				Trans ID
+			</th> 
+			<th>
+					Date
+			
+			</th> 
+				
+			<th>
+				Amount
+			</th>
+			<th>	
+				Remark
+			</th>
+			
+			
+			
+			
+			<th>Actions</th> 
+		</tr> 
+	</thead>
+				
 
+
+    <?php foreach ($paymentList as $pay): ?>
+    <tr>
+        
+        <td><?php echo  $pay['Payment']['id']; ?></td>
+        <td><?php echo  $pay['Payment']['generate_date']; ?></td>
+		<td>$<?php echo  $pay['Payment']['amount']; ?></td>
+		<td><?php echo  $pay['Payment']['remarks']; ?></td>
+	
+      
+        <td>
+        
+
+        <?php echo $this->Html->link('Delete', array('action' => 'delete_payment',  $pay['Payment']['id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
+
+
+        </td>
+	
+    </tr>
+    <?php endforeach; ?>
+
+</table>
+	
 	
   
 	</div>

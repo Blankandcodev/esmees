@@ -69,29 +69,46 @@ $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 		</li>
 		
 		<li><?php echo $this->Html->link('Users', array('controller' => 'Admin', 'action' => 'view_user')); ?></li>
-		<li class=""><?php echo $this->Html->link('Widthdraw Request', array('controller' => 'Admin', 'action' => 'widthdraw_request')); ?></li>
+		
 		
 	
 				
 		
-		<li>
 		
-		<?php echo $this->Html->link('Pages', array('controller' => 'Admin', 'action' => 'pages'), array('class'=>'left')); ?>
+		
+		
+		
+		<li><?php echo $this->Html->link('Pages', array('controller' => 'Admin', 'action' => 'pages')); ?>
+			<ul>
+				<li class=""><?php echo $this->Html->link('Add Banner', array('controller' => 'Admin', 'action' => 'add_banners')); ?></li>
 			
+			</ul>
+		</li>
+		
+		
+		
+		
+		<li><?php echo $this->Html->link('Commissions', array('controller' => 'Admin', 'action' => 'member_commission')); ?>
+			<ul>
+				<li class=""><?php echo $this->Html->link('Widthdraw Request', array('controller' => 'Admin', 'action' => 'widthdraw_request')); ?></li>
+				<li class=""><?php echo $this->Html->link('Distributed Commission', array('controller' => 'Admin', 'action' => 'distributed_commission')); ?></li>
+			</ul>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		</li>
 		<li>
 		
-		<?php echo $this->Html->link('Banners', array('controller' => 'Admin', 'action' => 'add_banners'), array('class'=>'left')); ?>
+		<?php echo $this->Html->link('Reports', array('controller' => 'Admin', 'action' => 'download_reports'), array('class'=>'left')); ?>
 			
-		
-		</li>
-		
-		<li><?php echo $this->Html->link('Member Commission', array('controller' => 'Admin', 'action' => 'member_commission')); ?>
-		
-		
-		
-		
 		
 		</li>
 		
@@ -106,7 +123,7 @@ $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 	<?php echo $this->fetch('content'); ?>
 </section>
 <footer id="footer" class="cf">
-	<div class="credits"><a href="http://blankandco.com">Built by <span>Blank & Co.</span></a></div>
+
 </footer>
 </body>
 </html>

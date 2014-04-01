@@ -29,7 +29,7 @@
 	$hidden=$bal_comm ;
 	
 	
-	$aval_commission=$this->Number->format($bal_comm, array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+	$aval_commission1=$this->Number->format($bal_comm, array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
 	
 	
 	
@@ -72,11 +72,21 @@
 						  
 						</div>
                        </div>
+					    <div class="div4">
+                       <div class="div4_a">
+                          <div class="div4_lft">Total Widthdraw Amount :   </div>
+                          <div class="div4_rgt1">
+						  <?php echo $aval_commission ;?>
+						  
+						</div>
+                       </div>
+					   
+                       </div>
 					   <div class="div4">
                        <div class="div4_a">
                           <div class="div4_lft">Available Vested Amount :   </div>
                           <div class="div4_rgt1">
-						  <?php echo $aval_commission ;?>
+						  <?php echo $aval_commission1 ;?>
 						  
 						</div>
                        </div>

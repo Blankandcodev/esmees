@@ -22,9 +22,9 @@
 					<fieldset>
 						<?php echo $this->Form->input('nickname',array('label'=>'Aka', 'type'=>'text', 'required' )); ?>
 						<?php echo $this->Form->input('name',array('label'=>'First Name', 'type'=>'text', 'required')); ?>
-						<?php echo $this->Form->input('middle_name',array('label'=>' Middle Name', 'type'=>'text', 'required')); ?>
+						<?php echo $this->Form->input('middle_name',array('label'=>' Middle Name', 'type'=>'text')); ?>
 						<?php echo $this->Form->input('last_name',array('label'=>' Last Name', 'type'=>'text', 'required')); ?>
-						<?php echo $this->Form->input('dob',array('label'=>' Date Of Birth', 'type'=>'text', 'required')); ?>
+						<?php echo $this->Form->input('dob',array('label'=>' Date Of Birth(dd/mm/yyyy)', 'type'=>'text', 'required')); ?>
 						<?php echo $this->Form->input('username', array('label'=>' Email Address', 'type'=>'text', 'required')); ?>
 						<?php echo $this->Form->input('address',array('label'=>'Address Line 1', 'type'=>'text', 'required')); ?>
 						<?php echo $this->Form->input('address1',array('label'=>'Address Line 2', 'type'=>'text', 'required')); ?>

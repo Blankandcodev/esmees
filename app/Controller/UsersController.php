@@ -32,8 +32,12 @@
 		$flowCount = $this->Follower->find('count', array('conditions' => array('Follower.follow_id' => $this->user['id'])));		
 		$this->set('flowCounts',$flowCount);
 		
-		$total_commision = $this->Commission->find('first', array('conditions' => array('Commission.user_id' => $this->user['id']),'fields' => array('sum(Commission.commissions) as total' )));
-		$this->set('totalCommission',$total_commision);
+		
+		$total_vested = $this->Commission->find('first', array('conditions' => array(
+			'Commission.user_id' => $this->user['id'],
+			'Commission.vesting_date <=' => date('Y-m-d')
+		),'fields' => array('sum(Commission.user_commission) as total_vested')));
+		$this->set('vestedCommission',$total_vested);
 		
 		
 	}
@@ -413,7 +417,7 @@
             $this->Email->subject = 'Welcome to Esmees.com';
             $this->Email->from = 'Esmees <Subodh@blankandco.com>';
 			$this->set('user', $user);
-			$this->Email->template = 'resendmail_user';
+			$this->Email->template = 'resend_user';
             $this->Email->sendAs = 'html';
 			if ($this->Email->send()) {
 				return true;
@@ -433,6 +437,9 @@
 			$this->request->data['User']['username'] = $user['User']['username'];
 			$this->request->data['User']['token'] = $user['User']['token'];
 			$this->request->data['User']['password'] = $user['User']['password'];
+			
+			
+			
 			if ($user['User']['status']==0){
 			
 				$email = $this->sendNewUserMail(array_merge($this->request->data['User'],array('username' => $username)));
@@ -600,16 +607,18 @@ public function password()
 		 else
 		 {
 			$amount= $this->request->data['fetch_request']['amount'];
-			$vamount= $this->request->data['fetch_request']['vamount'];
-			if($vamount  <= $amount )
+			$vamount= round($this->request->data['fetch_request']['vamount'], 2);
+			
+			if($amount < 0 || $amount > $vamount)
 			{
-				$this->Session->setFlash('The Widthdraw Request should  be Less  then or Equal to Available Vested Amount  . Please, try again', 'flash_success');
-			
-			
+				$this->Session->setFlash('The Widthdraw Request should  be Less  then or Equal to Available Vested Amount, and not a negative value', 'flash_success');
 			}
+			
+			
 		 else
 		 {
-			if ($this->Widthdraw->save(array('widthdraw_request_amount'=>$amount ,'user_id'=>$this->user['id'])))
+			$date =date('Y-m-d');
+	if ($this->Widthdraw->save(array('widthdraw_request_amount'=>$amount,'request_date'=>$date, 'user_id'=>$this->user['id'])))
 				{
 					$this->Session->setFlash('The Widthdraw Request  has sent .', 'flash_success');
 					 $this->redirect(array('controller' => 'Users','action' => 'index'));
@@ -780,7 +789,10 @@ public function password()
 		
 	}
 
-	
+	public function download_reports()
+	{
+		echo "---------------";
+	}
 	    
 	
 	

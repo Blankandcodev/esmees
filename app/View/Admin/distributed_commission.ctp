@@ -94,7 +94,7 @@
 		<td><?php echo  $user['User']['ss_number']; ?></td>
 		<td><?php echo  $user['User']['bankaccount_no']; ?></td>
 		<td><?php echo  $user['User']['bankrouting_no']; ?></td>
-		<td>$<?php echo  $user['Payment']['amount']; ?></td>
+		<td>$<?php echo $user['Payment']['amount']; ?></td>
 		<td><?php echo  $user['Payment']['generate_date']; ?></td>
 		
 	

@@ -29,7 +29,7 @@ App::uses('AppController', 'Controller');
  * @link http://book.cakephp.org/2.0/en/controllers/pages-controller.html
  */
 class PagesController extends AppController {
-	public $uses = array('Product','Look');
+	public $uses = array('Product','Look','Banner');
 	
 	public function beforeFilter(){
         parent::beforeFilter();
@@ -40,8 +40,11 @@ class PagesController extends AppController {
 		
 		$this->Look->contain('User', 'Product');
 		$looks = $this->Look->find('all', array('conditions'=>array('Look.cover'=>1), 'limit'=>10));
+	
+		
 		$this->set('products', $products);
 		$this->set('looks', $looks);
+	
 	}
 	
 	public function home()

@@ -2,7 +2,9 @@
 
 
 <div class="page-container home-page">
+
 	<div class="content_div1 cf">
+	<?php if(!empty($banners)){ ?>
 		<div class="div_lft">
 			<div class="div_txt">
 				<div class="titl">Shop by Hot Products</div>
@@ -25,6 +27,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<div class="banr"></div>
 	
 	<div class="look-listing">	

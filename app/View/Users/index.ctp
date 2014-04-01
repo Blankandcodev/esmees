@@ -1,8 +1,12 @@
  <?php
- foreach ($totalCommission as $key => $val){
-		  $total_commission= $this->Number->format($val['total'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
-		 
-	}
+if (!empty($vestedCommission))
+					{
+	
+		 foreach ($vestedCommission as $key => $val){
+		
+		  $vesting_amount =$val['total_vested'];
+		  $total_vested= $this->Number->format($val['total_vested'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+	}}
 ?>
 
 <div class="page-container">
@@ -69,7 +73,7 @@
 						<span>Likes :</span> <span class="num"><?php echo $user['likes'] ?></span>
 					</div>
 					<div class="pop-box">
-						<span>Commission :</span> <span class="num"><?php echo $total_commission ;?></span>
+						<span>Commission :</span> <span class="num"><?php echo $total_vested ;?></span>
 					</div>
 				</div>
 			</div>

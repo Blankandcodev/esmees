@@ -1,9 +1,10 @@
 <?php class AdminController extends AppController {
 	
-	var $uses = array('User','Adv','Category','Product','Look','Commission','Page','Link','Widthdraw','Payment');
+	var $uses = array('User','Adv','Category','Product','Look','Commission','Page','Link','Widthdraw','Payment','Banner');
 	
 	var $helpers = array('Form', 'Country','Paginator' => array('Paginator'));
 	
+
 	var $components = array(
 		'Paginator',
 		'Image',
@@ -254,6 +255,8 @@
         $this->redirect(array('action'=>'view_products'));
 		
     }
+	
+	
 	
 	public function view_products(){
 		
@@ -547,7 +550,7 @@
 		$this->Payment->delete($id);
       
 		$this->Session->setFlash(__('The payment with id: '.$id.' has been deleted.'), 'flash_success');
-        $this->redirect(array('action'=>'distributed_commission'));
+       $this->redirect($this->referer());
 	}
 	
 	public function pages(){
@@ -641,19 +644,24 @@
 	
 	public function add_banners()
 	{
-		if ($this->request->is('post')) {
-			
+		
+			if ($this->request->is('post')){
+			 // $image_path = $this->Image->upload_image_and_thumbnail($this->data['User']['image'], "Users");
+			  $this->request->data['Banner']['image'] = $image_path;
             if ($this->Banner->save($this->request->data)) {
-				$this->Session->setFlash(__('The Pages has been saved.'), 'flash_success');
-               
-                //$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash(__('The Banner has been saved.'), 'flash_success');
             } else 
 			{
-                $this->Session->setFlash(__('The Pages could not be saved. Please, try again.', 'flash_success'));
+                $this->Session->setFlash(__('The Banner could not be saved. Please, try again.', 'flash_success'));
             }
-			// unset($this->request->data['Page']['name']);
-			// unset($this->request->data['Page']['description']);
+			//$this->redirect(array('action' => 'pages'));
         }
+				
+                
+		
+	
+			
+					
 	}
 
 public function fetch_commissionls()
@@ -928,6 +936,13 @@ public function fetch_commissionls()
 		
 		
 	}
+	function delete_widthdraw_request($id)
+    {
+    	$this->Widthdraw->delete($id);
+		$this->Session->setFlash(__('The Widthdraw Request with id: '.$id.' has been deleted.'), 'flash_success');
+        $this->redirect(array('action'=>'widthdraw_request'));
+		
+    }
 	
 	
 	public function user_detail($id = null)
@@ -970,8 +985,10 @@ public function fetch_commissionls()
 			 {
 			
 			
+				 $date =date('Y-m-d');
+				
 			
-			 if ($this->Payment->save(array('amount'=>$amount,'remark'=>$remark, 'user_id'=>$id)))
+			 if ($this->Payment->save(array('amount'=>$amount,'remarks'=>$remark,'generate_date'=>$date, 'user_id'=>$id)))
 				{
 					
 					
@@ -987,8 +1004,13 @@ public function fetch_commissionls()
 				}
 			}
 		 }
+		 $this->Payment->contain();
+		$payment = $this->Payment->find('all',array('conditions' => array('Payment.user_id'=>$id)));
+		$this->set('paymentList', $payment);
+		
+		 
 		}
-		 }
+ }
 		
            
      
@@ -1003,14 +1025,27 @@ public function fetch_commissionls()
 		$this->set('commissionList', $data);
 	}
 	
-	
-	
+	public function download_reports()
+	{
+	if ($this->request->is('post'))
+	{
+		$reportid= $this->request->data['fetch_reports']['report_type'];
+		$sdate= $this->request->data['fetch_reports']['sdate'];
+		$edate= $this->request->data['fetch_reports']['edate'];
 		
- 
+		
+		$URI = 'https://reportws.linksynergy.com/downloadreport.php?bdate='.$sdate.'&edate='.$edate.'&token=cd4f37dc86a07f7845f3d54a4c594f6fdd45a96355367de7348e3c77971aebd9&nid=1&reportid='.$reportid .'';
+		
+		
+		
+		$this->redirect($URI);
 	
 	
+	}
+	}
+	
+	
+
+
 }
 
-
-
- 
