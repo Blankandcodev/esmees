@@ -2,34 +2,31 @@
 
 
 <div class="page-container home-page">
-
-	<div class="content_div1 cf">
-	
-		<div class="div_lft">
-			<div class="div_txt">
-				<div class="titl">Shop by Hot Products</div>
-				<div class="txt1">Lorem Ipsum Standard text Portion for Dummy Text Area Lorem Ipsum<br /> Standard text Portion<br /> for Dummy Text.
-				</div>
+	<div class="banner-container cf">
+		<div class="banner left half">
+			<div class="banner-img">
+				<img src="<?php echo $this->webroot; ?>/img/img3.png" />
 			</div>
-			<div class="div_btn">
-				<input type="button" value="Buy Now!" class="btnn1" />
+			<div class="caption">
+				<p class="ctitle">Shop by Hot Products</p>
+				<p class="cdesc">Lorem Ipsum Standard text Portion for Dummy Text Area Lorem Ipsum Standard text Portion for Dummy Text. </p>
+				<a class="btn1" href="#">Buy Now</a>
 			</div>
 		</div>
-
-
-		<div class="div_rgt">
-			<div class="div_txt">
-				<div class="titl">Shop by Member Looks</div>
-				<div class="txt1">Lorem Ipsum Standard text Portion for Dummy Text Area Lorem Ipsum<br /> Standard text Portion<br /> for Dummy Text.</div>
+		<div class="banner right half">
+			<div class="banner-img">
+				<img src="<?php echo $this->webroot; ?>/img/img5.png" />
 			</div>
-			<div class="div_btn">
-				<input type="button" value="Buy Now!" class="btnn1" />
+			<div class="caption">
+				<p class="ctitle">Shop by Hot Products</p>
+				<p class="cdesc">Lorem Ipsum Standard text Portion for Dummy Text Area Lorem Ipsum Standard text Portion for Dummy Text. </p>
+				<a class="btn1" href="#">Buy Now</a>
 			</div>
 		</div>
+		<div class="clr"></div>
 	</div>
 	
-	<div class="banr"></div>
-	
+	<?php if(!empty($looks)){ ?>
 	<div class="look-listing">	
 		<div class="heading">
 			<div class="title-btn">
@@ -38,35 +35,28 @@
 			</div>
 			<h1>#TREND<span>Setters</span></h1>
 		</div>
-		<?php if(!empty($looks)){ ?>
-			<div class="listing cf">
-				<ul class="item-list cf">
-				
-			
-				
-				
-					<?php foreach($looks as $mlook){?>
-						<li>
-							<div class="image">
-								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['Id']),true) ?>"><?php echo $this->Html->image('Looks/home/'.$mlook['Look']['image']);?></a>
-							</div>
-							<div class="info">
-								<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '...','exact' => 'false')); ?></p>
-								
-								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['Id']),true) ?>" class="like-btn right small"><?php echo isset($mlook['Look']['likes']) ?></a>
-								
-								<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'profile', $mlook['Look']['user_id']),true) ?>" class="user-name">
-									<?php echo $this->Text->truncate($mlook['User']['name'],20,	array('ellipsis' => '...','exact' => 'false')); ?>
-								</a>
-							</div>
-						</li>
-					  <?php } ?>
-				</ul>
-			</div>
-		<?php }else{
-			echo '<div class="flash">No looks uploaded yet!</div>';
-		} ?>
+		<div class="listing cf">
+			<ul class="item-list cf">
+				<?php foreach($looks as $mlook){?>
+					<li>
+						<div class="image">
+							<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['Id']),true) ?>"><?php echo $this->Html->image('Looks/home/'.$mlook['Look']['image']);?></a>
+						</div>
+						<div class="info">
+							<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '...','exact' => 'false')); ?></p>
+							
+							<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['Id']),true) ?>" class="like-btn right small"><?php echo isset($mlook['Look']['likes']) ?></a>
+							
+							<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'profile', $mlook['Look']['user_id']),true) ?>" class="user-name">
+								<?php echo $this->Text->truncate($mlook['User']['name'],20,	array('ellipsis' => '...','exact' => 'false')); ?>
+							</a>
+						</div>
+					</li>
+				  <?php } ?>
+			</ul>
+		</div>
 	</div>
+	<?php } ?>
 	<div class="product-listing">	
 		<div class="heading">
 			<div class="title-btn">
@@ -113,5 +103,10 @@
 		<?php }else{
 			echo '<div class="flash">No looks uploaded yet!</div>';
 		} ?>
+	</div>
+	
+	
+	<div class="banner-img">
+		<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'register')); ?>"><img src="<?php echo $this->webroot; ?>/img/img6.png" /></a>
 	</div>
 </div>

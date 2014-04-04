@@ -26,6 +26,8 @@ $cakeDescription = __d('cake_dev', 'Esmees');
 		<?php echo $cakeDescription ?>:
 		<?php echo $title_for_layout; ?>
 	</title>
+<link href='http://fonts.googleapis.com/css?family=Enriqueta' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300,300italic' rel='stylesheet' type='text/css'>
 	<?php
 		echo $this->Html->meta('icon');
 		echo $this->Html->css('style');
