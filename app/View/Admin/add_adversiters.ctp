@@ -14,7 +14,7 @@
     echo $this->Form->input('adv_name', array('label'=>'Merchant Name', 'type'=>'text', 'class'=>'required'));?>
 	
 	<?php
-    echo $this->Form->input('vsetry_peroid', array('label'=>'Vesting Peroid', 'type'=>'text'));?>
+    echo $this->Form->input('vested_period', array('label'=>'Vesting Peroid', 'type'=>'number'));?>
 	
 	<?php
     echo $this->Form->input('url', array('label'=>'Merchant website URL', 'type'=>'text'));?>
