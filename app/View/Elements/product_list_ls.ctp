@@ -17,7 +17,7 @@
 	$price= (!empty($_product['price'])) ? $_product['price'] : '';
 	$upccode= (!empty($_product['upccode'])) ? $_product['upccode'] : '';
 	$description= (!empty($_product['description'])) ? $_product['description'] : '';
-	$saleprice= (!empty($_product['saleprice'])) ? $_product['saleprice'] : '';
+	$saleprice= (!is_array($_product['saleprice'])) ? $_product['saleprice'] : '';
 	$linkurl= (!empty($_product['linkurl'])) ? $_product['linkurl'] : '';
 	$imageurl= (!empty($_product['imageurl'])) ? $_product['imageurl'] : '';
 	$long = (!empty($_product['description']['long'])) ? $_product['description']['long'] : '';

@@ -1,27 +1,20 @@
 <div class="page-container home-page">
-	<div class="content_div1 cf">
-		<div class="div_lft">
-			<div class="div_txt">
-				<div class="titl">Shop by Hot Products</div>
-				<div class="txt1">Lorem Ipsum Standard text Portion for Dummy Text Area Lorem Ipsum<br /> Standard text Portion<br /> for Dummy Text.
+	<?php if(!empty($banners)){ ?>
+		<div class="banner-container cf">
+			<?php foreach($banners as $banner){ ?>
+				<div class="banner <?php echo count($banners) > 1 ? 'half '.$banner['Banner']['section'] : 'full'.$banner['Banner']['section']; ?>">
+					<div class="banner-img">
+						<?php echo $this->Html->image('Banners/big/'.$banner['Banner']['image']);?>
+					</div>
+					<div class="caption">
+						<p class="ctitle"><?php echo $banner['Banner']['heading'] ?></p>
+						<p class="cdesc"><?php  echo $banner['Banner']['description'] ?> </p>
+						<a  target="_blank" class="btn1" href="<?php  echo $banner['Banner']['buy_url'] ?>">Buy Now</a>				
+					</div>
 				</div>
-			</div>
-			<div class="div_btn">
-				<input type="button" value="Buy Now!" class="btnn1" />
-			</div>
+			<?php } ?>
 		</div>
-
-
-		<div class="div_rgt">
-			<div class="div_txt">
-				<div class="titl">Shop by Member Looks</div>
-				<div class="txt1">Lorem Ipsum Standard text Portion for Dummy Text Area Lorem Ipsum<br /> Standard text Portion<br /> for Dummy Text.</div>
-			</div>
-			<div class="div_btn">
-				<input type="button" value="Buy Now!" class="btnn1" />
-			</div>
-		</div>
-	</div>
+	<?php } ?>
 	<div class="banr"></div>
 	
 	<?php if(!empty($looks)){ ?>

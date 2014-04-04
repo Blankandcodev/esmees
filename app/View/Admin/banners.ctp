@@ -9,18 +9,13 @@
 </div>
 <table class="dtable" cellspacing="0"> 
 			<thead> 
-				<tr> 
-   					 
-    				
-    				<th>Page</th> 
+				<tr>
 					<th>Heading </th> 
+    				<th>Page</th> 
 					<th>Section</th> 
-					<th>Description</th> 
-					<th>Url</th> 
-    				
+					<th>Status</th>
     				<th>Image</th> 
-					<th></th> 
-					<th>Actions</th> 
+					<th width="150">Actions</th> 
 				</tr> 
 			</thead> 
 			<tbody> 
@@ -32,31 +27,29 @@
 	 <?php foreach ($bannerList as $banner): ?>
     <tr>
         
-       <td><?php echo  $banner['Banner']['pages']; ?>
-	   
-	   </td>
-	    <td><?php echo  $banner['Banner']['heading']; ?>
-	   
-	   </td>
-	    <td><?php echo $banner['Banner']['section']; ?>
-	   
-	   </td>
-	    <td><?php echo  $banner['Banner']['description']; ?>
-	   
-	   </td>
-	   
-	    <td><?php echo  $banner['Banner']['buy_url']; ?>
-	   
-	   </td>
-       <td>
-		<?php
-		echo $this->Html->image('banners/big/'.$banner['Banner']['image'], array('width'=>'100', 'height'=>'136'));?>
+	    <td><?php echo  $banner['Banner']['heading']; ?></td>
+       <td><?php echo  $banner['Banner']['pages']; ?></td>
+	    <td><?php echo $banner['Banner']['section']; ?></td>
 		
 		<td>
+			<?php
+			$status=$banner['Banner']['status'];
+			if($status==0)
+			{
+				echo "<div style='color:red'>Not Active</div>";
+			}
+			if($status==1)
+			{
+			  echo 	"<div style='color:green'>Active</div>";
+			}
+			?>
+		</td>
+		<td><?php echo $this->Html->image('banners/big/'.$banner['Banner']['image'], array('width'=>'100'));?></td>
 		 <td>
        
+		 <?php echo $this->Html->link('Edit', array('action' => 'edit_banner', $banner['Banner']['id']), array('class'=>'edit') )?>
 
-        <?php echo $this->Html->link('Delete', array('action' => 'delete_looks', $banner['Banner']['id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
+        <?php echo $this->Html->link('Delete', array('action' => 'delete_banner', $banner['Banner']['id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
 
 
         </td>

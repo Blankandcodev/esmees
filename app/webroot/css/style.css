@@ -716,7 +716,7 @@ h3.subtitle{border-bottom: 1px solid #000000; color: #6C6C6C; font-size: 16px; f
 .del-icn{background: url(../img/cros.png) 5px 50% no-repeat; padding-left:20px;}
 
 .price-box a{color:#000;}
-.price-box .price{color:#f00;}
+.price-box .price{color:#000;}
 .lthru,
 .price-box .price.lthru{text-decoration:line-through; margin-right:10px; color:#000;}
 .price-box .sale-price{color:#f00;}

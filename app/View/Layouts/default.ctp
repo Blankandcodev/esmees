@@ -92,8 +92,12 @@ $cakeDescription = __d('cake_dev', 'Esmees');
 						 
 						</li>
 						
-                     <li><a href="#">OFFERS</a></li>
-                     <li><a href="#">HELP</a></li>
+                     <li>
+					 <a href="<?php echo $this->Html->url(array('controller'=>'Pages', 'action'=>'offers'),true) ?>">OFFERS</a>
+					 </li>
+                     <li>
+					  <a href="<?php echo $this->Html->url(array('controller'=>'Pages', 'action'=>'help'),true) ?>">HELP</a>
+					 </li>
                    </ul>
                 </div>
             
@@ -107,9 +111,21 @@ $cakeDescription = __d('cake_dev', 'Esmees');
                <div class="fotr_lft">All Rights Recieved. Copyright @ Site Name Here 2012.</div>
                <div class="fotr_rgt">
                   <ul>
-                    <li><a href="#">Terms & Condition</a></li>
-                    <li>.<a href="#">Privacy Policy</a></li>
-                    <li>.<a href="#">Contact Us</a></li>
+                    <li>
+					 <a href="<?php echo $this->Html->url(array('controller'=>'Pages', 'action'=>'terms_condition'),true) ?>">Terms & Condition</a>
+					
+					</li>
+                    <li>
+					.<a href="<?php echo $this->Html->url(array('controller'=>'Pages', 'action'=>'privacy_policy'),true) ?>">Privacy Policy</a>
+					
+					
+					
+					</li>
+					
+					
+                    <li>
+					.<a href="<?php echo $this->Html->url(array('controller'=>'Pages', 'action'=>'contactus'),true) ?>">Contact Us</a>
+					</li>
                   </ul>
                
                </div>

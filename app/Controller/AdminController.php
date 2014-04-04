@@ -651,9 +651,11 @@
 		if ($this->request->is('post') || $this->request->is('put')) {
 			
 			
+			
+			
                $image_path = $this->Image->upload_image_and_thumbnail($this->data['Banner']['image'], "Banners");
               
-			
+				
          
                 $this->request->data['Banner']['image'] = $image_path;
                 
@@ -661,7 +663,7 @@
 				if ($this->Banner->save($this->request->data)) 
 				{
 					$this->Session->setFlash(__('The Banners  has been saved.'), 'flash_success');
-					//return $this->redirect(array('action' => 'index'));	
+					return $this->redirect(array('action' => 'banners'));	
 						   
 				}
 				else
@@ -676,6 +678,53 @@
 	{
 			$banners=$this->Banner->find('all');
 			$this->set('bannerList', $banners);
+	}
+	
+	
+	Public function delete_banner($id = null)
+	{
+		$this->Banner->delete($id);
+      
+		$this->Session->setFlash(__('The Banner with id: '.$id.' has been deleted.'), 'flash_success');
+        $this->redirect($this->referer());
+	}
+	
+	Public function edit_banner($id = null)
+	{
+		$this->Banner->id = $id;
+        if (empty($this->data))
+        {
+            $this->data = $this->Banner->read();
+        }
+		$banners = $this->Banner->find('first', array('conditions' => array('Banner.id' => $id)));
+        if ($this->request->is('post') || $this->request->is('put')) 
+		{
+			
+			  $pages=$this->request->data['Banner']['pages'];
+			  $section=$this->request->data['Banner']['section'];
+			  $heading=$this->request->data['Banner']['heading'];
+			  $description=$this->request->data['Banner']['description'];
+			  $buy_url=$this->request->data['Banner']['buy_url'];
+			  $status=$this->request->data['Banner']['status'];
+			
+				
+			  if (empty($this->data['Banner']['image']['name'])) {
+
+                  $image_path = $banners['Banner']['image'];
+				
+                } else {
+
+                    $image_path = $this->Image->upload_image_and_thumbnail($this->data['Banner']['image'], "banners");
+                }
+				
+				if ($this->Banner->save(array('pages'=>$pages,'section'=>$section,'heading'=>$heading,'description'=>$description,'buy_url'=>$buy_url,'status'=>$status,'image'=>$image_path, 'id'=>$id)))
+						{
+							$this->Session->setFlash('The Banner Image has saved .', 'flash_success');
+							//$this->redirect(array('controller'=>'Users', 'action' => 'portfolio'));
+						}
+        }
+		
+		
 	}
 
 public function fetch_commissionls()

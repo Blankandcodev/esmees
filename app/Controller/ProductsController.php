@@ -1,5 +1,5 @@
 <?php class ProductsController extends AppController {
-	var $uses = array('Product','Order','Look','User','Category','Like');
+	var $uses = array('Product','Order','Look','User','Category','Like','Banner');
 	var $helpers = array('Form', 'Country');
 	var $components = array('Session');
 	var $layout = 'default';
@@ -126,6 +126,11 @@
 			
 			$this->set('products', $products);
 			$this->set('looks', $looks);
+			
+			$banners=$this->Banner->find('all',  array('conditions'=>array('Banner.pages'=>'men','Banner.status'=>1), 'limit'=>2));
+			$this->set('banners', $banners);
+			
+			
 		}
     }
 	public function women(){
@@ -156,6 +161,9 @@
 			
 			$this->set('products', $products);
 			$this->set('looks', $looks);
+			
+			$banners=$this->Banner->find('all',  array('conditions'=>array('Banner.pages'=>'women','Banner.status'=>1), 'limit'=>2));
+		    $this->set('banners', $banners);
 		}
     }
 	public function product_details($id=null)

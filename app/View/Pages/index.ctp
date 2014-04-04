@@ -2,30 +2,25 @@
 
 
 <div class="page-container home-page">
-	<div class="banner-container cf">
-		<div class="banner left half">
-			<div class="banner-img">
-				<img src="<?php echo $this->webroot; ?>/img/img3.png" />
-			</div>
-			<div class="caption">
-				<p class="ctitle">Shop by Hot Products</p>
-				<p class="cdesc">Lorem Ipsum Standard text Portion for Dummy Text Area Lorem Ipsum Standard text Portion for Dummy Text. </p>
-				<a class="btn1" href="#">Buy Now</a>
-			</div>
-		</div>
-		<div class="banner right half">
-			<div class="banner-img">
-				<img src="<?php echo $this->webroot; ?>/img/img5.png" />
-			</div>
-			<div class="caption">
-				<p class="ctitle">Shop by Hot Products</p>
-				<p class="cdesc">Lorem Ipsum Standard text Portion for Dummy Text Area Lorem Ipsum Standard text Portion for Dummy Text. </p>
-				<a class="btn1" href="#">Buy Now</a>
-			</div>
-		</div>
-		<div class="clr"></div>
-	</div>
 	
+	<?php if(!empty($banners)){ ?>
+		<div class="banner-container cf">
+			<?php foreach($banners as $banner){ ?>
+				<div class="banner <?php echo count($banners) > 1 ? 'half '.$banner['Banner']['section'] : 'full'.$banner['Banner']['section']; ?>">
+					<div class="banner-img">
+						<?php echo $this->Html->image('Banners/big/'.$banner['Banner']['image']);?>
+					</div>
+					<div class="caption">
+						<p class="ctitle"><?php echo $banner['Banner']['heading'] ?></p>
+						<p class="cdesc"><?php  echo $banner['Banner']['description'] ?> </p>
+						<a  target="_blank" class="btn1" href="<?php  echo $banner['Banner']['buy_url'] ?>">Buy Now</a>				
+					</div>
+				</div>
+			<?php } ?>
+		</div>
+	<?php } ?>
+	
+	<div class="clr"></div>
 	<?php if(!empty($looks)){ ?>
 	<div class="look-listing">	
 		<div class="heading">
@@ -107,6 +102,6 @@
 	
 	
 	<div class="banner-img">
-		<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'register')); ?>"><img src="<?php echo $this->webroot; ?>/img/img6.png" /></a>
+		<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'register')); ?>"><img src="<?php echo $this->webroot; ?>img/img6.png" /></a>
 	</div>
 </div>
