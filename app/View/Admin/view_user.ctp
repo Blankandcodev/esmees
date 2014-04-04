@@ -22,7 +22,7 @@
 
 <div class="paginate">
 </div>
-
+<?php if(!empty($users)){ ?>
 
 <table class="dtable" cellspacing="0"> 
 	<thead> 
@@ -32,6 +32,12 @@
 			
 			<?php
 			echo $this->Paginator->sort('member_id','Member ID',array('escape' => false));
+		?>
+			
+			</th> 
+			<th>
+			<?php
+			echo $this->Paginator->sort('nickname','Aka',array('escape' => false));
 		?>
 			
 			</th> 
@@ -89,6 +95,7 @@
     <tr>
         
         <td><?php echo  $user['User']['member_id']; ?></td>
+		 <td><?php echo  $user['User']['nickname']; ?></td>
         <td><?php echo  $user['User']['username']; ?></td>
 		<td><?php echo  $user['User']['name']; ?></td>
 	<td><?php echo  $user['User']['last_name']; ?></td>
@@ -112,6 +119,10 @@
     <?php endforeach; ?>
 
 </table>
+<?php }else{
+		echo '<div class="flash">No matching records found!</div>';
+	} ?>
+		</div>
 <div class="paginate">
 <?php	
 echo $this->Paginator->numbers(array(

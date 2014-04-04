@@ -62,7 +62,7 @@
 </table>
 </div>
 	<?php }else{
-		echo '<div class="flash">No  data found yet!</div>';
+		echo '<div class="flash">No matching records found!</div>';
 	} ?>
 		</div>
 <div class="paginate">

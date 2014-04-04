@@ -4,18 +4,19 @@
 	
 	var $helpers = array('Form', 'Country','Paginator' => array('Paginator'));
 	
+	
 
-	var $components = array(
+	public $components = array(
 		'Paginator',
 		'Image',
-        'Session',
+		'Session',
         'Auth' => array(
-            'loginRedirect' => array('controller' => 'admin', 'action' => 'index'),
-            'logoutRedirect' => array('controller' => 'admin', 'action' => 'login'),
+          'loginRedirect' => array('controller' => 'admin', 'action' => 'index'),
+           'logoutRedirect' => array('controller' => 'admin', 'action' => 'login'),
             'loginAction' => array('controller' => 'admin', 'action' => 'login'),
 			'authError' => 'You must be logged in to view this page.',
-            'authorize' => array('Controller')
-        )
+           'authorize' => array('Controller')
+       )
     );
 	
 	var $layout = 'admin';
@@ -403,7 +404,7 @@
             }
 			 unset($this->request->data['Adv']['adv_id']);
 			 unset($this->request->data['Adv']['adv_name']);
-			 unset($this->request->data['Adv']['vsetry_peroid']);
+			 unset($this->request->data['Adv']['vested_period']);
 			 unset($this->request->data['Adv']['url']);
         }
     }
@@ -645,23 +646,36 @@
 	public function add_banners()
 	{
 		
-			if ($this->request->is('post')){
-			 // $image_path = $this->Image->upload_image_and_thumbnail($this->data['User']['image'], "Users");
-			  $this->request->data['Banner']['image'] = $image_path;
-            if ($this->Banner->save($this->request->data)) {
-				$this->Session->setFlash(__('The Banner has been saved.'), 'flash_success');
-            } else 
-			{
-                $this->Session->setFlash(__('The Banner could not be saved. Please, try again.', 'flash_success'));
-            }
-			//$this->redirect(array('action' => 'pages'));
-        }
-				
-                
 		
-	
+		
+		if ($this->request->is('post') || $this->request->is('put')) {
 			
-					
+			
+               $image_path = $this->Image->upload_image_and_thumbnail($this->data['Banner']['image'], "Banners");
+              
+			
+         
+                $this->request->data['Banner']['image'] = $image_path;
+                
+				
+				if ($this->Banner->save($this->request->data)) 
+				{
+					$this->Session->setFlash(__('The Banners  has been saved.'), 'flash_success');
+					//return $this->redirect(array('action' => 'index'));	
+						   
+				}
+				else
+				{
+					 $this->Session->setFlash(__('The Banner has been not saved, try again'));
+				}
+		
+		}
+       			
+	}
+	public function banners()
+	{
+			$banners=$this->Banner->find('all');
+			$this->set('bannerList', $banners);
 	}
 
 public function fetch_commissionls()

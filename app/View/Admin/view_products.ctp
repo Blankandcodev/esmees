@@ -21,7 +21,7 @@
 <div class="paginate">
 </div>
 
-
+<?php if(!empty($products)){ ?>
 
 <table class="dtable" cellspacing="0"> 
 <thead> 
@@ -77,8 +77,21 @@
 	<td><?php echo '<img src="'. $product['Product']['image_url'].'" width=100 height=100>' ?></td>
 	<td width="150"><?php echo  $product['Product']['name']; ?></td>
 	<td width="150"><?php echo  $product['Product']['sku']; ?></td>
-	<td><?php echo  $product['Product']['price']; ?></td>
-	<td><?php echo  $product['Product']['sale_price']; ?></td>
+	<td>
+	
+	 <?php
+			 
+			 $amount= $this->Number->format( $product['Product']['price'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+			 echo $amount;
+			 ?>
+	
+	</td>
+	<td><?php 
+		 $sale_amount= $this->Number->format(  $product['Product']['sale_price'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+		 echo $sale_amount;
+	?>
+	
+	</td>
 	<td><?php echo  $product['Product']['advertiser_id']; ?></td>
 	<td><?php echo  $product['Product']['advetiser_name']; ?></td>
 	
@@ -91,6 +104,10 @@
 </tr>
 <?php endforeach; ?>
 </table>
+<?php }else{
+		echo '<div class="flash">No matching records found!</div>';
+	} ?>
+		</div>
 
 <div class="paginate">
 <?php	
