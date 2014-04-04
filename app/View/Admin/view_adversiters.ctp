@@ -21,6 +21,7 @@
 <div class="paginate">
 </div>
 
+<?php if(!empty($advs)){ ?>
 <table class="dtable" cellspacing="0"> 
 
 
@@ -59,6 +60,11 @@
     <?php endforeach; ?>
 
 </table>
+</div>
+	<?php }else{
+		echo '<div class="flash">No  data found yet!</div>';
+	} ?>
+		</div>
 <div class="paginate">
 <?php	
 echo $this->Paginator->numbers(array(
