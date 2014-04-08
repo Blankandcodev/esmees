@@ -32,6 +32,7 @@
 						<?php echo $this->Form->input('city',array('label'=>'City', 'type'=>'text', 'required')); ?>
 						<?php echo $this->Form->input('state',array('label'=>'State', 'type'=>'text', 'required')); ?>
 						<?php echo $this->Form->input('zip', array('label'=>'Zip Code', 'type'=>'text', 'required')); ?>
+						<?php 	echo $this->Country->select('country', array('label'=>'Selct your Country')); ?></li>
 						<div class="profile-image input">
 							<?php if($userProfile['image']!=NULL){
 								$image='Users/home/'.$userProfile['image'];
@@ -41,7 +42,7 @@
 								echo $this->Html->image($image, array('class'=>'mainimg', 'style'=>'width:100px; border:1px solid #999;')); ?><br/>
 							<?php echo $this->Form->file('image',array('label'=>'Profile Image', 'type'=>'text')); ?>
 						</div>
-						<?php 	echo $this->Country->select('country', array('label'=>'Selct your Country')); ?></li>
+						
 						
 						
 						<?php echo $this->Form->submit('Update', array('class'=>'button primary')); ?>

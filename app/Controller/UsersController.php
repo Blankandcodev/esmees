@@ -129,10 +129,10 @@
 					$this->redirect($this->referer());
 				}
 			}
-			$this->Session->setFlash('You Liked this Look.', 'flash_success');
+			$this->Session->setFlash('You followed this User.', 'flash_success');
 			$this->redirect($this->referer());
 		}else{
-			$this->Session->setFlash('Please select a look to like.', 'flash_error');
+			$this->Session->setFlash('Please select a User to follow.', 'flash_error');
 			$this->redirect($this->referer());
 		}
 		

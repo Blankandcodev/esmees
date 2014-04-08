@@ -49,47 +49,6 @@ class PagesController extends AppController {
 		$this->set('banners', $banners);
 	}
 	
-	public function home()
-	{
-	
-	}
-	
-	public function offers()
-	{
-			
-	}
-	
-	public function help()
-	{
-			
-	}
-	
-	public function terms_condition()
-	{
-		
-			
-	}
-	
-	
-	public function privacy_policy()
-	{
-		
-	}
-	
-	public function contactus()
-	{
-		
-	}
-	
-	
-public function search()
-{
-	
-	
-}
-  
-
-	
 
 	public function display() {
        	$path = func_get_args();

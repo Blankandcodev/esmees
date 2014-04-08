@@ -4,7 +4,7 @@
 			<?php foreach($banners as $banner){ ?>
 				<div class="banner <?php echo count($banners) > 1 ? 'half '.$banner['Banner']['section'] : 'full'.$banner['Banner']['section']; ?>">
 					<div class="banner-img">
-						<?php echo $this->Html->image('Banners/big/'.$banner['Banner']['image']);?>
+						<?php echo $this->Html->image('Banners/'.$banner['Banner']['image']);?>
 					</div>
 					<div class="caption">
 						<p class="ctitle"><?php echo $banner['Banner']['heading'] ?></p>

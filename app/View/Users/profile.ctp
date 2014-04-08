@@ -12,9 +12,10 @@
 		</div>
 		<div class="main">
 			<div class="account-info">
-				<p class="info cf"><span>Username:</span><?php echo $user['name']; ?></p>
-				<p class="info cf"><span>Follower:</span><?php echo count($followers); ?></p>
-				<p class="info cf"><span>Like:</span><?php echo $user['likes']; ?></p>
+				<p class="info cf"><span>User AkaName:</span><?php echo $user['nickname']; ?></p>
+				<p class="info cf"><span>Followers:</span><?php echo count($followers); ?></p>
+				<p class="info cf"><span>Likes:</span><?php echo $user['likes']; ?></p>
+			
 				<?php if(isset($loggeduser) && $user['id'] == $loggeduser['id']){}else{
 					if(!empty($isfollowed) && $isfollowed['Follower']['id']){ ?>
 						<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'unfollow', $isfollowed['Follower']['id'])) ?>" class="button primary">Unfollow me</a>
@@ -27,7 +28,7 @@
 	</div>
 		<div class="look-listing">
 			<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'looks', $user['id'])); ?>" class="title-btn right">View All</a>
-			<h1 class="sec-title bordered"><?php echo $user['name']; ?>'s Looks</h1>
+			<h1 class="sec-title bordered"><?php echo $user['nickname']; ?>'s Looks</h1>
 	<?php if(!empty($userLooks)){ ?>
 			<div class="listing cf">
 				<ul class="item-list cf">
