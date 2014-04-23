@@ -1,4 +1,13 @@
 <?php App::uses('AppController', 'Controller');
+/*
+LSORDER STATUS MEANING
+0 => Raw data from Linkshare signature reportid
+1 => Linkshare data exported to order table
+2 => Commission process done for LSORDER
+3 => Product or User not found in DB for Linkshare data
+
+*/
+
 class CronController extends AppController{
     public $name = 'Corn';
     public $helpers = array('Html', 'Form', 'Js');
@@ -122,8 +131,6 @@ class CronController extends AppController{
 			}else if(!empty($product)){
 				$this->Lsorder->id = $order['Lsorder']['id'];
 				$this->Lsorder->saveField('status', '3');				
-			}else{
-				
 			}
 			$i++;
 		}
