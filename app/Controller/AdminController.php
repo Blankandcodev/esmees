@@ -775,29 +775,17 @@
 				
                 } else {
 
-<<<<<<< HEAD
                     $image_path = $this->Image->upload_image_and_thumbnail($this->data['Banner']['image'], "Banners");
-=======
-                    $image_path = $this->Image->upload_image_and_thumbnail($this->data['Banner']['image'], "banners");
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
                 }
 				
 				if ($this->Banner->save(array('pages'=>$pages,'section'=>$section,'heading'=>$heading,'description'=>$description,'buy_url'=>$buy_url,'status'=>$status,'image'=>$image_path, 'id'=>$id)))
 						{
-<<<<<<< HEAD
 							$this->Session->setFlash(__('The Banner with id: '.$id.' has been updated.'), 'flash_success');
 							$this->redirect($this->referer());
 						}
         }
 		$this->data = $banners;
 		$this->set('bannerList',$banners['Banner']);
-=======
-							$this->Session->setFlash('The Banner Image has saved .', 'flash_success');
-							//$this->redirect(array('controller'=>'Users', 'action' => 'portfolio'));
-						}
-        }
-		
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 		
 	}
 
@@ -1122,21 +1110,8 @@ public function fetch_commissionls()
 			
 			 if( $amount > 0 && $amount <= $vamount)
 			 {
-<<<<<<< HEAD
 				$date =date('Y-m-d');
 				if ($this->Payment->save(array('amount'=>$amount,'generate_date'=>$date, 'user_id'=>$id)))
-=======
-				 $this->Session->setFlash('The Widthdraw amount should  be Less  then or Equal to Available Vested Amount  . Please, try again', 'flash_success');
-			 }
-			 else
-			 {
-			
-			
-				 $date =date('Y-m-d');
-				
-			
-			 if ($this->Payment->save(array('amount'=>$amount,'remarks'=>$remark,'generate_date'=>$date, 'user_id'=>$id)))
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 				{
 				 $this->Session->setFlash('The Widthdraw amount transfer successfully', 'flash_success');
 				 $this->Widthdraw->updateAll(array('status'=>1),array('user_id'=>$id));
@@ -1187,15 +1162,11 @@ public function fetch_commissionls()
 		
 		
 		$this->redirect($URI);
-<<<<<<< HEAD
 	
-=======
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 	
 	}
 	}
 	
-<<<<<<< HEAD
 	public function account_setting()
 	{
 		
@@ -1228,9 +1199,6 @@ public function fetch_commissionls()
 			$this->set('looks',$looks);
 			
 		}
-=======
-	}
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 	}
 	
 	

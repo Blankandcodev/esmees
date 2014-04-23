@@ -7,11 +7,7 @@
 
 		<fieldset>
  <?php
-<<<<<<< HEAD
 	echo $this->Form->input('pages', array('label'=>'Select', 'type'=>'select', 'options' => array('index' => 'Index Page','men' => 'Men', 'women' => 'Women','footer' => 'Member Banner In bottom','header' => 'Header'
-=======
-	echo $this->Form->input('pages', array('label'=>'Select Pages', 'type'=>'select', 'options' => array('index' => 'Index Page','men' => 'Men', 'women' => 'Women'
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
         )));?>
 		
  <?php

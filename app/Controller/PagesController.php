@@ -44,6 +44,7 @@ class PagesController extends AppController {
 		
 		$this->set('products', $products);
 		$this->set('looks', $looks);
+		
 		$banners=$this->Banner->find('all', array('conditions'=>array('Banner.pages'=>'index','Banner.status'=>1),'limit'=>2,array('order' => array('Banner.created' => 'DESC'))));
 		$this->set('banners', $banners);
 		

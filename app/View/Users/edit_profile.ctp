@@ -29,15 +29,9 @@
 						<?php echo $this->Form->input('address',array('label'=>'Address Line 1', 'type'=>'text' )); ?>
 						<?php echo $this->Form->input('address1',array('label'=>'Address Line 2', 'type'=>'text')); ?>
 						
-<<<<<<< HEAD
 						<?php echo $this->Form->input('city',array('label'=>'City', 'type'=>'text')); ?>
 						<?php echo $this->Form->input('state',array('label'=>'State', 'type'=>'text')); ?>
 						<?php echo $this->Form->input('zip', array('label'=>'Zip Code', 'type'=>'text')); ?>
-=======
-						<?php echo $this->Form->input('city',array('label'=>'City', 'type'=>'text', 'required')); ?>
-						<?php echo $this->Form->input('state',array('label'=>'State', 'type'=>'text', 'required')); ?>
-						<?php echo $this->Form->input('zip', array('label'=>'Zip Code', 'type'=>'text', 'required')); ?>
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 						<?php 	echo $this->Country->select('country', array('label'=>'Selct your Country')); ?></li>
 						<div class="profile-image input">
 							<?php if($userProfile['image']!=NULL){
