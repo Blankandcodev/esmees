@@ -17,10 +17,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `cackedb1`
+-- Database: `esmees`
 --
-CREATE DATABASE IF NOT EXISTS `cackedb1` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `cackedb1`;
+CREATE DATABASE IF NOT EXISTS `esmees` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `esmees`;
 
 -- --------------------------------------------------------
 
@@ -355,7 +355,7 @@ CREATE TABLE IF NOT EXISTS `payments` (
   `member_id` varchar(50) NOT NULL,
   `amount` varchar(20) NOT NULL,
   `remarks` varchar(500) NOT NULL,
-  `generate_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `generate_date` datetime NOT NULL,
   `status` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
@@ -511,7 +511,7 @@ CREATE TABLE IF NOT EXISTS `widthdraws` (
   `user_id` int(11) NOT NULL,
   `widthdraw_request_amount` varchar(50) NOT NULL,
   `currency` varchar(20) NOT NULL,
-  `request_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `request_date` datetime NOT NULL,
   `status` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;

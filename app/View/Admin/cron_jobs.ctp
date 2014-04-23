@@ -1,13 +1,14 @@
 <div class="title-row">
 	<h1>Cron Job</h1>
 	<h3>
-	 Note:-	The admin can  manually enter the date cron runs fetch data.
+	 After add product from signature report click on below button to send email to user.<br/>
+	 Note:- User will recieve email when next automated CronJob run.
 	</h3>
 	
 	
 </div>
-
-<?php echo $this->Form->create('fetch_reports'); ?>
+<div>
+<?php /* echo $this->Form->create('fetch_reports'); ?>
 
 		<fieldset>
 	
@@ -30,6 +31,6 @@
 	
 	
 	<h1 class="title">Email
-	
-	<a class="button primary title-btn" style="align:left" href="<?php echo $this->Html->url(array('controller' =>'Cron','action' => 'sendmail'), array('class'=>'add')); ?>"> Send Mail !</a>
+	*/ ?>
+	<a class="large button primary title-btn" style="align:left" href="<?php echo $this->Html->url(array('controller' =>'Cron','action' => 'manualprocron'), array('class'=>'')); ?>">Process new products</a>
 </div>

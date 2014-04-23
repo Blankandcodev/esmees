@@ -4,7 +4,8 @@ LSORDER STATUS MEANING
 0 => Raw data from Linkshare signature reportid
 1 => Linkshare data exported to order table
 2 => Commission process done for LSORDER
-3 => Product or User not found in DB for Linkshare data
+3 => Product not found but user found in DB for Linkshare data
+4 => Product & User both or user not found in DB for Linkshare data
 
 */
 
@@ -36,11 +37,42 @@ class CronController extends AppController{
 		echo "CRON JOB FINISHED <a href='/admin'>Back</a>";
 		exit;
 	}
+	
+	public function manualprocron(){
+		$status = 'SUCCESS';
+		$lorders = $this->Lsorder->find('all', array('conditions'=>array('Lsorder.status' => 3)));
+		$i = 0;
+		foreach($lorders as $order){
+			$maray = explode("-", $order['Lsorder']['member_id']);
+			$mid = isset($maray[1]) ? $maray[1] : 'NA';
+			
+			$product = $this->Product->find('first', array('fields'=>
+			'Product.id','conditions'=>array('Product.sku' => $order['Lsorder']['sku_number'])));
+			
+			$user = $this->User->find('first', array('fields'=>
+			'User.id', 'conditions'=>array('User.member_id' => $mid)));
+			if(!empty($product) && !empty($user)){
+				$this->Lsorder->updateAll(
+					array('Lsorder.status' => 0, 'Lsorder.email'=>0),
+					array('Lsorder.id' => $order['Lsorder']['id'])
+				);
+			}else if(empty($product) && !empty($user)){
+			
+			}else{
+				$this->Lsorder->id = $order['Lsorder']['id'];
+				$this->Lsorder->saveField('status', '4');	
+			}
+			$i++;
+		}
+		$this->Session->setFlash(__('Process completed successfully. Users will receive email about product update when next CronJob run.'), 'flash_success');				
+		$this->redirect($this->referer());
+		exit;
+	}
+	
 	public function fatchlsdata($bdate = null, $edate = null){
 		
 		$URI = 'https://reportws.linksynergy.com/downloadreport.php?bdate='.$bdate.'&edate='.$edate.'&token=cd4f37dc86a07f7845f3d54a4c594f6fdd45a96355367de7348e3c77971aebd9&nid=1&reportid=12';
 	
-		
 		$querryResult = file_get_contents($URI, false);
 		$Data = str_getcsv($querryResult, "\n");
 		$status = 'SUCCESS';
@@ -104,13 +136,13 @@ class CronController extends AppController{
 		$i = 0;
 		foreach($lorders as $order){
 			$maray = explode("-", $order['Lsorder']['member_id']);
-			$mid = $maray[1];
+			$mid = isset($maray[1]) ? $maray[1] : 'NA';
 			
 			$product = $this->Product->find('first', array('fields'=>
 			'Product.id','conditions'=>array('Product.sku' => $order['Lsorder']['sku_number'])));
 			
 			$user = $this->User->find('first', array('fields'=>
-			'User.id','conditions'=>array('User.member_id' => $mid)));
+			'User.id', 'conditions'=>array('User.member_id' => $mid)));
 			if(!empty($product) && !empty($user)){
 				$data = array();
 				$data['Order']['order_id'] = $order['Lsorder']['order_id'];
@@ -128,9 +160,12 @@ class CronController extends AppController{
 				}
 				$this->Lsorder->id = $order['Lsorder']['id'];
 				$this->Lsorder->saveField('status', '1');
-			}else if(!empty($product)){
+			}else if(empty($product) && !empty($user)){
 				$this->Lsorder->id = $order['Lsorder']['id'];
 				$this->Lsorder->saveField('status', '3');				
+			}else{
+				$this->Lsorder->id = $order['Lsorder']['id'];
+				$this->Lsorder->saveField('status', '4');	
 			}
 			$i++;
 		}
@@ -181,13 +216,13 @@ class CronController extends AppController{
 				
 				$this->Commission->create();
 				if ($this->Commission->save($data)){
-					$this->Lsorder->id = $order['Lsorder']['id'];
 					$this->caronStatus .= "<br/>Commission $i saved<br/>";
 				}else{
 					$this->caronStatus .= "ERROR";
 					$status = "ERROR";
 				}
 			}
+			$this->Lsorder->id = $order['Lsorder']['id'];
 			$this->Lsorder->saveField('status', '2');
 			$i++;
 		}
@@ -196,29 +231,35 @@ class CronController extends AppController{
 	}
 	
 	public function sendlsemail(){
-		$lorders = $this->Lsorder->find('all', array('conditions'=>array('Lsorder.email' => 0)));
+		$lorders = $this->Lsorder->find('all', array('conditions'=>array('Lsorder.email' => 0, 'Lsorder.status >' => 0)));
 		foreach($lorders as $order){
-			$maray = explode("-", $order['Lsorder']['member_id']);
-			$mid = $maray[1];
-			if($mid != 'ESMGUEST'){
-				$user = $this->User->find('first', array('conditions'=>array('User.member_id' => $mid)));
-				
-				
-				if(!empty($user)){
-					if($this->sendInviteMail($user['User'],$order['Lsorder'])){
-						$this->Lsorder->id = $order['Lsorder']['id'];
-						$this->Lsorder->saveField('email', 1);
-					};
+			$status = $order['Lsorder']['status'];
+			if($status == 1 || $status == 2){
+				$maray = explode("-", $order['Lsorder']['member_id']);
+				$mid = $maray[1];
+				if($mid != 'ESMGUEST'){
+					$user = $this->User->find('first', array('conditions'=>array('User.member_id' => $mid)));
+					if(!empty($user)){
+						if($this->sendInviteMail($user['User'],$order['Lsorder'])){
+							$this->Lsorder->id = $order['Lsorder']['id'];
+							$this->Lsorder->saveField('email', 1);
+						};
+					}
+					$this->mailStatus .= "email send <br/>";
 				}
-				$this->mailStatus .= "email send <br/>";
+			}else{
+				$this->Lsorder->id = $order['Lsorder']['id'];
+				$this->Lsorder->saveField('email', 2);
 			}
 		}
+		return $this->mailStatus;
 	}
+	
 	public function sendInviteMail($data = array(),$commi=array()){
         if ($data != NULL){
             $this->Email->to =$data['username'];
 			$this->Email->bcc = array('sbdh.singh@gmail.com');
-            $this->Email->subject = 'Welcome to Esmees.com';
+            $this->Email->subject = "Welcome to Esmees.com #".$order['Lsorder']['order_id']."-".$order['Lsorder']['id'];
             $this->Email->from = 'Esmees <Subodh@blankandco.com>';
 			$this->set('data', $data);
 			$this->set('commi', $commi);
