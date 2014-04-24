@@ -35,8 +35,19 @@
 		?>
 			
 			</th> 
+<<<<<<< HEAD
 			<th width="150">
 			
+=======
+			<th>
+			
+			<?php
+			echo $this->Paginator->sort('nickname','Aka',array('escape' => false));
+		?>
+			
+			</th> 
+			<th>
+>>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 			<?php
 			echo $this->Paginator->sort('nickname','User Aka',array('escape' => false));
 		?>
@@ -96,9 +107,14 @@
         <td><?php echo  $user['User']['member_id']; ?></td>
         <td><?php echo  $user['User']['nickname']; ?></td>
 		 <td><?php echo  $user['User']['username']; ?></td>
+<<<<<<< HEAD
 		<td><?php echo  $user['User']['name']; ?> <?php echo  $user['User']['last_name']; ?></td>
 		
 		
+=======
+		<td><?php echo  $user['User']['name']; ?></td>
+	<td><?php echo  $user['User']['last_name']; ?></td>
+>>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 		<td><?php echo  $user['User']['city']; ?></td>
 		<td><?php echo  $user['User']['state']; ?></td>
 		<td><?php echo  $user['User']['zip']; ?></td>
@@ -107,6 +123,7 @@
 			$status=$user['User']['status'];
 			if($status==0)
 			{
+<<<<<<< HEAD
 				echo "<div style='color:red'>In Active</div>";
 			}
 			if($status==1)
@@ -123,6 +140,21 @@
         
 		
 	
+=======
+				echo "<div style='color:red'>Not verified</div>";
+			}
+			if($status==1)
+			{
+			  echo 	"<div style='color:green'>verified</div>";
+			}
+			?>
+		</td>
+		<td><?php echo  $user['User']['created']; ?></td>
+      
+        <td>
+        
+		
+>>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
         <?php echo $this->Html->link('Delete', array('action' => 'delete', $user['User']['id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
 
 

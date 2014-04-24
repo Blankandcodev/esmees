@@ -127,7 +127,11 @@
 			$this->set('products', $products);
 			$this->set('looks', $looks);
 			
+<<<<<<< HEAD
 			$banners=$this->Banner->find('all',  array('conditions'=>array('Banner.pages'=>'men','Banner.status'=>1),array('order' => array('Banner.created' => 'DESC'), 'limit'=>2)));
+=======
+			$banners=$this->Banner->find('all',  array('conditions'=>array('Banner.pages'=>'men','Banner.status'=>1), 'limit'=>2));
+>>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 			$this->set('banners', $banners);
 			
 			
@@ -162,8 +166,13 @@
 			$this->set('products', $products);
 			$this->set('looks', $looks);
 			
+<<<<<<< HEAD
 			$banners=$this->Banner->find('all',  array('conditions'=>array('Banner.pages'=>'women','Banner.status'=>1),array('order' => array('Banner.created' => 'DESC'), 'limit'=>2)));
 		$this->set('banners', $banners);
+=======
+			$banners=$this->Banner->find('all',  array('conditions'=>array('Banner.pages'=>'women','Banner.status'=>1), 'limit'=>2));
+		    $this->set('banners', $banners);
+>>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 		}
     }
 	public function product_details($id=null)

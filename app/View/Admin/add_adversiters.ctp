@@ -14,7 +14,11 @@
     echo $this->Form->input('adv_name', array('label'=>'Merchant Name', 'type'=>'text', 'class'=>'required'));?>
 	
 	<?php
+<<<<<<< HEAD
     echo $this->Form->input('vested_period', array('label'=>'Vesting Peroid(days)', 'type'=>'number'));?>
+=======
+    echo $this->Form->input('vested_period', array('label'=>'Vesting Peroid', 'type'=>'number'));?>
+>>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 	
 	<?php
     echo $this->Form->input('url', array('label'=>'Merchant website URL', 'type'=>'text'));?>

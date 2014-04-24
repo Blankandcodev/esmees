@@ -456,6 +456,7 @@
 		if ($this->request->is('post')){
 			$username=$this->request->data['User']['username'];
 			$user = $this->User->find('first', array('conditions'=>array('User.username'=>$username)));
+<<<<<<< HEAD
 			if(!empty($user)){
 				$token=$user['User']['token'];	
 				$this->request->data['User']['name'] = $user['User']['name'];
@@ -481,6 +482,28 @@
 			}else{
 				$this->Session->setFlash('Sorry! we could not find your email. Please register.');
 				$this->redirect(array('controller'=>'Users', 'action'=>'register'));
+=======
+			$token=$user['User']['token'];	
+			$this->request->data['User']['name'] = $user['User']['name'];
+			$this->request->data['User']['username'] = $user['User']['username'];
+			$this->request->data['User']['token'] = $user['User']['token'];
+			$this->request->data['User']['password'] = $user['User']['password'];
+			
+			
+			
+			if ($user['User']['status']==0){
+			
+				$email = $this->sendNewUserMail(array_merge($this->request->data['User'],array('username' => $username)));
+				$this->Session->setFlash(__('Your verification code has been generated and Emailed to ' . $username.''), 'flash_success');
+				$this->redirect(array('controller'=>'Pages','action' =>'index'));
+			
+			}
+			if ($user['User']['status']==1)
+			{			
+					$this->Session->setFlash('Your account is already verified, Please login');
+					$this->redirect(array('controller'=>'Pages', 'action'=>'index'));
+			
+>>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 			}
 		}
 		

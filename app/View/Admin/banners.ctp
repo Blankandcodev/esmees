@@ -36,7 +36,11 @@
 			$status=$banner['Banner']['status'];
 			if($status==0)
 			{
+<<<<<<< HEAD
 				echo "<div style='color:red'>In Active</div>";
+=======
+				echo "<div style='color:red'>Not Active</div>";
+>>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 			}
 			if($status==1)
 			{
@@ -44,8 +48,12 @@
 			}
 			?>
 		</td>
+<<<<<<< HEAD
 		<td><?php echo $this->Html->image('Banners/'.$banner['Banner']['image'], array('width'=>'100'));?></td>
 	
+=======
+		<td><?php echo $this->Html->image('banners/big/'.$banner['Banner']['image'], array('width'=>'100'));?></td>
+>>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 		 <td>
        
 		 <?php echo $this->Html->link('Edit', array('action' => 'edit_banner', $banner['Banner']['id']), array('class'=>'edit') )?>

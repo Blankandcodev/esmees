@@ -173,6 +173,7 @@
         
 
         <?php echo $this->Html->link('Delete', array('action' => 'delete_payment',  $pay['Payment']['id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
+<<<<<<< HEAD
 
 
         </td>
@@ -180,6 +181,15 @@
     </tr>
     <?php endforeach; ?>
 
+=======
+
+
+        </td>
+	
+    </tr>
+    <?php endforeach; ?>
+
+>>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 </table>
 	
 	
