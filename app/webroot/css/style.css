@@ -62,11 +62,7 @@ h1,h2,h3,h4,h5,h6,ul,img,a,p{margin:0px; padding:0px;text-decoration:none;list-s
 .rgt_upr ul li{ float:left; font-size:14px;  font-family: Roboto, Helvetica, Arial, sans-serif;;  text-align:right; margin-left:10px;  margin-top:5px; }
 .rgt_upr ul li a{ color:#FFFFFF;}
 .rgt_upr ul li:last-child{ margin-right:0px;}
-<<<<<<< HEAD
 .srch_div{ float:left; width:302px; height:33px; border:1px solid #dedede; border-radius:4px;  margin-top:13px;margin-right:2px;}
-=======
-.srch_div{ float:right; width:302px; height:33px; border:1px solid #dedede; border-radius:4px;  margin-top:13px;margin-right:2px;}
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 .srch_div input.txt_box{ float:left; font-size:14px; font-family:Arial, Helvetica, sans-serif; text-align:left; text-indent:6px; color:#a9a9a9; width:260px; height:30px; border:none;border-top-left-radius: 4px;border-bottom-left-radius: 4px; line-height:30px;}
 .srch_img{ float:right; width:15px; height:auto; margin:9px;}
 .srch_img img{ float:right; width:15px; height:14px;}
@@ -598,21 +594,13 @@ img{max-width:100%;}
 
 .banner-container{margin:0 0 12px;}
 .banner-container .banner{position:relative;}
-<<<<<<< HEAD
 .banner .banner-img{position:relative; z-index:0; text-align:center}
-=======
-.banner .banner-img{position:relative; z-index:0;}
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 .banner-container .banner img{}
 .banner-container .half{ width:49.25%;}
 .banner-container .caption {position:absolute; bottom:30px; left:30px; top:25px; z-index:1;}
 .banner-container .caption .ctitle{font-size: 28px; text-align: left; width: 100%;}
 .banner-container .caption .cdesc{color: #6A6A6A; font-size: 14px; line-height: 23px; margin-top: 14px; text-align: left; width: 60%;}
-<<<<<<< HEAD
 .banner-container .caption .btn1{background-image: url("../img/img4.png"); border: 1px solid #000000; border-radius: 4px; color: #FFFFFF; cursor: pointer; float: left; font-size: 16px; height: 37px; box-shadow: 0 0 1px 1px #CCCCCC inset; display: block; font-family: Arial; font-style: normal; font-weight: bold; line-height: 37px; margin: 0 10px 0 0; padding: 0 25px; text-align: center; text-decoration: none; text-indent: 0; transition: all 0.2s ease 0s; position:absolute; bottom:0;min-width:100px;}
-=======
-.banner-container .caption .btn1{background-image: url("../img/img4.png"); border: 1px solid #000000; border-radius: 4px; color: #FFFFFF; cursor: pointer; float: left; font-size: 16px; height: 37px; box-shadow: 0 0 1px 1px #CCCCCC inset; display: block; font-family: Arial; font-style: normal; font-weight: bold; line-height: 37px; margin: 0 10px 0 0; padding: 0 25px; text-align: center; text-decoration: none; text-indent: 0; transition: all 0.2s ease 0s; position:absolute; bottom:0;}
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 
 
 
@@ -669,13 +657,8 @@ img{max-width:100%;}
 
 
 .heading h1{
-<<<<<<< HEAD
 	color: #3F3F3F;
 	
-=======
-	color: #000000;
-	font-family: Roboto;
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 	font-size: 24px;
 	line-height: 50px;
 	margin-left: 10px;
@@ -882,27 +865,6 @@ ul.info-list li span{display:block; color:#000; font-weight:bold;}
 	overflow: hidden;
 	background-color: #FFFFFF;	
 }
-<<<<<<< HEAD
-=======
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 /* Alerts */
 #flashMessage,
 .flash{

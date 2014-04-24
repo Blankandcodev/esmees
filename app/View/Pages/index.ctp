@@ -6,11 +6,7 @@
 	<?php if(!empty($banners)){ ?>
 		<div class="banner-container cf">
 			<?php foreach($banners as $banner){ ?>
-<<<<<<< HEAD
 				<div class="banner <?php echo count($banners) > 1 ? 'half '.$banner['Banner']['section'] : 'full'; ?>">
-=======
-				<div class="banner <?php echo count($banners) > 1 ? 'half '.$banner['Banner']['section'] : 'full'.$banner['Banner']['section']; ?>">
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 					<div class="banner-img">
 						<?php echo $this->Html->image('Banners/'.$banner['Banner']['image']);?>
 					</div>
@@ -33,10 +29,7 @@
 				<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'gallery', 'women')); ?>">Women</a>
 			</div>
 			<h1>#TREND<span>Setters</span></h1>
-<<<<<<< HEAD
 			
-=======
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 		</div>
 		<div class="listing cf">
 			<ul class="item-list cf">
@@ -48,17 +41,10 @@
 						<div class="info">
 							<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '...','exact' => 'false')); ?></p>
 							
-<<<<<<< HEAD
 							<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['Id']),true) ?>" class="like-btn right small"><?php echo $mlook['Look']['likes'] ?></a>
 							
 							<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'profile', $mlook['Look']['user_id']),true) ?>" class="user-name">
 								<?php echo $this->Text->truncate($mlook['User']['nickname'],50,	array('ellipsis' => '...','exact' => 'false')); ?>
-=======
-							<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['Id']),true) ?>" class="like-btn right small"><?php echo isset($mlook['Look']['likes']) ?></a>
-							
-							<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'profile', $mlook['Look']['user_id']),true) ?>" class="user-name">
-								<?php echo $this->Text->truncate($mlook['User']['name'],20,	array('ellipsis' => '...','exact' => 'false')); ?>
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 							</a>
 						</div>
 					</li>
@@ -118,14 +104,10 @@
 	
 	
 	<div class="banner-img">
-<<<<<<< HEAD
 	<?php
 		if(!empty($footers)){ ?>
 	
 		<a href="#"><?php echo $this->Html->image('Banners/'.$footers['Banner']['image']);?></a>
 	 <?php } ?>
-=======
-		<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'register')); ?>"><img src="<?php echo $this->webroot; ?>img/img6.png" /></a>
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 	</div>
 </div>

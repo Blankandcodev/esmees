@@ -87,17 +87,12 @@ $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 					</ul>
 				</li>
 			</ul>
-<<<<<<< HEAD
 		</li>
 		<li><?php echo $this->Html->link('Users', array('controller' => 'Admin', 'action' => 'view_user')); ?>
 		
 			
 		
 		</li>
-=======
-		</li>
-		<li><?php echo $this->Html->link('Users', array('controller' => 'Admin', 'action' => 'view_user')); ?></li>
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 		
 		
 	
@@ -114,11 +109,7 @@ $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 		
 		<li><?php echo $this->Html->link('Commissions', array('controller' => 'Admin', 'action' => 'member_commission')); ?>
 			<ul>
-<<<<<<< HEAD
 				<li class=""><?php echo $this->Html->link('Withdraw Request', array('controller' => 'Admin', 'action' => 'widthdraw_request')); ?></li>
-=======
-				<li class=""><?php echo $this->Html->link('Widthdraw Request', array('controller' => 'Admin', 'action' => 'widthdraw_request')); ?></li>
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 				<li class=""><?php echo $this->Html->link('Distributed Commission', array('controller' => 'Admin', 'action' => 'distributed_commission')); ?></li>
 			</ul>
 		</li>
@@ -134,14 +125,6 @@ $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 		
 		</li>
 		<li>
-<<<<<<< HEAD
-=======
-		
-		<?php echo $this->Html->link('Reports', array('controller' => 'Admin', 'action' => 'download_reports'), array('class'=>'left')); ?>
-			
-		
-		</li>
->>>>>>> 80da00b175635dbe7774711d9f665b465b2eb1ff
 		
 		<?php echo $this->Html->link('Reports', array('controller' => 'Admin', 'action' => 'download_reports'), array('class'=>'')); ?>
 			
