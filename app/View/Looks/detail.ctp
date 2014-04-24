@@ -22,12 +22,12 @@ $_product = $looks['Product'];
 		<div class="item-info">
 			<div class="look-info">
 				<p class="caption"><?php echo $_look['caption_name']; ?></p>
-				<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'Profile', $_look['user_id']),true) ?>"><?php echo $_user['name']; ?></a>
+				<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'Profile', $_look['user_id']),true) ?>"><?php echo $_user['nickname']; ?></a>
 			</div>
 			
 			<?php if(!empty($_product['mnf_name'])){ ?><h2 class="brand"><?php echo $_product['mnf_name']; ?></h2><?php }; ?>
 			<h1 class="item-title"><?php echo $_product['name']; ?></h1>
-			<div class="price"><?php echo !empty($_product['currency']) ? $_product['currency'] : 'USD'; ?> <?php echo $_product['price']; ?></div>
+			<div class="price"><?php echo !empty($_product['currency']) ? $_product['currency'] : '$'; ?> <?php echo $_product['price']; ?></div>
 			<div class="detail">
 				<h3 class="subtitle">Detail</h3>
 				<?php echo $_product['descrition']; ?>
@@ -35,7 +35,7 @@ $_product = $looks['Product'];
 			<div class="buy-button">
 				<?php $trakker = "";				
 					$referid=$_user['member_id'];
-					$cid = isset($loggeduser['member_id']) ? $loggeduser['member_id'] : 'GUEST';
+					$cid = isset($loggeduser['member_id']) ? $loggeduser['member_id'] : 'ESMGUEST';
 				if( $_product['type'] == 1){
 					$trakker = "&u1=$referid-$cid";
 				}else if($_product['type'] == 0){
@@ -49,7 +49,14 @@ $_product = $looks['Product'];
 				<?php if(!empty($isLiked) && $isLiked['Like']['id']){
 					echo $this->Html->link($_look['likes'], array('action' => 'ullike', $isLiked['Like']['id']), array('class'=>'like-btn unlike'));
 				}else{
-					echo $this->Html->link(isset($_look['likes']), array('action' => 'Like', $_look['Id']), array('class'=>'like-btn'));
+				
+				
+					echo $this->Html->link($_look['likes'], array('action' => 'Like', $_look['Id']), array('class'=>'like-btn'));
+					
+					
+
+					
+					
 				} ?>
 			</div>
 			
@@ -60,7 +67,7 @@ $_product = $looks['Product'];
 	<?php if(isset($memberLooks)){?>
 		<div class="look-listing">
 			<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'looks', $_user['id'])); ?>" class="title-btn right">View All</a>
-			<h1 class="sec-title bordered"><?php echo $_user['name']; ?>' Looks</h1>
+			<h1 class="sec-title bordered"><?php echo $_user['nickname']; ?>'s Looks</h1>
 			<div class="listing cf">
 				<ul class="item-list cf">
 					<?php foreach($memberLooks as $mlook){?>
@@ -71,16 +78,30 @@ $_product = $looks['Product'];
 							<div class="info">
 								<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '...','exact' => 'false')); ?></p>
 								
-								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['id']),true) ?>" class="like-btn right small"><?php echo isset($mlook['Look']['likes']) ?></a>
+								<?php if(!empty($mlook['Like'])){
+									echo $this->Html->link($mlook['Look']['likes'], array('action' => 'ullike', $mlook['Like'][0]['id']), array('class'=>'like-btn small right unlike'));
+								}else{
+									echo $this->Html->link($mlook['Look']['likes'], array('action' => 'Like', $mlook['Look']['id']), array('class'=>'like-btn small right'));
+								} ?>
+								
+								
+								
 								
 								<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'followers', $mlook['Look']['user_id']),true) ?>" class="user-name">
-									<?php echo $this->Text->truncate($mlook['User']['name'],10,	array('ellipsis' => '...','exact' => 'false')); ?>
+									<?php echo $this->Text->truncate($mlook['User']['nickname'],50,	array('ellipsis' => '...','exact' => 'false')); ?>
 								</a>
 							</div>
 						</li>
-					  <?php } ?>
+						<li>
+							
+						</li>
+					  <?php }
+					
+
+					  ?>
 				</ul>
 			</div>
+			
 		</div>
 	<?php } ?>	
 </div>

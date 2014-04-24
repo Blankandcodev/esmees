@@ -1,5 +1,5 @@
 <div class="title-row">
-	<a class="button primary title-btn" href="<?php echo $this->Html->url(array('action'=>'view_pages'), array('class'=>'add')); ?>"><  View all Pages</a>
+	<a class="button primary title-btn" href="<?php echo $this->Html->url(array('action'=>'pages'), array('class'=>'add')); ?>"><  View all Pages</a>
 	<h1 class="title">Add Page</h1>
 </div>
 <?php echo $this->Form->create('Page'); ?>

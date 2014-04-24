@@ -22,26 +22,27 @@
 					<fieldset>
 						<?php echo $this->Form->input('nickname',array('label'=>'Aka', 'type'=>'text', 'required' )); ?>
 						<?php echo $this->Form->input('name',array('label'=>'First Name', 'type'=>'text', 'required')); ?>
-						<?php echo $this->Form->input('middle_name',array('label'=>' Middle Name', 'type'=>'text', 'required')); ?>
+						<?php echo $this->Form->input('middle_name',array('label'=>' Middle Name', 'type'=>'text')); ?>
 						<?php echo $this->Form->input('last_name',array('label'=>' Last Name', 'type'=>'text', 'required')); ?>
-						<?php echo $this->Form->input('dob',array('label'=>' Date Of Birth', 'type'=>'text', 'required')); ?>
+						<?php echo $this->Form->input('dob',array('label'=>' Date Of Birth(dd/mm/yyyy)', 'type'=>'text', 'required')); ?>
 						<?php echo $this->Form->input('username', array('label'=>' Email Address', 'type'=>'text', 'required')); ?>
-						<?php echo $this->Form->input('address',array('label'=>'Address Line 1', 'type'=>'text', 'required')); ?>
-						<?php echo $this->Form->input('address1',array('label'=>'Address Line 2', 'type'=>'text', 'required')); ?>
+						<?php echo $this->Form->input('address',array('label'=>'Address Line 1', 'type'=>'text' )); ?>
+						<?php echo $this->Form->input('address1',array('label'=>'Address Line 2', 'type'=>'text')); ?>
 						
-						<?php echo $this->Form->input('city',array('label'=>'City', 'type'=>'text', 'required')); ?>
-						<?php echo $this->Form->input('state',array('label'=>'State', 'type'=>'text', 'required')); ?>
-						<?php echo $this->Form->input('zip', array('label'=>'Zip Code', 'type'=>'text', 'required')); ?>
+						<?php echo $this->Form->input('city',array('label'=>'City', 'type'=>'text')); ?>
+						<?php echo $this->Form->input('state',array('label'=>'State', 'type'=>'text')); ?>
+						<?php echo $this->Form->input('zip', array('label'=>'Zip Code', 'type'=>'text')); ?>
+						<?php 	echo $this->Country->select('country', array('label'=>'Selct your Country')); ?></li>
 						<div class="profile-image input">
 							<?php if($userProfile['image']!=NULL){
 								$image='Users/home/'.$userProfile['image'];
 								}else{
-									$image="profile.png";
+									$image="Profile.png";
 								}
-								echo $this->Html->image($image, array('class'=>'mainimg', 'style'=>'width:100px; border:1px solid #999;')); ?><br/>
+						echo $this->Html->image($image, array('class'=>'mainimg', 'style'=>'width:100px; border:1px solid #999;')); ?><br/>
 							<?php echo $this->Form->file('image',array('label'=>'Profile Image', 'type'=>'text')); ?>
 						</div>
-						<?php 	echo $this->Country->select('country', array('label'=>'Selct your Country')); ?></li>
+						
 						
 						
 						<?php echo $this->Form->submit('Update', array('class'=>'button primary')); ?>

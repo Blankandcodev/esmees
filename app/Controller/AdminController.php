@@ -1,20 +1,22 @@
 <?php class AdminController extends AppController {
 	
-	var $uses = array('User','Adv','Category','Product','Look','Commission','Page','Link','Widthdraw','Payment');
+	var $uses = array('User','Adv','Category','Product','Look','Commission','Page','Link','Widthdraw','Payment','Banner');
 	
 	var $helpers = array('Form', 'Country','Paginator' => array('Paginator'));
 	
-	var $components = array(
+	
+
+	public $components = array(
 		'Paginator',
 		'Image',
-        'Session',
+		'Session',
         'Auth' => array(
-            'loginRedirect' => array('controller' => 'admin', 'action' => 'index'),
-            'logoutRedirect' => array('controller' => 'admin', 'action' => 'login'),
+          'loginRedirect' => array('controller' => 'admin', 'action' => 'index'),
+           'logoutRedirect' => array('controller' => 'admin', 'action' => 'login'),
             'loginAction' => array('controller' => 'admin', 'action' => 'login'),
 			'authError' => 'You must be logged in to view this page.',
-            'authorize' => array('Controller')
-        )
+           'authorize' => array('Controller')
+       )
     );
 	
 	var $layout = 'admin';
@@ -88,42 +90,7 @@
 
 	}
 //-------------------------------------------- Starts Product Function ------------------------------	
-	public function ConnectToCJ($params = array()){
-		$query_string = '';
-		$params['keywords'] = $params['keywords'] .'+'. $params['category'];
-		$params['affiliate'] = '';
-		$params['category'] = '';
-		foreach($params as $param=>$val){
-			if($val){
-				if($param == 'adv_id'){
-					$query_string .= "&advertiser-ids=".$val;
-				}else if($param == 'pagenumber'){
-					$query_string .= "&page-number=".$val;					
-				}else if($param == 'record'){
-					$query_string .= "&records-per-page=".$val;					
-				}else{
-					$query_string .= "&".$param."=".$val;	
-				}
-			}
-		}
-		global $sort_order, $sort_by;
-		$URI = 'https://product-search.api.cj.com/v2/product-search?'.
-			'website-id=7386303'.	
-			$query_string;
-		$context = stream_context_create(
-			array(
-				'http' => array(
-					'method' => 'GET',
-					'header' => 'Authorization:  009a4361d95c8e2bdce29187482ade06d25c54353bcbd8f380a2302f4358784d95be510873a64c2785e4bdd76a0876e68a8e6dfe46f462d5c585e420f2fa2c63c9/1ceeee775a48c02959c579de2b4c21736b25d0263b01a20a4a61473c1667da0523a54c62d9a9fb4fa0e5eaebb5f94f2a134d1d94e05ac90b26e3e27c09ef2801'
-				)
-			)
-		);
-		
-		// $response = new SimpleXMLElement(file_get_contents($URI, false, $context));
-		$querryResult = file_get_contents($URI, false, $context);
-		$response = json_decode(json_encode((array) simplexml_load_string($querryResult)), 1);
-		return $response;
-	}
+	
 	
 	public function add_product(){
 		if ($this->request->is('post')){
@@ -163,6 +130,7 @@
 		
 		if ($this->request->is('post')){
 			$params = array_shift($this->request->data);
+			
 						
 			$aflType = $params['affiliate'];
 			$advlists = $this->Adv->find('all', array('conditions' => array('Adv.afflitate_type'=>$aflType)));
@@ -178,15 +146,19 @@
 				$response = '';
 				if($params['affiliate'] == 'LS'){
 					$response = $this->ConnectToLN($params);
+					
 					$response['affiliate'] = $params['affiliate'];
 					$this->set('products', $response);
+					//$this->redirect($this->referer(array('action' => 'add_products')));
 					
-				}else if($params['affiliate'] == 'CJ'){
+					
+					
+				}
+				else if($params['affiliate'] == 'CJ'){
 					$response = $this->ConnectToCJ($params);
 					$response = array_shift($response);
 					$response['affiliate'] = $params['affiliate'];
 					$this->set('products', $response);
-					//pr(array_shift($response));
 //					die;
 				}
 			}
@@ -224,6 +196,12 @@
 	
 		
 		$this->Product->id = $id;
+		$product = $this->Product->find('first', array(
+					'conditions' => array(
+						'Product.id'=> $id
+					)
+				)
+			);
 		$AllCats = $this->Category->children(1);
 		$catalist = array();
 		foreach($AllCats as $cat){
@@ -244,6 +222,8 @@
             }
         } else {
             $this->request->data = $this->Product->read(null, $id);
+			$this->data = $product;
+			$this->set('productList',$product['Product']);
 		}
 	}
 	
@@ -254,6 +234,8 @@
         $this->redirect(array('action'=>'view_products'));
 		
     }
+	
+	
 	
 	public function view_products(){
 		
@@ -280,24 +262,35 @@
 		$query_string = '';
 					
 		$params['affiliate'] = '';
+		
+		
 		foreach($params as $param=>$val){
 			if($val){
-				if($param == 'keywords'){
-					$query_string .= "&keyword=".$val;
-				}else if($param == 'adv_id'){
-					$query_string .= "&mid=".$val;
-				}else if($param == 'category'){
-					$query_string .= "&cat=".$val;
-				}else if($param == 'record'){
-					$query_string .= "&max=".$val;
-				}else{
-					$query_string .= "&".$param."=".$val;
+				if($param == 'ktype'){
+					$ktype = "&".$val."=";
 				}
+				if($param == 'keywords'){
+					$query_string .= $ktype.'"'.urlencode($val).'"';
+				}
+				else if($param == 'adv_id'){
+					$query_string .= "&mid=".urlencode($val);
+				}else if($param == 'category'){
+					$query_string .= "&cat=".urlencode($val);
+				}else if($param == 'record'){
+					$query_string .= "&max=".urlencode($val);
+				}else if($param == 'ktype'){
+					$query_string .= "";
+				}
+				else{
+					$query_string .= "&".$param."=".urlencode($val);
+			}
 			}
 		}
+		
 		$URI = 'http://productsearch.linksynergy.com/productsearch?'.
 			'&token=d279e4bb38551f715b664fe212adba01e22bf72bf8273cef793b56301a3d6050'.
 			$query_string.'&MaxResults=20';
+		
 			
 			$context = stream_context_create(
 			array(
@@ -311,7 +304,59 @@
 		$querryResult = file_get_contents($URI, false, $context);
 		$response = json_decode(json_encode((array) simplexml_load_string($querryResult)), 1);
 		return $response;
+		
    }
+   
+   
+   public function ConnectToCJ($params = array()){
+		$query_string = '';
+		$params['keywords'] = $params['keywords'];
+		$params['affiliate'] = '';
+		
+		foreach($params as $param=>$val){
+			if($val){
+				if($param == 'adv_id'){
+					$query_string .= "&advertiser-ids=".$val;
+				}else if($param == 'pagenumber'){
+					$query_string .= "&page-number=".$val;					
+				}else if($param == 'record'){
+					$query_string .= "&records-per-page=".$val;					
+				}else if($param == 'ktype'){
+					$query_string .= "";
+				}else{
+					$query_string .= "&".$param."=".$val;	
+				}
+			}
+		}
+		global $sort_order, $sort_by;
+		global $sort_order, $sort_by;
+		$URI = 'https://product-search.api.cj.com/v2/product-search?'.
+			'website-id=7386303'.	
+			$query_string;
+	
+		$context = stream_context_create(
+			array(
+				'http' => array(
+					'method' => 'GET',
+					'header' => 'Authorization:  009a4361d95c8e2bdce29187482ade06d25c54353bcbd8f380a2302f4358784d95be510873a64c2785e4bdd76a0876e68a8e6dfe46f462d5c585e420f2fa2c63c9/1ceeee775a48c02959c579de2b4c21736b25d0263b01a20a4a61473c1667da0523a54c62d9a9fb4fa0e5eaebb5f94f2a134d1d94e05ac90b26e3e27c09ef2801'
+				)
+			)
+		);
+		
+		// $response = new SimpleXMLElement(file_get_contents($URI, false, $context));
+		$querryResult = file_get_contents($URI, false, $context);
+		$response = json_decode(json_encode((array) simplexml_load_string($querryResult)), 1);		
+		return $response;
+		
+		
+		
+		
+		
+		
+	}
+	
+   
+   
 //----------------------------------------------------End Product Function-------------------------------
 
 	/*  MANAGE ADMIN */
@@ -400,7 +445,7 @@
             }
 			 unset($this->request->data['Adv']['adv_id']);
 			 unset($this->request->data['Adv']['adv_name']);
-			 unset($this->request->data['Adv']['vsetry_peroid']);
+			 unset($this->request->data['Adv']['vested_period']);
 			 unset($this->request->data['Adv']['url']);
         }
     }
@@ -488,19 +533,23 @@
 	{
 		
 		
-		$this->Paginator->settings = array('limit' => 10);
+		$this->Paginator->settings = array('limit' => 50);
 		$looks = $this->Paginator->paginate('Look');
 		$this->set('looks',$looks);
+		
 		
 		if ($this->request->is('post')) 
 		{
 		
 		$this->Paginator->settings = array(
-		'conditions' => array('Look.caption_name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%', ),
-		'limit' => 10
-		);
+		'conditions' =>array('OR' =>array('Look.caption_name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','User.name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','User.username LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','User.member_id LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','User.nickname LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%' )
+	
+		));
+		
 		$looks = $this->Paginator->paginate('Look');
 		$this->set('looks',$looks);
+		
+	
 
 		}
 		else
@@ -509,6 +558,7 @@
 		}
 		
 	}
+	
 	
 	public function view_commission()
 	{
@@ -547,7 +597,7 @@
 		$this->Payment->delete($id);
       
 		$this->Session->setFlash(__('The payment with id: '.$id.' has been deleted.'), 'flash_success');
-        $this->redirect(array('action'=>'distributed_commission'));
+       $this->redirect($this->referer());
 	}
 	
 	public function pages(){
@@ -618,9 +668,9 @@
 			$param_img = $this->request->params['form']['file'];
 			$image_path = $this->Image->upload_image_and_thumbnail($param_img, "upload");
 			$array = array(
-				'filelink' => '/esmees/img/upload/'.$image_path,
-				'thumb' => '/esmees/img/upload/small/'.$image_path,
-				'image' => '/esmees/img/upload/big/'.$image_path
+				'filelink' => '/img/upload/'.$image_path,
+				'thumb' => '/img/upload/small/'.$image_path,
+				'image' => '/img/upload/big/'.$image_path
 			);
 			echo stripslashes(json_encode($array));
 			
@@ -629,11 +679,26 @@
 			$data = json_decode($file);
 			unset($file);
 			$data[] = $array;
-			pr($data);
+			//pr($data);
 			file_put_contents($fp, json_encode($data));
 			unset($data);			
 			exit;
 		}
+	}
+	
+	public function cron_jobs()
+	{
+			
+		if ($this->request->is('post') || $this->request->is('put')) 
+		{
+			 
+			  $bdate=$this->request->data['fetch_reports']['sdate'];
+			  $edate=$this->request->data['fetch_reports']['edate'];
+              return $this->redirect(array('controller' => 'Cron', 'action' => 'fetchsavedata', $bdate, $edate) );
+		}
+		
+		
+					
 	}
 	
 	
@@ -641,19 +706,87 @@
 	
 	public function add_banners()
 	{
-		if ($this->request->is('post')) {
+		
+		
+		
+		if ($this->request->is('post') || $this->request->is('put')) {
 			
-            if ($this->Banner->save($this->request->data)) {
-				$this->Session->setFlash(__('The Pages has been saved.'), 'flash_success');
-               
-                //$this->redirect(array('action' => 'index'));
-            } else 
-			{
-                $this->Session->setFlash(__('The Pages could not be saved. Please, try again.', 'flash_success'));
-            }
-			// unset($this->request->data['Page']['name']);
-			// unset($this->request->data['Page']['description']);
+			
+			
+			
+               $image_path = $this->Image->upload_image_and_thumbnail($this->data['Banner']['image'], "Banners");
+              
+				
+         
+                $this->request->data['Banner']['image'] = $image_path;
+                
+				
+				if ($this->Banner->save($this->request->data)) 
+				{
+					$this->Session->setFlash(__('The Banners  has been saved.'), 'flash_success');
+					return $this->redirect(array('action' => 'banners'));	
+						   
+				}
+				else
+				{
+					 $this->Session->setFlash(__('The Banner has been not saved, try again'));
+				}
+		
+		}
+       			
+	}
+	public function banners()
+	{
+			$banners=$this->Banner->find('all');
+			$this->set('bannerList', $banners);
+	}
+	
+	
+	Public function delete_banner($id = null)
+	{
+		$this->Banner->delete($id);
+      
+		$this->Session->setFlash(__('The Banner with id: '.$id.' has been deleted.'), 'flash_success');
+        $this->redirect($this->referer());
+	}
+	
+	Public function edit_banner($id = null)
+	{
+		$this->Banner->id = $id;
+        if (empty($this->data))
+        {
+            $this->data = $this->Banner->read();
         }
+		$banners = $this->Banner->find('first', array('conditions' => array('Banner.id' => $id)));
+        if ($this->request->is('post') || $this->request->is('put')) 
+		{
+			
+			  $pages=$this->request->data['Banner']['pages'];
+			  $section=$this->request->data['Banner']['section'];
+			  $heading=$this->request->data['Banner']['heading'];
+			  $description=$this->request->data['Banner']['description'];
+			  $buy_url=$this->request->data['Banner']['buy_url'];
+			  $status=$this->request->data['Banner']['status'];
+			
+				
+			  if (empty($this->data['Banner']['image']['name'])) {
+
+                  $image_path = $banners['Banner']['image'];
+				
+                } else {
+
+                    $image_path = $this->Image->upload_image_and_thumbnail($this->data['Banner']['image'], "Banners");
+                }
+				
+				if ($this->Banner->save(array('pages'=>$pages,'section'=>$section,'heading'=>$heading,'description'=>$description,'buy_url'=>$buy_url,'status'=>$status,'image'=>$image_path, 'id'=>$id)))
+						{
+							$this->Session->setFlash(__('The Banner with id: '.$id.' has been updated.'), 'flash_success');
+							$this->redirect($this->referer());
+						}
+        }
+		$this->data = $banners;
+		$this->set('bannerList',$banners['Banner']);
+		
 	}
 
 public function fetch_commissionls()
@@ -928,20 +1061,28 @@ public function fetch_commissionls()
 		
 		
 	}
+	function delete_widthdraw_request($id)
+    {
+    	$this->Widthdraw->delete($id);
+		$this->Session->setFlash(__('The Widthdraw Request with id: '.$id.' has been deleted.'), 'flash_success');
+        $this->redirect(array('action'=>'widthdraw_request'));
+		
+    }
 	
 	
-	public function user_detail($id = null)
+	public function user_detail($id = null,$resuestid=null)
 	{
+		
 		if(!empty($id))
 		{
-		$total_commision = $this->Commission->find('first', array('conditions' => array('Commission.user_id' => $id),'fields' => array('sum(Commission.user_commission) as total' )));
+		$total_commision = $this->Commission->find('first', array('conditions' => array('Commission.user_id' => $id),'fields' => array('total')));
 		$this->set('totalCommission',$total_commision);
 		
 		
 		$total_vested = $this->Commission->find('first', array('conditions' => array(
 			'Commission.user_id' => $id,
 			'Commission.vesting_date <=' => date('Y-m-d')
-		),'fields' => array('sum(Commission.user_commission) as total_vested')));
+		),'fields' => array('total')));
 		$this->set('vestedCommission',$total_vested);
 		
 		
@@ -952,43 +1093,47 @@ public function fetch_commissionls()
 		$user = $this->User->find('first', array('conditions' => array('User.id'=>$id)));
 		$this->set('user', $user['User']);
 		
+		$this->Widthdraw->contain();
+		$widthdraw = $this->Widthdraw->find('first', array('conditions' => array('Widthdraw.id'=>$resuestid)));
+		$this->set('widthdraw', $widthdraw['Widthdraw']);
+	
+		
+		
 		
 		
 		if ($this->request->is('post')) {
 			
-			$vamount= $this->request->data['fetch_requset']['vamount'];
-			$amount= $this->request->data['fetch_requset']['amount'];
-			$remark= $this->request->data['fetch_requset']['remark'];
+			$vamount= floatval($this->request->data['fetch_requset']['vamount']);
+			$amount= floatval($this->request->data['fetch_requset']['amount']);
 			
-		
+			echo $vamount ." > ". $amount;
 			
-			 if($vamount <= $amount )
+			 if( $amount > 0 && $amount <= $vamount)
 			 {
-				 $this->Session->setFlash('The Widthdraw amount should  be Less  then or Equal to Available Vested Amount  . Please, try again', 'flash_success');
-			 }
-			 else
-			 {
-			
-			
-			
-			 if ($this->Payment->save(array('amount'=>$amount,'remark'=>$remark, 'user_id'=>$id)))
+				$date =date('Y-m-d');
+				if ($this->Payment->save(array('amount'=>$amount,'generate_date'=>$date, 'user_id'=>$id)))
 				{
-					
-					
-					 $this->Session->setFlash('The Widthdraw amount transfer successfully', 'flash_success');
-					 $this->Widthdraw->updateAll(array('status'=>1),array('user_id'=>$id));
-					 
-					 
-					
+				 $this->Session->setFlash('The Widthdraw amount transfer successfully', 'flash_success');
+				 $this->Widthdraw->updateAll(array('status'=>1),array('user_id'=>$id));
 				}
 				else
 				{
 				 $this->Session->setFlash(__('The Widthdraw Request could not be sent. Please, try again.'));
 				}
+			 }
+			 else
+			{
+				 $this->Session->setFlash('The Widthdraw amount should  be Less  then or Equal to Available Vested Amount  . Please, try again', 'flash_success');
+				 $this->redirect(array('action'=>'widthdraw_request'));
 			}
 		 }
+		 $this->Payment->contain();
+		$payment = $this->Payment->find('all',array('conditions' => array('Payment.user_id'=>$id)));
+		$this->set('paymentList', $payment);
+		
+		 
 		}
-		 }
+ }
 		
            
      
@@ -1003,14 +1148,61 @@ public function fetch_commissionls()
 		$this->set('commissionList', $data);
 	}
 	
-	
-	
+	public function download_reports()
+	{
+	if ($this->request->is('post'))
+	{
+		$reportid= $this->request->data['fetch_reports']['report_type'];
+		$sdate= $this->request->data['fetch_reports']['sdate'];
+		$edate= $this->request->data['fetch_reports']['edate'];
 		
- 
+		
+		$URI = 'https://reportws.linksynergy.com/downloadreport.php?bdate='.$sdate.'&edate='.$edate.'&token=cd4f37dc86a07f7845f3d54a4c594f6fdd45a96355367de7348e3c77971aebd9&nid=1&reportid='.$reportid .'';
+		
+		
+		
+		$this->redirect($URI);
 	
 	
+	}
+	}
+	
+	public function account_setting()
+	{
+		
+			$this->User->contain();
+			$user = $this->User->find('first', array('conditions' => array('User.Role'=>1)));
+			$this->set('user', $user['User']);
+			if ($this->request->is('post')) {
+				if(!empty($this->request->data['User']['username1']) || !empty($this->request->data['User']['password1'])){
+					$this->User->id = $user['User']['id'];
+					if(!empty($this->request->data['User']['username1'])){
+						$this->User->saveField('username', $this->request->data['User']['username1']);
+					}
+					if(!empty($this->request->data['User']['password1'])){
+						$this->User->saveField('password', $this->request->data['User']['password1']);
+					}
+					$this->Session->setFlash('Username / Password updated', 'flash_success');
+					$this->redirect(array('action'=>'index'));
+				}
+			}
+		
+		
+	}
+	
+	
+	public function view_looks($userId = null){
+	
+		if(!empty($userId)){
+			$this->Look->contain();
+			$looks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $userId)));
+			$this->set('looks',$looks);
+			
+		}
+	}
+	
+	
+
+
 }
 
-
-
- 

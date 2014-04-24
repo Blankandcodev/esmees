@@ -23,46 +23,56 @@
 <div class="paginate">
 </div>
 
-
+<?php if(!empty($users)){ ?>
 <table class="dtable" cellspacing="0"> 
 	<thead> 
 		<tr> 
 			 
-			<th>
+			<th width="100px">
 			
 			<?php
 			echo $this->Paginator->sort('member_id','Member ID',array('escape' => false));
 		?>
 			
 			</th> 
-			<th>
+			<th width="150">
+			
 			<?php
-			echo $this->Paginator->sort('username','UserName/Email',array('escape' => false));
+			echo $this->Paginator->sort('nickname','User Aka',array('escape' => false));
 		?>
 			
 			</th> 
 			<th>
 			<?php
-			echo $this->Paginator->sort('name','First Name',array('escape' => false));
+			echo $this->Paginator->sort('username','Email Address',array('escape' => false));
 		?>
 			
 			</th> 
-			<th>
+			<th width="100px">
 			<?php
-			echo $this->Paginator->sort('last_name','Last Name',array('escape' => false));
+			echo $this->Paginator->sort('name','Full Name',array('escape' => false));
 		?>
 			
 			</th> 
-			<th>Date of Birth</th> 
+			
+		
+		
 			<th>
 			<?php
 			echo $this->Paginator->sort('city','City',array('escape' => false));
-		?>
+			?>
 			
 			</th>
+			
 			<th>
 			<?php
 			echo $this->Paginator->sort('state','State',array('escape' => false));
+		?>
+			
+			</th>
+			<th width="100px">
+			<?php
+			echo $this->Paginator->sort('zip','Zip Code',array('escape' => false));
 		?>
 			
 			</th>
@@ -72,14 +82,9 @@
 		?>
 			
 			</th>
-			<th>
 			
-			<?php
-			echo $this->Paginator->sort('created','Join Date',array('escape' => false));
-		?>
-			
-			</th>
-			<th>Actions</th> 
+			<th>Looks</th> 
+			<th>Delete</th> 
 		</tr> 
 	</thead>
 				
@@ -89,20 +94,35 @@
     <tr>
         
         <td><?php echo  $user['User']['member_id']; ?></td>
-        <td><?php echo  $user['User']['username']; ?></td>
-		<td><?php echo  $user['User']['name']; ?></td>
-	<td><?php echo  $user['User']['last_name']; ?></td>
+        <td><?php echo  $user['User']['nickname']; ?></td>
+		 <td><?php echo  $user['User']['username']; ?></td>
+		<td><?php echo  $user['User']['name']; ?> <?php echo  $user['User']['last_name']; ?></td>
+		
+		
 		<td><?php echo  $user['User']['city']; ?></td>
 		<td><?php echo  $user['User']['state']; ?></td>
 		<td><?php echo  $user['User']['zip']; ?></td>
 		<td>
-					   <?php echo 
-						$user['User']['status']; ?></td>
-		<td><?php echo  $user['User']['created']; ?></td>
-      
-        <td>
+			<?php
+			$status=$user['User']['status'];
+			if($status==0)
+			{
+				echo "<div style='color:red'>In Active</div>";
+			}
+			if($status==1)
+			{
+			  echo 	"<div style='color:green'>Active</div>";
+			}
+			?>
+		</td>
+		
+		<td>
+			<?php echo $this->Html->link('View', array('action' => 'view_looks', $user['User']['id']), array('class'=>'view') )?>
+		</td>
+        <td width="150px">
         
-
+		
+	
         <?php echo $this->Html->link('Delete', array('action' => 'delete', $user['User']['id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
 
 
@@ -112,6 +132,11 @@
     <?php endforeach; ?>
 
 </table>
+</div>
+	<?php }else{
+		echo '<div class="flash">No matching records found!</div>';
+	} ?>
+		</div>
 <div class="paginate">
 <?php	
 echo $this->Paginator->numbers(array(

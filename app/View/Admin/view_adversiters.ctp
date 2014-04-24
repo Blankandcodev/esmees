@@ -21,6 +21,7 @@
 <div class="paginate">
 </div>
 
+<?php if(!empty($advs)){ ?>
 <table class="dtable" cellspacing="0"> 
 
 
@@ -47,7 +48,7 @@
         <td><?php echo  $adv['Adv']['adv_id']; ?></td>
        
 		<td><?php echo  $adv['Adv']['adv_name']; ?></td>
-		<td><?php echo  $adv['Adv']['vested_period']; ?></td>
+		<td><?php echo  $adv['Adv']['vested_period']; ?> day(s)</td>
 		<td><?php echo  $adv['Adv']['url']; ?></td>
         
         <td align='right'>
@@ -59,6 +60,11 @@
     <?php endforeach; ?>
 
 </table>
+</div>
+	<?php }else{
+		echo '<div class="flash">No matching records found!</div>';
+	} ?>
+		</div>
 <div class="paginate">
 <?php	
 echo $this->Paginator->numbers(array(

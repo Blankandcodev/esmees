@@ -21,6 +21,10 @@
 			$product_id = $looks['Product']['id'];
 
 			if(!empty($user_id)){
+				$this->Look->bindModel(array('hasMany' => array('Like' => array('className' => 'Like',
+					'counterCache' => true,
+					'foreignKey' => 'product_id',
+					'conditions'    => array('Like.user_id' => $this->user['id'])))), false);
 				$userlooks = $this->Look->find('all', array('conditions' => array('Look.user_id' => $user_id, 'Look.cover'=>1 ), 'limit'=>10));
 				$this->set('memberLooks',$userlooks);
 				
@@ -104,8 +108,10 @@
 		}
 	}
 	public function like($objId = null){
-		
-		if($this->user){		
+		$this->Look->contain();
+		$look = $this->Look->find('first', array('conditions'=>array('Look.Id'=>$objId)));
+		if($this->user && !empty($look)){
+			
 			if($objId != null){
 				$checkExist = $this->Like->find('count', array('conditions'=>array('Like.product_id'=>$objId, 'Like.user_id'=>$this->user['id'])));			
 				if(!$checkExist){
@@ -115,7 +121,7 @@
 					}
 					$this->User->updateAll(
 						array('User.likes' => 'User.likes + 1'),
-						array('User.id' => $this->user['id'])
+						array('User.id' => $look['Look']['user_id'])
 					);
 					$this->Look->updateAll(
 						array('Look.likes' => 'Look.likes + 1'),
@@ -134,17 +140,21 @@
 	}
 	
 	public function ullike($likeId = null){
+		
 		if($this->user){
 			if($likeId != null){
 				$like = $this->Like->find('first', array('conditions'=>array('Like.id'=>$likeId)));
 				if(!empty($like)){
+					$this->Look->contain();
+					$look = $this->Look->find('first', array('conditions'=>array('Look.Id'=>$like['Like']['product_id'])));
+					
 					if (!$this->Like->delete($likeId)){
 						$this->Session->setFlash('Oops an unexpected error occurred, Please try again.', 'flash_error');
 						$this->redirect($this->referer());
 					}
 					$this->User->updateAll(
 						array('User.likes' => 'User.likes - 1'),
-						array('User.id' => $this->user['id'])
+						array('User.id' => $look['Look']['user_id'])
 					);
 					$this->Look->updateAll(
 						array('Look.likes' => 'Look.likes - 1'),

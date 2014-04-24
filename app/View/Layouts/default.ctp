@@ -26,6 +26,8 @@ $cakeDescription = __d('cake_dev', 'Esmees');
 		<?php echo $cakeDescription ?>:
 		<?php echo $title_for_layout; ?>
 	</title>
+<link href='http://fonts.googleapis.com/css?family=Enriqueta' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:300,300italic' rel='stylesheet' type='text/css'>
 	<?php
 		echo $this->Html->meta('icon');
 		echo $this->Html->css('style');
@@ -55,7 +57,17 @@ $cakeDescription = __d('cake_dev', 'Esmees');
                 <div class="upr_sec">
                    <div class="left_sec">
                       <div class="logo"><a href="<?php echo $this->webroot; ?>"><img src="<?php echo $this->webroot; ?>img/logo.png" alt="logo" /></a></div>
-                      <div class="image1"><a href="#"><img src="<?php echo $this->webroot; ?>img/img1.png" /></a></div>
+                      <div class="image1">
+					  
+					  <?php
+								if(!empty($topbnr)){ ?>
+	
+						<a href="#"><?php echo $this->Html->image('Banners/'.$topbnr['Banner']['image']);?></a>
+						<?php } ?>
+					  
+					  
+					  
+					  </div>
                    
                    </div>
                    <div class="rgt_sec">
@@ -90,8 +102,12 @@ $cakeDescription = __d('cake_dev', 'Esmees');
 						 
 						</li>
 						
-                     <li><a href="#">OFFERS</a></li>
-                     <li><a href="#">HELP</a></li>
+                     <li>
+					 <a href="<?php echo $this->Html->url(array('controller'=>'Pages', 'action'=>'offers'),true) ?>">OFFERS</a>
+					 </li>
+                     <li>
+					  <a href="<?php echo $this->Html->url(array('controller'=>'Pages', 'action'=>'help'),true) ?>">HELP</a>
+					 </li>
                    </ul>
                 </div>
             
@@ -105,9 +121,21 @@ $cakeDescription = __d('cake_dev', 'Esmees');
                <div class="fotr_lft">All Rights Recieved. Copyright @ Site Name Here 2012.</div>
                <div class="fotr_rgt">
                   <ul>
-                    <li><a href="#">Terms & Condition</a></li>
-                    <li>.<a href="#">Privacy Policy</a></li>
-                    <li>.<a href="#">Contact Us</a></li>
+                    <li>
+					 <a href="<?php echo $this->Html->url(array('controller'=>'Pages', 'action'=>'terms_condition'),true) ?>">Terms & Condition</a>
+					
+					</li>
+                    <li>
+					.<a href="<?php echo $this->Html->url(array('controller'=>'Pages', 'action'=>'privacy_policy'),true) ?>">Privacy Policy</a>
+					
+					
+					
+					</li>
+					
+					
+                    <li>
+					.<a href="<?php echo $this->Html->url(array('controller'=>'Pages', 'action'=>'contactus'),true) ?>">Contact Us</a>
+					</li>
                   </ul>
                
                </div>

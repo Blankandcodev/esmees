@@ -143,6 +143,7 @@ input[type=checkbox]{
 	border:1px solid #999;
 	border-radius:3px;
 	box-shadow: 1px 1px 2px #bbb inset;
+	float:left;
 }
 input[type=text],
 input[type=email],
@@ -256,6 +257,11 @@ header .logo img{
 	float:left;
 	display:block;
 	position:relative;
+	border-right: 5px solid #e5e5e5;
+}
+
+#nav li ul li{
+	border-right:0;
 	border-left: 5px solid #e5e5e5;
 }
 #nav li a{
@@ -280,10 +286,12 @@ header .logo img{
   display:none;
   width: auto;
 }
-#nav li:hover ul {display:block;}
+#nav li ul ul{top:0; left:100%;}
+#nav li:hover > ul {display:block;}
 #nav li ul li {
   float: none;
   white-space: nowrap;
+  min-width:150px;
 }
 #nav li ul li a {
   padding: 10px 30px;

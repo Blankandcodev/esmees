@@ -2,11 +2,15 @@
 <thead>
 <tr>
 	<th width="100">Title</th>
-	<th>&nbsp;</th>
-	<th width="80">Price</th>
+	<th>Product Name/Description</th>
+	<th >Sku</th>
+	<th >Price</th>
+	<th>Sale Price</th>
 	<th width="100">Action</th>
 </tr>
 </thead>
+
+
 <?php foreach($products['product'] as $_product){
 	$imageUrl = (!empty($_product['image-url'])) ? $_product['image-url'] : '';
 	$name = (!empty($_product['name'])) ? $_product['name'] : '';
@@ -29,8 +33,31 @@
 	$price = (!empty($_product['price'])) ? $_product['price'] : ''; ?>
 	<tr>
 		<td><img width="100" src="<?php echo $imageUrl; ?>"  /></td>
-		<td><?php echo $name ;?></td>
-		<td><?php echo $currency; ?> <?php echo $price ;?></td>
+		
+		<td><h3><?php echo $name ;?></h3><p><?php echo $description; ?></p></td>
+		<td><?php echo $sku ;?></td>
+		
+		<td> <?php
+		
+		 $amount= $this->Number->format($price, array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+			 echo $amount;
+		
+		
+		?></td>
+		<td> <?php 
+		
+			if(!empty($saleprice))
+			{
+			 $saleamount= $this->Number->format($saleprice, array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+			 echo $saleamount;
+			 }
+			 else
+			 {
+				echo "$0.00";
+			 }
+		
+		
+		;?></td>
 		<td>
 			<?php echo $this->Form->create('add_product', array('url'=>array('controller'=>'admin', 'action'=>'add_product'), 'class'=>'addProduct'));?>
 			<?php echo $this->Form->input('name', array('type'=>'hidden', 'value'=> $name )); ?>

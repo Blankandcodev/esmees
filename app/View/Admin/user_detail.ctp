@@ -1,11 +1,12 @@
 <?php
+	$vesting_amount=0;
 	if (!empty($vestedCommission))
 					{
 	
 		 foreach ($vestedCommission as $key => $val){
 		
-		  $vesting_amount =$val['total_vested'];
-		  $total_vested= $this->Number->format($val['total_vested'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+		  $vesting_amount =$val['total'];
+		  $total_vested= $this->Number->format($val['total'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
 	}}
 	
 	if (!empty($totalCommission))
@@ -24,11 +25,13 @@
 	}
 	}
 	
-	$bal_comm = $vesting_amount - $paid_commission;
 	
-	$hidden=$bal_comm ;
-	$aval_commission=$this->Number->format($bal_comm, array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
 	
+		$bal_comm = $vesting_amount - $paid_commission;
+		
+		
+		$bal_commission=$this->Number->format($bal_comm, array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+
 	
 	
 ?>
@@ -48,13 +51,18 @@
 	<tr>
 			<td>
 				<div>
+	<?php
+			$amount = (!empty($widthdraw['widthdraw_request_amount'])) ? $widthdraw['widthdraw_request_amount'] : '';
+			
+			
+	?>
 
 	<?php echo $this->Form->create('fetch_requset'); ?>
-	<?php   echo $this->Form->input('vamount', array('value'=>'0', 'type'=>'hidden','value'=>
-	$hidden));?>
-	<?php echo $this->Form->input('amount', array('label'=>'WidthDraw Amount($)', 'type'=>'number', 'class'=>'required'));?>
+	<?php echo $this->Form->input('vamount', array('label'=>'Available Vested Amount:($)', 'type'=>'text','value'=>$bal_comm, 'class'=>'required', 'width'=>'100', 'readonly'));?>
 	
-	<?php echo $this->Form->input('remark', array('label'=>'Remark', 'type'=>'textarea', 'class'=>'required'));?>
+	<?php echo $this->Form->input('amount', array('label'=>'WidthDraw Request Amount($)', 'type'=>'number','value'=>$amount, 'class'=>'required',),array('width'=>'100'));?>
+	
+
 	
 	<?php echo $this->Form->Submit('WidthDraw Commission',array('class'=>'button primary left')); ?>
 	
@@ -64,7 +72,7 @@
 	</div>
 	
 			</td>
-			<td>
+			<td >
 				<div class="account-info">
 					<?php if(isset($user) && $user){ ?>
 					
@@ -73,7 +81,15 @@
 					
 						<li><span>Total Commission Earned:  </span><?php echo  $total_commission; ?> </li>
 						<li><span>Total Vested Amount:  </span><?php echo $total_vested; ?> </li>
-						<li><span>Available Vested Amount:  </span><?php echo  $aval_commission; ?></li>
+						<li><span>Available Vested Amount:  </span><?php 
+						if(!empty($bal_commission))
+							echo $bal_commission; 
+						else
+						{
+							echo "<span style='color:red'>No Available</span>";
+						}
+						
+						?></li>
 						
 					
 					</ul>
@@ -114,7 +130,58 @@
 	</table>
 	<div>
 	
+	
+<table class="dtable" cellspacing="0"> 
+	<thead> 
+		<tr> 
+			 
+			<th>
+				
+				Trans ID
+			</th> 
+			<th>
+					Date
+			
+			</th> 
+				
+			<th>
+				Amount
+			</th>
+			<th>	
+				Remark
+			</th>
+			
+			
+			
+			
+			<th>Actions</th> 
+		</tr> 
+	</thead>
+				
 
+
+    <?php foreach ($paymentList as $pay): ?>
+    <tr>
+        
+        <td><?php echo  $pay['Payment']['id']; ?></td>
+        <td><?php echo  $pay['Payment']['generate_date']; ?></td>
+		<td>$<?php echo  $pay['Payment']['amount']; ?></td>
+		<td><?php echo  $pay['Payment']['remarks']; ?></td>
+	
+      
+        <td>
+        
+
+        <?php echo $this->Html->link('Delete', array('action' => 'delete_payment',  $pay['Payment']['id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
+
+
+        </td>
+	
+    </tr>
+    <?php endforeach; ?>
+
+</table>
+	
 	
   
 	</div>

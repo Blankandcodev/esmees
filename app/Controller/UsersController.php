@@ -32,8 +32,12 @@
 		$flowCount = $this->Follower->find('count', array('conditions' => array('Follower.follow_id' => $this->user['id'])));		
 		$this->set('flowCounts',$flowCount);
 		
-		$total_commision = $this->Commission->find('first', array('conditions' => array('Commission.user_id' => $this->user['id']),'fields' => array('sum(Commission.commissions) as total' )));
-		$this->set('totalCommission',$total_commision);
+		
+		$total_vested = $this->Commission->find('first', array('conditions' => array(
+			'Commission.user_id' => $this->user['id'],
+			'Commission.vesting_date <=' => date('Y-m-d')
+		),'fields' => array('sum(Commission.user_commission) as total_vested')));
+		$this->set('vestedCommission',$total_vested);
 		
 		
 	}
@@ -125,10 +129,10 @@
 					$this->redirect($this->referer());
 				}
 			}
-			$this->Session->setFlash('You Liked this Look.', 'flash_success');
+			$this->Session->setFlash('You followed this User.', 'flash_success');
 			$this->redirect($this->referer());
 		}else{
-			$this->Session->setFlash('Please select a look to like.', 'flash_error');
+			$this->Session->setFlash('Please select a User to follow.', 'flash_error');
 			$this->redirect($this->referer());
 		}
 		
@@ -191,11 +195,20 @@
 	
 	public function add_wishlist($objId = null, $type = 0){
 		
+		
+		
 		if($objId){
+			$checkExist = $this->Wishlist->find('count', array('conditions'=>array('Wishlist.product_id'=>$objId, 'Wishlist.user_id'=>  $this->user['id']),));
+			if(!$checkExist){
 			if ($this->Wishlist->save(array('product_id'=>$objId, 'user_id'=>$this->user['id'], 'type'=>$type))){
 				$this->Session->setFlash('The Item has added to your Wishlist.', 'flash_success');
 			}else{
-				$this->Session->setFlash('The Item has could not be added to your Wishlist.', 'flash_error');
+				
+			}
+			}
+			else
+			{
+				$this->Session->setFlash('The Item has all ready added to your Wishlist.', 'flash_error');
 			}
 		}
 		$this->redirect($this->referer());
@@ -226,16 +239,21 @@
 	
 	public function edit_lookimage($id)
     {
+	
 		$this->Look->id = $id;
         if (empty($this->data))
         {
             $this->data = $this->Look->read();
         }
+		$this->Look->contain();
 		$portfolio = $this->Look->find('first', array('conditions' => array('Look.id' => $id)));
+		
         if ($this->request->is('post') || $this->request->is('put')) 
 		{
 			
 			$name= $this->request->data['Look']['caption_name'];
+			$cover= $this->request->data['Look']['cover'];
+			
 				
 			  if (empty($this->data['Look']['image']['name'])) {
 
@@ -246,11 +264,21 @@
                     $image_path = $this->Image->upload_image_and_thumbnail($this->data['Look']['image'], "Looks");
                 }
 				
-				if ($this->Look->save(array('caption_name'=>$name,'image'=>$image_path, 'id'=>$id)))
+				 $this->Look->contain();
+				$checkCover = $this->Look->find('first', array('conditions' => array(
+							'Look.cover'=>1,
+							'Look.order_id'=>$portfolio['Look']['order_id']
+						), 'fields'=>'Look.id'));						
+				
+				if ($this->Look->save(array('caption_name'=>$name,'image'=>$image_path, 'cover'=>$cover, 'id'=>$id)))
 				{
 					$this->Session->setFlash('The Looks Image has saved .', 'flash_success');
-					$this->redirect(array('controller'=>'Users', 'action' => 'portfolio'));
 				}
+				if($cover > 0 && !empty($checkCover)){
+					$this->Look->id = $checkCover['Look']['id'];
+					$this->Look->saveField('cover', 0);
+				}
+					$this->redirect(array('controller'=>'Users', 'action' => 'portfolio'));
         }
 		
 		$this->data = $portfolio;
@@ -295,21 +323,21 @@
 							'Look.cover'=>1,
 							'Look.order_id'=>$this->request->data['lookupload']['order_id']
 						), 'fields'=>'Look.id'));						
-						if($checkCover){
-							if($this->request->data['lookupload']['cover'] > 0){
-								$this->Look->id = $checkCover['Look']['id'];
-								$this->Look->saveField('cover', 0);
-								echo "conflict resolved";
-							}
-						}else{
+						if(!$checkCover){
 							$this->request->data['lookupload']['cover'] = 1;
-								echo "no-conflict";
 						}
 						if ($this->Look->save($this->request->data['lookupload'])){
 						
 							$this->Session->setFlash('The Looks Image has saved .', 'flash_success');
 						}else{
 							$this->Session->setFlash('Look could not saved .', 'flash_error');
+						}
+						if($checkCover){
+							if($this->request->data['lookupload']['cover'] > 0){
+								$this->Look->id = $checkCover['Look']['id'];
+								$this->Look->saveField('cover', 0);
+								
+							}
 						}
 					}
 					$this->redirect(array('controller'=>'Users', 'action' => 'portfolio'));
@@ -413,7 +441,7 @@
             $this->Email->subject = 'Welcome to Esmees.com';
             $this->Email->from = 'Esmees <Subodh@blankandco.com>';
 			$this->set('user', $user);
-			$this->Email->template = 'resendmail_user';
+			$this->Email->template = 'resend_user';
             $this->Email->sendAs = 'html';
 			if ($this->Email->send()) {
 				return true;
@@ -428,25 +456,33 @@
 		if ($this->request->is('post')){
 			$username=$this->request->data['User']['username'];
 			$user = $this->User->find('first', array('conditions'=>array('User.username'=>$username)));
-			$token=$user['User']['token'];	
-			$this->request->data['User']['name'] = $user['User']['name'];
-			$this->request->data['User']['username'] = $user['User']['username'];
-			$this->request->data['User']['token'] = $user['User']['token'];
-			$this->request->data['User']['password'] = $user['User']['password'];
-			if ($user['User']['status']==0){
-			
-				$email = $this->sendNewUserMail(array_merge($this->request->data['User'],array('username' => $username)));
-				$this->Session->setFlash(__('Your verification code has been generated and Emailed to ' . $username.''), 'flash_success');
-				$this->redirect(array('controller'=>'Pages','action' =>'index'));
-			
+			if(!empty($user)){
+				$token=$user['User']['token'];	
+				$this->request->data['User']['name'] = $user['User']['name'];
+				$this->request->data['User']['username'] = $user['User']['username'];
+				$this->request->data['User']['token'] = $user['User']['token'];
+				$this->request->data['User']['password'] = $user['User']['password'];
+				
+				
+				
+				if ($user['User']['status']==0){
+				
+					$email = $this->sendNewUserMail(array_merge($this->request->data['User'],array('username' => $username)));
+					$this->Session->setFlash(__('Your verification code has been generated and Emailed to ' . $username.''), 'flash_success');
+					$this->redirect(array('controller'=>'Pages','action' =>'index'));
+				
+				}
+				if ($user['User']['status']==1)
+				{			
+						$this->Session->setFlash('Your account is already verified, Please login');
+						$this->redirect(array('controller'=>'Pages', 'action'=>'index'));
+				
+				}
+			}else{
+				$this->Session->setFlash('Sorry! we could not find your email. Please register.');
+				$this->redirect(array('controller'=>'Users', 'action'=>'register'));
 			}
-			if ($user['User']['status']==1)
-			{			
-					$this->Session->setFlash('Your account is already verified, Please login');
-					$this->redirect(array('controller'=>'Pages', 'action'=>'index'));
-			
-			}
-	}
+		}
 		
 	}
 
@@ -600,16 +636,18 @@ public function password()
 		 else
 		 {
 			$amount= $this->request->data['fetch_request']['amount'];
-			$vamount= $this->request->data['fetch_request']['vamount'];
-			if($vamount  <= $amount )
+			$vamount= round($this->request->data['fetch_request']['vamount'], 2);
+			
+			if($amount < 0 || $amount > $vamount)
 			{
-				$this->Session->setFlash('The Widthdraw Request should  be Less  then or Equal to Available Vested Amount  . Please, try again', 'flash_success');
-			
-			
+				$this->Session->setFlash('The Widthdraw Request should  be Less  then or Equal to Available Vested Amount, and not a negative value', 'flash_success');
 			}
+			
+			
 		 else
 		 {
-			if ($this->Widthdraw->save(array('widthdraw_request_amount'=>$amount ,'user_id'=>$this->user['id'])))
+			$date =date('Y-m-d');
+	if ($this->Widthdraw->save(array('widthdraw_request_amount'=>$amount,'request_date'=>$date, 'user_id'=>$this->user['id'])))
 				{
 					$this->Session->setFlash('The Widthdraw Request  has sent .', 'flash_success');
 					 $this->redirect(array('controller' => 'Users','action' => 'index'));
@@ -755,14 +793,32 @@ public function password()
 	
 	public function bank_details()
 	{
+		$this->User->contain();
+		$userinfo = $this->User->find('first', array('conditions'=>array('User.id'=>$this->user['id'])));
+		$this->set('userInfo',$userinfo);
+		
+		
 		if ($this->request->is('post'))
 		 {
 			$userid = $this->user['id'];
+			$nickname= $this->request->data['bank']['nickname'];
+			$fname= $this->request->data['bank']['name'];
+			$mname=$this->request->data['bank']['middle_name'];
+			$lname=$this->request->data['bank']['last_name'];
+			$email=$this->request->data['bank']['username'];
+			$address=$this->request->data['bank']['address'];
+			$address1=$this->request->data['bank']['addres1'];
+			$city=$this->request->data['bank']['city'];
+			$state=$this->request->data['bank']['state'];
+			$zip=$this->request->data['bank']['zip'];
+			
 			$bankname= $this->request->data['bank']['bankname'];
 			$acnumber= $this->request->data['bank']['acnumber'];
 			$ssnumber=$this->request->data['bank']['ssnumber'];
-			$brtnumber=$this->request->data['bank']['brtnumber'];
-			if ($this->User->save(array('bankname'=>$bankname, 'bankaccount_no'=>$acnumber,'ss_number'=>$ssnumber,'bankaccount_no'=>$brtnumber ,'id'=>$userid)))
+			$brtnumber=$this->request->data['bank']['br_number'];
+			echo $brtnumber;
+			
+			if ($this->User->save(array('nickname'=>$nickname,'name'=>$fname,'middle_name'=>$mname,'last_name'=>$lname,'username'=>$email,'address'=>$address,'address1'=>$address1,'city'=>$city,'state'=>$state,'zip'=>$zip,'bankname'=>$bankname, 'bankaccount_no'=>$acnumber,'ss_number'=>$ssnumber,'bankaccount_no'=>$acnumber ,'bankrouting_no'=>$brtnumber,'id'=>$userid)))
 				{
 					$this->Session->setFlash('The bank details saved .', 'flash_success');
 					 $this->redirect(array('controller' => 'Users','action' => 'commission'));
@@ -780,7 +836,10 @@ public function password()
 		
 	}
 
-	
+	public function download_reports()
+	{
+		echo "---------------";
+	}
 	    
 	
 	

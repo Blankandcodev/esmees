@@ -12,7 +12,7 @@
 	?>
 		<div class="portfolio-row cf">
 			<div class="product-info pbox">
-				<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_detail', $_product['id'])); ?>"><img src="<?php echo $_product['image_url']; ?>"></a>
+				<a class="img" href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_detail', $_product['id'])); ?>"><img src="<?php echo $_product['image_url']; ?>"></a>
 				<div class="sinfo">
 					<?php echo $_product['name']; ?>
 				</div>

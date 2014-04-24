@@ -2,7 +2,7 @@
 	<div class="title">
 		<div class="colset col2 cf">
 			<div class="left">
-				<h1>#NewOnThe<span>Web</span></h1>
+				<h1>#HotOffThe<span>Web</span></h1>
 			</div>
 			<div class="main">
 				<div class="srch_div">

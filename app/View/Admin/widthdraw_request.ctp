@@ -1,7 +1,7 @@
 
 <div class="title-row">
 	
-	<h1 class="title">Widthdraw Request List</h1>
+	<h1 class="title">Withdraw Request List</h1>
 </div>
 
 <div class="addproduct">
@@ -81,15 +81,16 @@
 		
 		<td> 
 		<?php 
-			$status=$user['User']['status'];
+			$status=$user['Widthdraw']['status'];
 			if($status==0)
 			{
 				echo "Unpaid";
 			}
-			else 
+			if($status==1)
 			{
-				echo "Unpaid";
+				echo "Paid";
 			}
+			
 
 		?></td>
 		<td><?php echo  $user['Widthdraw']['request_date']; ?></td>
@@ -97,10 +98,10 @@
 	
       
         <td align='right'>
-        <?php echo $this->Html->link('Widthdraw', array('action'=>'user_detail',  $user['User']['id']), array('class'=>'gallery-btn'));?>  
+        <?php echo $this->Html->link('Withdraw', array('action'=>'user_detail',  $user['User']['id'],$user['Widthdraw']['id']), array('class'=>'gallery-btn'));?>  
 		
 
-        <?php echo $this->Html->link('Delete', array('action' => 'delete', $user['User']['id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
+        <?php echo $this->Html->link('Delete', array('action' => 'delete_widthdraw_request', $user['Widthdraw']['id']), array('class'=>'delete-btn'), 'Are you sure?' )?>
 
 
         </td>

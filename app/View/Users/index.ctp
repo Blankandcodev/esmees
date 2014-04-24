@@ -1,8 +1,12 @@
  <?php
- foreach ($totalCommission as $key => $val){
-		  $total_commission= $this->Number->format($val['total'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
-		 
-	}
+if (!empty($vestedCommission))
+					{
+	
+		 foreach ($vestedCommission as $key => $val){
+		
+		  $vesting_amount =$val['total_vested'];
+		  $total_vested= $this->Number->format($val['total_vested'], array('places' => 2,'escape' => false, 'decimals' => '.','thousands' => ','));
+	}}
 ?>
 
 <div class="page-container">
@@ -49,9 +53,10 @@
 					
 						<li>
 							<?php echo $this->Html->link('ChangePassword', array('controller'=>'Users', 'action'=>'password',$user['id']), array('class'=>'right'));?> 
-							<span>Email Address :</span> <?php echo  $user['username']; ?>
+							<span>Aka Name :</span> <?php echo  $user['nickname']; ?>
 						</li>
-						<li><span>Name:  </span><?php echo  $user['name']; ?> </li>
+						<li><span>Email address:  </span><?php echo $user['username']; ?> </li>
+						<li><span>Name:  </span><?php echo  $user['name']; ?>  <?php echo  $user['last_name']; ?> </li>
 						<li><span>City:  </span><?php echo $user['city']; ?> </li>
 						<li><span>State:  </span><?php echo  $user['state']; ?></li>
 						<li><span>Zip Code: </span> <?php echo  $user['zip']; ?></li>
@@ -69,7 +74,7 @@
 						<span>Likes :</span> <span class="num"><?php echo $user['likes'] ?></span>
 					</div>
 					<div class="pop-box">
-						<span>Commission :</span> <span class="num"><?php echo $total_commission ;?></span>
+						<span>Commission :</span> <span class="num"><?php echo $total_vested ;?></span>
 					</div>
 				</div>
 			</div>
@@ -78,7 +83,7 @@
 	</div>
 		<div class="look-listing">
 			<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'looks', $user['id'])); ?>" class="title-btn right">View All</a>
-			<h1 class="sec-title bordered"><?php echo $user['name']; ?>'s Looks</h1>
+			<h1 class="sec-title bordered"><?php echo $user['nickname']; ?>'s Looks</h1>
 	<?php if(!empty($userLooks)){ ?>
 			<div class="listing cf">
 				<ul class="item-list cf">
@@ -90,10 +95,10 @@
 							<div class="info">
 								<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '...','exact' => 'false')); ?></p>
 								
-								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['id']),true) ?>" class="like-btn right small"><?php echo count($mlook['Like']) ?></a>
+								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['Id']),true) ?>" class="like-btn right small"><?php echo $mlook['Look']['likes'] ?></a>
 								
 								<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'profile', $mlook['Look']['user_id']),true) ?>" class="user-name">
-									<?php echo $this->Text->truncate($mlook['User']['name'],20,	array('ellipsis' => '...','exact' => 'false')); ?>
+									<?php echo $this->Text->truncate($mlook['User']['nickname'],50,	array('ellipsis' => '...','exact' => 'false')); ?>
 								</a>
 							</div>
 						</li>

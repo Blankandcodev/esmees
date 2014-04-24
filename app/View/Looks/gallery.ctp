@@ -5,13 +5,7 @@
 				<h1>#TREND<span>Setters</span></h1>
 			</div>
 			<div class="main">
-				<div class="srch_div">
-					<?PHP echo $this->Form->Create('Search', array( 'type'=>'get' ) );
-					echo $this->Form->input('keyword', array('placeholder'=>'@User or #caption', 'type'=>'text'));
-					echo $this->Form->submit('Serach');
-					echo $this->Form->end();
-					?>
-				</div>
+				
 				
 				<div class="sorting right">
 					<ul class="custdrop">
@@ -20,9 +14,17 @@
 								<li><?php echo $this->Paginator->sort('caption_name', 'Look Caption'); ?></li>
 								<li><?php echo $this->Paginator->sort('likes', 'Popularity'); ?></li>
 								<li><?php echo $this->Paginator->sort('User.name', 'User Name'); ?></li>
+								<li><?php echo $this->Paginator->sort('User.nickname', 'User Aka'); ?></li>
 							</ul>
 						</li>
 					</ul>
+				</div>
+				<div class="srch_div">
+					<?PHP echo $this->Form->Create('Search', array( 'type'=>'get' ) );
+					echo $this->Form->input('keyword', array('placeholder'=>'@User or #caption', 'type'=>'text'));
+					echo $this->Form->submit('Serach');
+					echo $this->Form->end();
+					?>
 				</div>
 			</div>
 		</div>
@@ -63,10 +65,10 @@
 									<div class="info">
 										<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '...','exact' => 'false')); ?></p>
 										
-										<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['id']),true) ?>" class="like-btn right small"><?php echo count($mlook['Like']) ?></a>
+										<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['Id']),true) ?>" class="like-btn right small"><?php echo $mlook['Look']['likes'] ?></a>
 										
 										<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'profile', $mlook['Look']['user_id']),true) ?>" class="user-name">
-											<?php echo $this->Text->truncate($mlook['User']['name'],20,	array('ellipsis' => '...','exact' => 'false')); ?>
+											<?php echo $this->Text->truncate($mlook['User']['nickname'],50,	array('ellipsis' => '...','exact' => 'false')); ?>
 										</a>
 									</div>
 								</li>

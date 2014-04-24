@@ -29,7 +29,7 @@ App::uses('AppController', 'Controller');
  * @link http://book.cakephp.org/2.0/en/controllers/pages-controller.html
  */
 class PagesController extends AppController {
-	public $uses = array('Product','Look');
+	public $uses = array('Product','Look','Banner','Page');
 	
 	public function beforeFilter(){
         parent::beforeFilter();
@@ -40,49 +40,44 @@ class PagesController extends AppController {
 		
 		$this->Look->contain('User', 'Product');
 		$looks = $this->Look->find('all', array('conditions'=>array('Look.cover'=>1), 'limit'=>10));
+	
+		
 		$this->set('products', $products);
 		$this->set('looks', $looks);
+		
+		$banners=$this->Banner->find('all', array('conditions'=>array('Banner.pages'=>'index','Banner.status'=>1),'limit'=>2,array('order' => array('Banner.created' => 'DESC'))));
+		$this->set('banners', $banners);
+		
+		$footerbanners=$this->Banner->find('first',  array('conditions'=>array('Banner.pages'=>'footer','Banner.status'=>1),'limit'=>1,array('order' => array('Banner.created' => 'DESC'))));
+		$this->set('footers', $footerbanners);
+		
 	}
 	
-	public function home()
-	{
-	
-	}
-	
-	
-public function search()
-{
-	
-	
-}
-  
 
-	
-	
 	public function display() {
-	
-     //   $this->set('products', $this->Product->find('all'));
-		
-		
        	$path = func_get_args();
-
 		$count = count($path);
 		if (!$count) {
 			return $this->redirect('/');
 		}
-		$page = $subpage = $title_for_layout = null;
+		$page = $title_for_layout = null;
 
-		if (!empty($path[0])) {
+		if (!empty($path[0]) && $path[0] != 'index'){
 			$page = $path[0];
+		}else{
+			return $this->redirect('/');
 		}
-		if (!empty($path[1])) {
-			$subpage = $path[1];
+		if ($page){
+			$content = $this->Page->find('first', array('conditions'=>array('Page.slug'=>$page)));
+			if(!empty($content)){
+				$title_for_layout = Inflector::humanize($page);
+				$this->set('content', $content);
+			}else{
+				throw new NotFoundException();
+			}
 		}
-		if (!empty($path[$count - 1])) {
-			$title_for_layout = Inflector::humanize($path[$count - 1]);
-		}
-		$this->set(compact('page', 'subpage', 'title_for_layout'));
-
+		$this->set(compact('page', 'title_for_layout'));
+/*
 		try {
 			$this->render(implode('/', $path));
 		} catch (MissingViewException $e) {
@@ -90,6 +85,7 @@ public function search()
 				throw $e;
 			}
 			throw new NotFoundException();
-		}
+		}*/
 	}
+
 }

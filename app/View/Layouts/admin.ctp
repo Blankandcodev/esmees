@@ -49,55 +49,103 @@ $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 </div>
 <nav id="nav">
 	<ul class="menu">
-		<li><?php echo $this->Html->link('Merchants', array('controller' => 'Admin', 'action' => 'view_adversiters')); ?>
+		<li><a href="#">Catalog</a>
 			<ul>
-				<li class=""><?php echo $this->Html->link('View Marchants', array('controller' => 'Admin', 'action' => 'view_adversiters')); ?></li>
-				<li class=""><?php echo $this->Html->link('Add Marchants', array('controller' => 'Admin', 'action' => 'add_adversiters')); ?></li>
+				<li><?php echo $this->Html->link('Merchants', array('controller' => 'Admin', 'action' => 'view_adversiters')); ?>
+					<ul>
+						<li class=""><?php echo $this->Html->link('View Marchants', array('controller' => 'Admin', 'action' => 'view_adversiters')); ?></li>
+						<li class=""><?php echo $this->Html->link('Add Marchants', array('controller' => 'Admin', 'action' => 'add_adversiters')); ?></li>
+					</ul>
+				</li>
+				<li><?php echo $this->Html->link('Categories', array('controller' => 'Admin', 'action' => 'view_category')); ?>
+					<ul>
+						<li class=""><?php echo $this->Html->link('View Category', array('controller' => 'Admin', 'action' => 'view_category')); ?></li>
+						<li class=""><?php echo $this->Html->link('Add Category', array('controller' => 'Admin', 'action' => 'add_category')); ?></li>
+					</ul>
+				</li>
+				<li><?php echo $this->Html->link('Products', array('controller' => 'Admin', 'action' => 'view_products')); ?>
+					<ul>
+						<li class=""><?php echo $this->Html->link('View Products', array('controller' => 'Admin', 'action' => 'view_products')); ?></li>
+						<li class=""><?php echo $this->Html->link('Add Products', array('controller' => 'Admin', 'action' => 'add_products')); ?></li>
+					</ul>
+				</li>
 			</ul>
 		</li>
-		<li><?php echo $this->Html->link('Categories', array('controller' => 'Admin', 'action' => 'view_category')); ?>
+		<li>
+			<a href="#">CMS</a>
 			<ul>
-				<li class=""><?php echo $this->Html->link('View Category', array('controller' => 'Admin', 'action' => 'view_category')); ?></li>
-				<li class=""><?php echo $this->Html->link('Add Category', array('controller' => 'Admin', 'action' => 'add_category')); ?></li>
+				<li><?php echo $this->Html->link('Pages', array('controller' => 'Admin', 'action' => 'pages')); ?>
+					<ul>
+						<li class=""><?php echo $this->Html->link('View Pages', array('controller' => 'Admin', 'action' => 'pages')); ?></li>
+						<li class=""><?php echo $this->Html->link('Add Page', array('controller' => 'Admin', 'action' => 'add_page')); ?></li>
+					</ul>
+				</li>
+				<li><?php echo $this->Html->link('Banners', array('controller' => 'Admin', 'action' => 'banners')); ?>
+					<ul>
+						<li class=""><?php echo $this->Html->link('All Banners', array('controller' => 'Admin', 'action' => 'banners')); ?></li>
+						<li class=""><?php echo $this->Html->link('Add Banner', array('controller' => 'Admin', 'action' => 'add_banners')); ?></li>
+					</ul>
+				</li>
 			</ul>
 		</li>
-		<li><?php echo $this->Html->link('Products', array('controller' => 'Admin', 'action' => 'view_products')); ?>
-			<ul>
-				<li class=""><?php echo $this->Html->link('View Products', array('controller' => 'Admin', 'action' => 'view_products')); ?></li>
-				<li class=""><?php echo $this->Html->link('Add Products', array('controller' => 'Admin', 'action' => 'add_products')); ?></li>
-			</ul>
+		<li><?php echo $this->Html->link('Users', array('controller' => 'Admin', 'action' => 'view_user')); ?>
+		
+			
+		
 		</li>
 		
-		<li><?php echo $this->Html->link('Users', array('controller' => 'Admin', 'action' => 'view_user')); ?></li>
-		<li class=""><?php echo $this->Html->link('Widthdraw Request', array('controller' => 'Admin', 'action' => 'widthdraw_request')); ?></li>
 		
 	
 				
 		
-		<li>
 		
-		<?php echo $this->Html->link('Pages', array('controller' => 'Admin', 'action' => 'pages'), array('class'=>'left')); ?>
-			
+		
+		
+		
+		
+		
+		
+		
+		
+		<li><?php echo $this->Html->link('Commissions', array('controller' => 'Admin', 'action' => 'member_commission')); ?>
+			<ul>
+				<li class=""><?php echo $this->Html->link('Withdraw Request', array('controller' => 'Admin', 'action' => 'widthdraw_request')); ?></li>
+				<li class=""><?php echo $this->Html->link('Distributed Commission', array('controller' => 'Admin', 'action' => 'distributed_commission')); ?></li>
+			</ul>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		</li>
 		<li>
 		
-		<?php echo $this->Html->link('Banners', array('controller' => 'Admin', 'action' => 'add_banners'), array('class'=>'left')); ?>
+		<?php echo $this->Html->link('Reports', array('controller' => 'Admin', 'action' => 'download_reports'), array('class'=>'')); ?>
 			
 		
 		</li>
 		
-		<li><?php echo $this->Html->link('Member Commission', array('controller' => 'Admin', 'action' => 'member_commission')); ?>
-		
-		
-		
-		
+		<li><a href="#">Admin Account &nbsp;</a>
+		<ul><li>
+		<?php echo $this->Html->link('Cron Jobs', array('controller' => 'Admin', 'action' => 'cron_jobs'), array('class'=>'')); ?>
+			
 		
 		</li>
 		
+			<li>
 		
+		<?php echo $this->Html->link('Account Setting', array('controller' => 'Admin', 'action' => 'account_setting'), array('class'=>'')); ?>
+			
 		
-		<li><?php echo $this->Html->link('Logout', array('controller' => 'Admin', 'action' => 'logout'), array('class'=>'left')); ?></li>
+		</li>
+		<li><?php echo $this->Html->link('Logout', array('controller' => 'Admin', 'action' => 'logout'), array('class'=>'')); ?></li>
+		</ul></li>
 	</ul>
 </nav>
 </header>
@@ -106,7 +154,7 @@ $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 	<?php echo $this->fetch('content'); ?>
 </section>
 <footer id="footer" class="cf">
-	<div class="credits"><a href="http://blankandco.com">Built by <span>Blank & Co.</span></a></div>
+
 </footer>
 </body>
 </html>

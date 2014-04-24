@@ -61,8 +61,8 @@ $(document).ready(function(){
 		}, "json")
 	});
 	$('.editor').redactor({
-		imageUpload: '/esmees/Admin/imgupload',
-		imageGetJson: '/esmees/img/upload/data.json'
+		imageUpload: '/Admin/imgupload',
+		imageGetJson: '/img/upload/data.json'
 	});
 });
 $(window).resize(function(){

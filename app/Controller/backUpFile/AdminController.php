@@ -1,19 +1,22 @@
 <?php class AdminController extends AppController {
 	
-	var $uses = array('User','Adv','Category','Product','Look','Commission');
+	var $uses = array('User','Adv','Category','Product','Look','Commission','Page','Link','Widthdraw','Payment','Banner');
 	
 	var $helpers = array('Form', 'Country','Paginator' => array('Paginator'));
 	
-	var $components = array(
+	
+
+	public $components = array(
 		'Paginator',
-        'Session',
+		'Image',
+		'Session',
         'Auth' => array(
-            'loginRedirect' => array('controller' => 'admin', 'action' => 'index'),
-            'logoutRedirect' => array('controller' => 'admin', 'action' => 'login'),
+          'loginRedirect' => array('controller' => 'admin', 'action' => 'index'),
+           'logoutRedirect' => array('controller' => 'admin', 'action' => 'login'),
             'loginAction' => array('controller' => 'admin', 'action' => 'login'),
 			'authError' => 'You must be logged in to view this page.',
-            'authorize' => array('Controller')
-        )
+           'authorize' => array('Controller')
+       )
     );
 	
 	var $layout = 'admin';
@@ -61,8 +64,26 @@
         $this->set('users', $this->paginate());
     }
 	 public function view_user() {
-        $this->User->recursive = 0;
-        $this->set('users', $this->paginate());
+        //$this->User->recursive = 0;
+       // $this->set('users', $this->paginate());
+	   
+	   $this->Paginator->settings = array('limit' => 10);
+		$data = $this->Paginator->paginate('User');
+		$this->set('users', $data);
+		if ($this->request->is('post')) 
+		{
+		
+		$this->Paginator->settings = array(
+		'conditions' =>array('OR' =>array('User.name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','User.username LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','User.member_id LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','User.nickname LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%' )
+	
+		));
+		$data = $this->Paginator->paginate('User');
+		$this->set('users',$data);
+		}
+		else
+		{
+		 
+		}
     }
 //---------------------------------------------End User Function-------------------------------------
 	public function sample() {
@@ -111,12 +132,12 @@
 			$data = array_shift($this->request->data);
 			
 			if ($this->Product->save($data)){
-				$this->Session->setFlash(__('The Product has been saved.'), 'flash_success');
 				if ($this->request->is('ajax')){
 					$arr = array('status'=>'success', 'msg'=>'Product has been saved');
 					echo json_encode($arr);
 					exit;
 				}else{
+					$this->Session->setFlash(__('The Product has been saved.'), 'flash_success');
 					$this->redirect($this->referer(array('action' => 'add_cjproduct')));
 				}
 			}else{
@@ -205,6 +226,12 @@
 	
 		
 		$this->Product->id = $id;
+		$product = $this->Product->find('first', array(
+					'conditions' => array(
+						'Product.id'=> $id
+					)
+				)
+			);
 		$AllCats = $this->Category->children(1);
 		$catalist = array();
 		foreach($AllCats as $cat){
@@ -225,6 +252,8 @@
             }
         } else {
             $this->request->data = $this->Product->read(null, $id);
+			$this->data = $product;
+			$this->set('productList',$product['Product']);
 		}
 	}
 	
@@ -236,10 +265,27 @@
 		
     }
 	
+	
+	
 	public function view_products(){
-		$this->Paginator->settings = $this->paginate;
+		
+		$this->Paginator->settings = array('limit' => 50);
 		$data = $this->Paginator->paginate('Product');
 		$this->set('products', $data);
+		if ($this->request->is('post')) 
+		{
+		
+		$this->Paginator->settings = array(
+		'conditions' =>array('OR' =>array('Product.name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','Product.sku LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','Product.advetiser_name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','Product.mnf_name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%' )
+	
+		));
+		$data = $this->Paginator->paginate('Product');
+		$this->set('products',$data);
+		}
+		else
+		{
+		 
+		}
     }
 	
 	public function ConnectToLN($params = array()){
@@ -250,7 +296,9 @@
 			if($val){
 				if($param == 'keywords'){
 					$query_string .= "&keyword=".$val;
-				}else if($param == 'adv_id'){
+				}
+				
+				else if($param == 'adv_id'){
 					$query_string .= "&mid=".$val;
 				}else if($param == 'category'){
 					$query_string .= "&cat=".$val;
@@ -261,6 +309,7 @@
 				}
 			}
 		}
+		
 		$URI = 'http://productsearch.linksynergy.com/productsearch?'.
 			'&token=d279e4bb38551f715b664fe212adba01e22bf72bf8273cef793b56301a3d6050'.
 			$query_string.'&MaxResults=20';
@@ -331,7 +380,28 @@
 	
 
 	function view_adversiters(){
-		$this->set('advs', $this->Adv->find('all'));
+		
+		$this->Paginator->settings = array('limit' => 10);
+		$data = $this->Paginator->paginate('Adv');
+		$this->set('advs',$data);
+		
+		if ($this->request->is('post')) 
+		{
+		
+		$this->Paginator->settings = array(
+		'conditions' => array('Adv.adv_name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%', ),
+		'limit' => 10
+		);
+		$data = $this->Paginator->paginate('Adv');
+		$this->set('advs',$data);
+
+		}
+		else
+		{
+		 
+		}
+		
+		
 	}
 	function add_adversiters(){
 		if ($this->request->is('post')) {
@@ -345,6 +415,8 @@
             }
 			 unset($this->request->data['Adv']['adv_id']);
 			 unset($this->request->data['Adv']['adv_name']);
+			 unset($this->request->data['Adv']['vested_period']);
+			 unset($this->request->data['Adv']['url']);
         }
     }
 	function edit_adversiters($id = null) {
@@ -387,7 +459,7 @@
 		$AllCats = $this->Category->generateTreeList(null, null, null, '-- ');
 		$catalist = array();
 		foreach($AllCats as $id=>$cat){
-			$catalist[$id] = $cat;
+		$catalist[$id] = $cat;
 		}
 		$this->set('categoryList', $catalist);
 		
@@ -427,10 +499,29 @@
         $this->redirect(array('action'=>'view_category'));
     }
 	
-	function view_looksimage($id)
+	function view_looksimage()
 	{
-			$looks=$this->Look->find('all', array('conditions' => array('Look.status' => 0,'Look.user_id' => $id )));
-			$this->set('looks', $looks);
+		
+		
+		$this->Paginator->settings = array('limit' => 10);
+		$looks = $this->Paginator->paginate('Look');
+		$this->set('looks',$looks);
+		
+		if ($this->request->is('post')) 
+		{
+		
+		$this->Paginator->settings = array(
+		'conditions' => array('Look.caption_name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%', ),
+		'limit' => 10
+		);
+		$looks = $this->Paginator->paginate('Look');
+		$this->set('looks',$looks);
+
+		}
+		else
+		{
+		 
+		}
 		
 	}
 	
@@ -438,13 +529,598 @@
 	{
 			$commission=$this->Commission->find('all');
 			$this->set('commissionList', $commission);
-			pr($commission);
+			
+	}
+	
+	public function distributed_commission()
+	{
+		$this->Paginator->settings = array('limit' => 10);
+		$payment = $this->Paginator->paginate('Payment');
+		$this->set('payments',$payment);
+		
+		if ($this->request->is('post')) 
+		{
+		
+		$this->Paginator->settings = array(
+		'conditions' => array('User.name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%', ),
+		'limit' => 10
+		);
+		$payment = $this->Paginator->paginate('Payment');
+		$this->set('payments',$payment);
+		
+
+		}
+		else
+		{
+		 
+		}
+			
+	}
+	
+	Public function delete_payment($id = null)
+	{
+		$this->Payment->delete($id);
+      
+		$this->Session->setFlash(__('The payment with id: '.$id.' has been deleted.'), 'flash_success');
+       $this->redirect($this->referer());
+	}
+	
+	public function pages(){
+		$this->set('pages', $this->Page->find('all'));
 	}
 	
 	
+	public function add_page(){
+		if ($this->request->is('post')){
+			
+            if ($this->Page->save($this->request->data)) {
+				$this->Session->setFlash(__('The Pages has been saved.'), 'flash_success');
+            } else 
+			{
+                $this->Session->setFlash(__('The Pages could not be saved. Please, try again.', 'flash_success'));
+            }
+			$this->redirect(array('action' => 'pages'));
+        }
+		
+	}
+	Public function edit_page($id = null){
+		$this->Page->id = $id;
+        if (empty($this->data))
+        {
+            $this->data = $this->Page->read();
+		//	echo(this->Page->read());
+        }
+        if ($this->request->is('post') || $this->request->is('put')) {
+            if ($this->Page->save($this->request->data)) {
+               
+				 	$this->Session->setFlash(__('The Pages Name has been Updated.'), 'flash_success');
+               // 
+            } else {
+                $this->Session->setFlash(__('The Pages could not be saved. Please, try again.'), 'flash_error');
+            }
+			$this->redirect($this->referer());
+        } else {
+            //$this->request->data = $this->Category->read(null, $id);
+           // unset($this->request->data['Category']['name']);
+        }
+	}
+	
+
+	
+	
+	Public function delete_page($id = null)
+	{
+		$this->Page->delete($id);
+      
+		$this->Session->setFlash(__('The Pages with id: '.$id.' has been deleted.'), 'flash_success');
+        $this->redirect(array('action'=>'view_pages'));
+	}
+	
+		
+	Public function delete_looks($id = null)
+	{
+		$this->Look->delete($id);
+      
+		$this->Session->setFlash(__('The Look with id: '.$id.' has been deleted.'), 'flash_success');
+        $this->redirect(array('action'=>'view_looksimage'));
+	}
+	
+	
+	
+	
+	public function imgupload(){
+		if ($this->request->is('post') || $this->request->is('put')) {
+			$param_img = $this->request->params['form']['file'];
+			$image_path = $this->Image->upload_image_and_thumbnail($param_img, "upload");
+			$array = array(
+				'filelink' => '/esmees/img/upload/'.$image_path,
+				'thumb' => '/esmees/img/upload/small/'.$image_path,
+				'image' => '/esmees/img/upload/big/'.$image_path
+			);
+			echo stripslashes(json_encode($array));
+			
+			$fp = WWW_ROOT.'/img/upload/data.json';
+			$file = file_get_contents($fp);
+			$data = json_decode($file);
+			unset($file);
+			$data[] = $array;
+			pr($data);
+			file_put_contents($fp, json_encode($data));
+			unset($data);			
+			exit;
+		}
+	}
+	
+	
+	//--------------------------------------------Banners-----------------------------------
+	
+	public function add_banners()
+	{
+		
+		
+		
+		if ($this->request->is('post') || $this->request->is('put')) {
+			
+			
+			
+			
+               $image_path = $this->Image->upload_image_and_thumbnail($this->data['Banner']['image'], "Banners");
+              
+				
+         
+                $this->request->data['Banner']['image'] = $image_path;
+                
+				
+				if ($this->Banner->save($this->request->data)) 
+				{
+					$this->Session->setFlash(__('The Banners  has been saved.'), 'flash_success');
+					return $this->redirect(array('action' => 'banners'));	
+						   
+				}
+				else
+				{
+					 $this->Session->setFlash(__('The Banner has been not saved, try again'));
+				}
+		
+		}
+       			
+	}
+	public function banners()
+	{
+			$banners=$this->Banner->find('all');
+			$this->set('bannerList', $banners);
+	}
+	
+	
+	Public function delete_banner($id = null)
+	{
+		$this->Banner->delete($id);
+      
+		$this->Session->setFlash(__('The Banner with id: '.$id.' has been deleted.'), 'flash_success');
+        $this->redirect($this->referer());
+	}
+	
+	Public function edit_banner($id = null)
+	{
+		$this->Banner->id = $id;
+        if (empty($this->data))
+        {
+            $this->data = $this->Banner->read();
+        }
+		$banners = $this->Banner->find('first', array('conditions' => array('Banner.id' => $id)));
+        if ($this->request->is('post') || $this->request->is('put')) 
+		{
+			
+			  $pages=$this->request->data['Banner']['pages'];
+			  $section=$this->request->data['Banner']['section'];
+			  $heading=$this->request->data['Banner']['heading'];
+			  $description=$this->request->data['Banner']['description'];
+			  $buy_url=$this->request->data['Banner']['buy_url'];
+			  $status=$this->request->data['Banner']['status'];
+			
+				
+			  if (empty($this->data['Banner']['image']['name'])) {
+
+                  $image_path = $banners['Banner']['image'];
+				
+                } else {
+
+                    $image_path = $this->Image->upload_image_and_thumbnail($this->data['Banner']['image'], "Banners");
+                }
+				
+				if ($this->Banner->save(array('pages'=>$pages,'section'=>$section,'heading'=>$heading,'description'=>$description,'buy_url'=>$buy_url,'status'=>$status,'image'=>$image_path, 'id'=>$id)))
+						{
+							$this->Session->setFlash(__('The Banner with id: '.$id.' has been updated.'), 'flash_success');
+							$this->redirect($this->referer());
+						}
+        }
+		$this->data = $banners;
+		$this->set('bannerList',$banners['Banner']);
+		
+	}
+
+public function fetch_commissionls()
+{
+	$URI = 'https://reportws.linksynergy.com/downloadreport.php?bdate=20140301&edate=20140319&token=cd4f37dc86a07f7845f3d54a4c594f6fdd45a96355367de7348e3c77971aebd9&nid=1&reportid=12';
+		
+		$querryResult = file_get_contents($URI, false);
+		$Data = str_getcsv($querryResult, "\n");
+		
+		$data = array();
+		$array = array();
+		$i = 0;
+		 foreach ($Data as $key => $val)
+			{
+			if($key!=0)
+			
+			{
+			$array[] = str_getcsv($val);
+			
+			$member_id = $array[$i][0];
+            $merchant_id = $array[$i][1];
+            $merchant_name = $array[$i][2];
+            $order_id = $array[$i][3];
+            $transaction_date = $array[$i][4];
+            $transaction_time = $array[$i][5];
+            $sku_number = $array[$i][6];
+            $sales = $array[$i][7];
+			$quantity = $array[$i][8];
+            $commissions = $array[$i][9];
+            $process_date = $array[$i][10];
+            $process_time =$array[$i][11];
+            
+			$i++;
+            
+			$data['Link']['member_id'] = $member_id;
+			$data['Link']['adv_id'] = $merchant_id;
+			$data['Link']['merchant_name'] = $merchant_name;
+			$data['Link']['order_id'] = $order_id;
+			$data['Link']['transaction_date'] = $transaction_date;
+			$data['Link']['transaction_time'] = $transaction_time;
+			$data['Link']['sku_number'] = $sku_number;
+			$data['Link']['sales'] = $sales;
+			$data['Link']['quantity'] = $quantity;
+			$data['Link']['commissions'] = $commissions;
+			$data['Link']['process_date'] = $process_date;
+			$data['Link']['process_time'] = $process_time;
+			
+			$this->Link->create();
+			
+			if ($this->Link->save($data)) {
+			 $this->Session->setFlash(__('The Commission has been saved.'), 'flash_success');
+			 
+			
+			}
+			else
+			{
+				$this->Session->setFlash(__('The  Commission not be saved. Please, try again.', 'flash_success'));
+			}
+		}
+			
+		} 
+		 $this->redirect(array('action'=>'fetch_commission'));
 }
-//------------------------------------------------End Category Function---------------------------
 
-//------------------------------------------------User Looks Function------------------------------
 
- 
+	
+	public function fetch_commission(){
+		
+			$commission=$this->Link->find('all');
+			$this->set('commissionList', $commission);
+		
+		
+		
+   }
+   
+  
+   
+   public function fetch_commission_cj()
+   {
+			$URI = 'https://commission-detail.api.cj.com/v3/commissions?date-type=posting&action-types=sale&website-ids=7386303';
+			$context = stream_context_create(
+			array(
+				'http' => array(
+					'method' => 'GET',
+					'header' => 'Authorization:  009a4361d95c8e2bdce29187482ade06d25c54353bcbd8f380a2302f4358784d95be510873a64c2785e4bdd76a0876e68a8e6dfe46f462d5c585e420f2fa2c63c9/1ceeee775a48c02959c579de2b4c21736b25d0263b01a20a4a61473c1667da0523a54c62d9a9fb4fa0e5eaebb5f94f2a134d1d94e05ac90b26e3e27c09ef2801'
+				)
+			)
+		);
+		$querryResult = file_get_contents($URI, false, $context);
+		$response = json_decode(json_encode((array) simplexml_load_string($querryResult)), 1);
+		$this->set('commissionCj', $response);
+   }
+   
+   
+   public function generate_commissionls()
+   {
+			
+			$data=$this->Link->find('all');
+			$this->set('links', $data);
+		
+			$array = array();
+			$i = 0;
+			foreach ($data as $key => $val){
+			$id = $val['Link']['id'];
+			$member_id = $val['Link']['member_id'];
+			$merchant_id= $val['Link']['adv_id'];
+			$merchant_name= $val['Link']['merchant_name'];
+			$order_id= $val['Link']['order_id'];
+			$transaction_date= $val['Link']['transaction_date'];
+			$transaction_time= $val['Link']['transaction_time'];
+            $sku_number= $val['Link']['sku_number'];
+			$sales= $val['Link']['sales'];
+			$quantity= $val['Link']['quantity'];
+			$process_date= $val['Link']['process_date'];
+			$commissions= $val['Link']['commissions'];
+			$process_time= $val['Link']['process_time'];
+			$status= $val['Link']['status'];
+			
+			$i++;
+			$member = preg_split("/[\s,-]+/", "$member_id");
+
+			$data['Commission']['member_id'] = $member['1'];
+			$data['Commission']['adversiter_id'] = $merchant_id;
+			$data['Commission']['order_id'] = $order_id;
+			
+			$data['Commission']['transaction_date'] = $transaction_date;
+			$data['Commission']['total_commission_earned'] = $commissions;
+			if($status==0)
+			{
+			
+				$adv=$this->Adv->find('all',array('conditions' => array('Adv.adv_id' => $merchant_id),'recursive' => 1));
+				
+				foreach ($adv as $key => $val)
+				{
+					$day = $val['Adv']['vested_period'];
+					$trans_date = $transaction_date;
+				
+					
+					$date = date_create($transaction_date);
+					date_modify($date, "+".$day." days");
+					$data['Commission']['v_date'] = date_format($date, 'Y-m-d');
+				
+			
+			
+				$this->Commission->create();
+				
+				if ($this->Commission->save($data)) {
+				
+					
+				
+					$this->Link->id    = $id;
+					$this->Link->saveField('status', '1');
+					$this->Session->setFlash(__('The Commission has been saved.'), 'flash_success');
+					//$this->redirect(array('action' => 'fetch_commission'));
+					$this->redirect($this->referer(array('action' => 'fetch_commission')));
+					
+					
+			 
+				}
+				else
+				{
+					$this->Session->setFlash(__('The  Commission not be saved. Please, try again.', 'flash_success'));
+				}
+				}
+			}
+			else
+			{
+				//$this->Session->setFlash(__('The  Commission allready generated.', 'flash_success'));
+				$this->Session->setFlash(__('The  Commission allready generated.'), 'flash_success');
+			}
+			
+		}
+		
+			
+   }
+   
+    public function generate_order()
+   {
+			
+			$data=$this->Link->find('all');
+			$this->set('links', $data);
+		
+			$array = array();
+			$i = 0;
+			foreach ($data as $key => $val){
+			$id = $val['Link']['id'];
+			$member_id = $val['Link']['member_id'];
+			$merchant_id= $val['Link']['adv_id'];
+			$merchant_name= $val['Link']['merchant_name'];
+			$order_id= $val['Link']['order_id'];
+			$transaction_date= $val['Link']['transaction_date'];
+			$transaction_time= $val['Link']['transaction_time'];
+            $sku_number= $val['Link']['sku_number'];
+			$sales= $val['Link']['sales'];
+			$quantity= $val['Link']['quantity'];
+			$process_date= $val['Link']['process_date'];
+			$commissions= $val['Link']['commissions'];
+			$process_time= $val['Link']['process_time'];
+			$status= $val['Link']['status'];
+			
+			$i++;
+			$member = preg_split("/[\s,-]+/", "$member_id");
+
+			$data['Commission']['member_id'] = $member['1'];
+			$data['Commission']['adversiter_id'] = $merchant_id;
+			$data['Commission']['order_id'] = $order_id;
+			
+			$data['Commission']['transaction_date'] = $transaction_date;
+			$data['Commission']['total_commission_earned'] = $commissions;
+			if($status==0)
+			{
+			
+				$adv=$this->Adv->find('all',array('conditions' => array('Adv.adv_id' => $merchant_id),'recursive' => 1));
+				
+				foreach ($adv as $key => $val)
+				{
+					$day = $val['Adv']['vested_period'];
+					$trans_date = $transaction_date;
+				
+					
+					$date = date_create($transaction_date);
+					date_modify($date, "+".$day." days");
+					$data['Commission']['v_date'] = date_format($date, 'Y-m-d');
+				
+			
+			
+				$this->Order->create();
+				
+				if ($this->Commission->save($data)) {
+				
+					
+				
+					$this->Link->id    = $id;
+					$this->Link->saveField('status', '1');
+					$this->Session->setFlash(__('The Commission has been saved.'), 'flash_success');
+					//$this->redirect(array('action' => 'fetch_commission'));
+					$this->redirect($this->referer(array('action' => 'fetch_commission')));
+					
+					
+			 
+				}
+				else
+				{
+					$this->Session->setFlash(__('The  Commission not be saved. Please, try again.', 'flash_success'));
+				}
+				}
+			}
+			else
+			{
+				//$this->Session->setFlash(__('The  Commission allready generated.', 'flash_success'));
+				$this->Session->setFlash(__('The  Commission allready generated.'), 'flash_success');
+			}
+			
+		}
+		
+			
+   }
+   
+   
+   
+  public function widthdraw_request()
+   {
+		
+	    $this->Paginator->settings = array('limit' => 10);
+		$data = $this->Paginator->paginate('Widthdraw');
+		$this->set('widthDraws', $data);
+		
+		$data = $this->Paginator->paginate('Widthdraw');
+		$this->set('widthDraws',$data);
+		
+		
+		
+		
+	}
+	function delete_widthdraw_request($id)
+    {
+    	$this->Widthdraw->delete($id);
+		$this->Session->setFlash(__('The Widthdraw Request with id: '.$id.' has been deleted.'), 'flash_success');
+        $this->redirect(array('action'=>'widthdraw_request'));
+		
+    }
+	
+	
+	public function user_detail($id = null)
+	{
+		if(!empty($id))
+		{
+		$total_commision = $this->Commission->find('first', array('conditions' => array('Commission.user_id' => $id),'fields' => array('sum(Commission.user_commission) as total' )));
+		$this->set('totalCommission',$total_commision);
+		
+		
+		$total_vested = $this->Commission->find('first', array('conditions' => array(
+			'Commission.user_id' => $id,
+			'Commission.vesting_date <=' => date('Y-m-d')
+		),'fields' => array('sum(Commission.user_commission) as total_vested')));
+		$this->set('vestedCommission',$total_vested);
+		
+		
+		$paid_commission = $this->Payment->find('first', array('conditions' => array('Payment.user_id' => $id),'fields' => array('sum(Payment.amount) as total_paid' )));
+		$this->set('paidCommission',$paid_commission);
+		
+		$this->User->contain();
+		$user = $this->User->find('first', array('conditions' => array('User.id'=>$id)));
+		$this->set('user', $user['User']);
+		
+		
+		
+		if ($this->request->is('post')) {
+			
+			$vamount= $this->request->data['fetch_requset']['vamount'];
+			$amount= $this->request->data['fetch_requset']['amount'];
+			$remark= $this->request->data['fetch_requset']['remark'];
+			
+		
+			
+			 if($vamount <= $amount )
+			 {
+				 $this->Session->setFlash('The Widthdraw amount should  be Less  then or Equal to Available Vested Amount  . Please, try again', 'flash_success');
+			 }
+			 else
+			 {
+			
+			
+				 $date =date('Y-m-d');
+				
+			
+			 if ($this->Payment->save(array('amount'=>$amount,'remarks'=>$remark,'generate_date'=>$date, 'user_id'=>$id)))
+				{
+					
+					
+					 $this->Session->setFlash('The Widthdraw amount transfer successfully', 'flash_success');
+					 $this->Widthdraw->updateAll(array('status'=>1),array('user_id'=>$id));
+					 
+					 
+					
+				}
+				else
+				{
+				 $this->Session->setFlash(__('The Widthdraw Request could not be sent. Please, try again.'));
+				}
+			}
+		 }
+		 $this->Payment->contain();
+		$payment = $this->Payment->find('all',array('conditions' => array('Payment.user_id'=>$id)));
+		$this->set('paymentList', $payment);
+		
+		 
+		}
+ }
+		
+           
+     
+		
+		
+
+	
+	public function member_commission()
+	{
+		$this->Paginator->settings = array('limit' => 10);
+		$data = $this->Paginator->paginate('Commission');
+		$this->set('commissionList', $data);
+	}
+	
+	public function download_reports()
+	{
+	if ($this->request->is('post'))
+	{
+		$reportid= $this->request->data['fetch_reports']['report_type'];
+		$sdate= $this->request->data['fetch_reports']['sdate'];
+		$edate= $this->request->data['fetch_reports']['edate'];
+		
+		
+		$URI = 'https://reportws.linksynergy.com/downloadreport.php?bdate='.$sdate.'&edate='.$edate.'&token=cd4f37dc86a07f7845f3d54a4c594f6fdd45a96355367de7348e3c77971aebd9&nid=1&reportid='.$reportid .'';
+		
+		
+		
+		$this->redirect($URI);
+	
+	
+	}
+	}
+	
+	
+
+
+}
+

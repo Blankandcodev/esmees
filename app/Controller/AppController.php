@@ -32,7 +32,7 @@ App::uses('Controller', 'Controller');
  * @link http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-	public $user;
+	public $uses = array('Banner','Page');
 	var $components = array(
         'Session',
         'Auth' => array(
@@ -61,6 +61,10 @@ class AppController extends Controller {
 		}
 		$this->user = $this->Auth->user();
 		$this->Auth->allow();
+		
+		
+		$headerbanners=$this->Banner->find('first',  array('conditions'=>array('Banner.pages'=>'header','Banner.status'=>1),'limit'=>1,array('order' => array('Banner.created' => 'DESC'))));
+		$this->set('topbnr', $headerbanners);
     }
 	public function SimpleXML2Array($xml){
 		$array = (array)$xml;
@@ -73,5 +77,19 @@ class AppController extends Controller {
 		}
 	
 		return $array;
+	}
+	function getCurrentUser() {
+	  // for CakePHP 1.x:
+	  App::import('Component','Session');
+	  $Session = new SessionComponent();
+
+	  // for CakePHP 2.x:
+	  App::uses('CakeSession', 'Model/Datasource');
+	  $Session = new CakeSession();
+
+
+	  $user = $Session->read('Auth.User');
+
+	  return $user;
 	}
 }

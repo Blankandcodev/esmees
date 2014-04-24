@@ -25,6 +25,24 @@
 	<a class="button primary title-btn" href="<?php echo $this->Html->url(array('action'=>'view_user'), array('class'=>'add')); ?>">back to User</a>
 	<h1 class="title">View Look Image</h1>
 </div>
+<div class="addproduct">
+	<h2 class="subtitle">Search Looks</h2>
+	<?php 
+	
+		
+			echo $this->Form->create('product_fetch');
+			
+			echo $this->Form->input('keyword', array( 'label'=>'Keywords ','type' => 'text','placeholder'=>'User Search wise User Aka/first Name /memberID' , 'class'=>'required'));
+
+			
+			
+			echo $this->Form->submit('Search', array('class'=>'button primary left'));
+		?>
+	<?php echo $this->Form->end(); ?>
+</div>
+<div class="paginate">
+</div>
+<?php if(!empty($looks)){ ?>
 <table class="dtable" cellspacing="0"> 
 			<thead> 
 				<tr> 
@@ -33,7 +51,7 @@
     				<th>Image</th> 
     				
     				<th></th> 
-					<th>Actions</th> 
+					<th width="150px">Actions</th> 
 				</tr> 
 			</thead> 
 			<tbody> 
@@ -42,6 +60,7 @@
 
     
 	<tbody> 
+	
 	 <?php foreach ($looks as $look): ?>
     <tr>
         
@@ -50,7 +69,7 @@
 	   </td>
        <td>
 		<?php
-		echo $this->Html->image('Looks/big/'.$look['Look']['image'], array('width'=>'100', 'height'=>'136'));?>
+		echo $this->Html->image('Looks/big/'.$look['Look']['image'], array('width'=>'50', 'height'=>'50'));?>
 		
 		<td>
 		 <td>
@@ -64,11 +83,20 @@
         
       
     </tr>
+	
 	<?php endforeach; ?>
 	</tbody>
+	
   
 
 </table>
+</div>
+	<?php }else{
+		echo '<div class="flash">No matching records found!</div>';
+	} ?>
+		</div>
+	
+	
 <div class="paginate">
 <?php	
 echo $this->Paginator->numbers(array(

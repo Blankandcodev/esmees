@@ -9,7 +9,7 @@
 <center>
 <table cellpadding="0" cellspacing="0" width="600" style="background:#fff; margin:0 auto; text-align:left; width:600px;">
 <tr>
-	<td style="padding:25px 20px; text-align:left; border-bottom:1px solid #ccc;">
+	<td style="padding:25px 20px; text-align:left; border-bottom:1px solid #000000; background:#000000">
 			<img src="<?php echo $homeurl;?>/img/logo.png" height="51" width="259">
 	</td>
 </tr>
@@ -32,7 +32,7 @@
 	</td>
 </tr>
 <tr>
-	<td style="padding:25px; border-top:1px solid #ccc; text-align:left;">
+	<td style="padding:25px; border-top:1px solid #000000; text-align:left; background:#000000">
 		<a href="<?php echo $homeurl; ?>"><img src="<?php echo $homeurl;?>/img/foot-logo.png" height="17" width="161" style="border:0;"></a>
 	</td>
 </tr>

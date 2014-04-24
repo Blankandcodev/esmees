@@ -5,19 +5,22 @@
 	<h2 class="subtitle">Search Products</h2>
 	<?php 
 		$affiliate = isset($searchdata['affiliate']) ? $searchdata['affiliate'] : 0;
+		$ksettype = isset($searchdata['ktype']) ? $searchdata['ktype'] : 0;
 		$adv_id = isset($searchdata['adv_id']) ? $searchdata['adv_id'] : 0;
 		$record = isset($searchdata['record']) ? $searchdata['record'] : 15;
 		$keywords = isset($searchdata['keywords']) ? $searchdata['keywords'] : '';
-		$category = isset($searchdata['category']) ? $searchdata['category'] : '';
+		//$category = isset($searchdata['category']) ? $searchdata['category'] : '';
 		$currency = isset($searchdata['currency']) ? $searchdata['currency'] : '';
 		$afOpts = array('Select Affiliate Program', 'CJ'=>'Commission Junction', 'LS'=>'Link Share');
+		$ktype = array('keyword'=>'with all of the words', 'exact'=>'with the exact phrase', 'one'=>'with at least one of the words');
 		
 			echo $this->Form->create('product_fetch', array('class'=>'floated cf', 'id'=>'psearchForm'));
 			echo $this->Form->input('affiliate', array('options' => $afOpts, 'default'=>$affiliate, 'label'=>'Select Affiliate Program', 'class'=>'required selchk', 'onChange'=>'getMerchantList(this.value, "'.$this->Html->url(array('action'=>'get_merchantlist'), true).'", "#Advlist");'));
+			echo $this->Form->input('ktype', array('options' => $ktype, 'default'=>$ksettype, 'label'=>'Search Type', 'class'=>'required selchk'));
 			echo $this->Form->input('keywords', array( 'label'=>'keyword ','type' => 'text', 'class'=>'required', 'value'=>$keywords));
 			echo '<div class="advance cf" id="advance-opts">';
 				echo $this->Form->input('adv_id', array('options' => $advList, 'default'=>$adv_id, 'label'=>'Select Advertiser Name ', 'id'=>'Advlist'));
-				echo $this->Form->input('category', array( 'label'=>'Category ','type' => 'text', 'value'=>$category));
+				//echo $this->Form->input('category', array( 'label'=>'Category ','type' => 'text', 'value'=>$category));
 				echo $this->Form->input('currency', array( 'label'=>'Currency','type' => 'text', 'value'=>$currency, 'style'=>'width:50px'));
 				echo $this->Form->input('pagenumber', array( 'label'=>'Page','type' => 'text', 'value'=>1, 'id'=>'pageNo', 'style'=>'width:50px'));
 				echo $this->Form->input('record', array('options' => array(15=>15, 30=>30, 50=>50), 'default'=>$record, 'label'=>'Records-per-page'));

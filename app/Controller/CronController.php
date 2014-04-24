@@ -13,23 +13,23 @@ class CronController extends AppController{
 	
 	public function sendmail(){
 		$this->sendlsemail();
-		$this->sendcjemail();
+	//	$this->sendcjemail();
 		echo $this->mailStatus;
+		echo "CRON JOB FINISHED <a href='/admin'>Back</a>";
 		exit;
 	}
 	
-	public function fetchsavedata($date = null){
-		$this->fatchlsdata($date);
+	public function fetchsavedata($bdate = null, $edate = null){
+		$this->fatchlsdata($bdate,$edate);
 		$this->saveorder();
 		$this->savelscommission();
 		echo $this->caronStatus;
+		echo "CRON JOB FINISHED <a href='/admin'>Back</a>";
 		exit;
 	}
-	public function fatchlsdata($date = null){
-		if($date == null){
-			$date = date('Ymd');
-		}
-		$URI = 'https://reportws.linksynergy.com/downloadreport.php?bdate='.$date.'&edate='.$date.'&token=cd4f37dc86a07f7845f3d54a4c594f6fdd45a96355367de7348e3c77971aebd9&nid=1&reportid=12';
+	public function fatchlsdata($bdate = null, $edate = null){
+		
+		$URI = 'https://reportws.linksynergy.com/downloadreport.php?bdate='.$bdate.'&edate='.$edate.'&token=cd4f37dc86a07f7845f3d54a4c594f6fdd45a96355367de7348e3c77971aebd9&nid=1&reportid=12';
 	
 		
 		$querryResult = file_get_contents($URI, false);
@@ -85,6 +85,7 @@ class CronController extends AppController{
 			}
 			$i++;
 		}
+		echo "suc1";
 		return $status;
 	}
 	
@@ -116,17 +117,23 @@ class CronController extends AppController{
 					$this->caronStatus = "ERROR";
 					$status = "ERROR";
 				}
+				$this->Lsorder->id = $order['Lsorder']['id'];
+				$this->Lsorder->saveField('status', '1');
+			}else if(!empty($product)){
+				$this->Lsorder->id = $order['Lsorder']['id'];
+				$this->Lsorder->saveField('status', '3');				
+			}else{
+				
 			}
-			$this->Lsorder->id = $order['Lsorder']['id'];
-			$this->Lsorder->saveField('status', '1');
 			$i++;
 		}
+		echo "suc2";
 		return $status;
 	}
 	
 	public function savelscommission(){
 		$status = 'SUCCESS';
-		$lorders = $this->Lsorder->find('all', array('conditions'=>array('Lsorder.status' => 2)));
+		$lorders = $this->Lsorder->find('all', array('conditions'=>array('Lsorder.status' => 1)));
 		$i = 0;
 		foreach($lorders as $order){
 			$maray = explode("-", $order['Lsorder']['member_id']);
@@ -168,15 +175,16 @@ class CronController extends AppController{
 				$this->Commission->create();
 				if ($this->Commission->save($data)){
 					$this->Lsorder->id = $order['Lsorder']['id'];
-					$this->Lsorder->saveField('status', '1');
 					$this->caronStatus .= "<br/>Commission $i saved<br/>";
 				}else{
 					$this->caronStatus .= "ERROR";
 					$status = "ERROR";
 				}
 			}
+			$this->Lsorder->saveField('status', '2');
 			$i++;
 		}
+		echo "suc3";
 		return $status;
 	}
 	
@@ -187,8 +195,10 @@ class CronController extends AppController{
 			$mid = $maray[1];
 			if($mid != 'ESMGUEST'){
 				$user = $this->User->find('first', array('conditions'=>array('User.member_id' => $mid)));
+				
+				
 				if(!empty($user)){
-					if($this->sendInviteMail($user['User'])){
+					if($this->sendInviteMail($user['User'],$order['Lsorder'])){
 						$this->Lsorder->id = $order['Lsorder']['id'];
 						$this->Lsorder->saveField('email', 1);
 					};
@@ -197,12 +207,14 @@ class CronController extends AppController{
 			}
 		}
 	}
-	public function sendInviteMail($data = array()){
+	public function sendInviteMail($data = array(),$commi=array()){
         if ($data != NULL){
             $this->Email->to =$data['username'];
+			$this->Email->bcc = array('sbdh.singh@gmail.com');
             $this->Email->subject = 'Welcome to Esmees.com';
             $this->Email->from = 'Esmees <Subodh@blankandco.com>';
 			$this->set('data', $data);
+			$this->set('commi', $commi);
 			$this->Email->template = 'invite';
             $this->Email->sendAs = 'html';
 			if ($this->Email->send()) {
