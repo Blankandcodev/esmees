@@ -83,7 +83,7 @@ h1,h2,h3,h4,h5,h6,ul,img,a,p{margin:0px; padding:0px;text-decoration:none;list-s
 .div_btn{ float:left;  width:304px; margin:26px;position: relative;top: 202px;}
 .div_btn input.btnn1{ float:left; width:123px; height:37px; border-radius:4px; cursor:pointer; background-image:url(../img/img4.png); font-size:16px; color:#ffffff; border:1px solid #000000;}
 .div_rgt{ float:right; width:490px; border:1px solid #c7c7c7; background-image:url(../img/img5.png); height:485px;}
-.banr{ background-image:url(../img/img6.png); width:100%; margin:12px 0; height:225px;}
+.banr{ background-image:width:100%; margin:12px 0; height:225px;}
 .txt2{ float:right; width:427px; margin:35px 82px 0px 0px; color:#000000; font-size:63px; text-transform:uppercase; text-align:center; }
 .txt2 span.span1{ color:#ff031a;}
 .content_div2{ float:left; width:100%; height:auto; margin-top:14px;}
@@ -523,7 +523,7 @@ select{
 textarea{
 	height:75px;
 }
-.error{border-color:#f00 !important;}
+.error,.form-error{border-color:#f00 !important;}
 label{
 }
 form{
@@ -554,13 +554,13 @@ form .input {
 	display:block;
 	margin:0 0 15px;
 }
-form .input  label{
+form .input  label,.error-message{
 	margin:0 0 5px;
 	font-weight:bold;
 	font-size:13px;
 	display:block;
 }
-form .input  label.error,
+form .input  label.error,.error-message,
 label.error{
 	color:#f00;
 	margin:5px 0 0;
@@ -673,7 +673,7 @@ img{max-width:100%;}
 	color: #000000;
 	float: right;
 	font-family: Roboto;
-	font-size: 20px;
+	font-size: 24px;
 	font-style: italic;
 	font-weight: normal;
 	line-height: 50px;
@@ -704,8 +704,8 @@ img{max-width:100%;}
 .item-info .look-info a{ color: #6C6C6C;font-size: 17px;font-weight: bold;font-style:normal;}
 
 .item-info .brand{color: #000000; font-size: 21px; font-weight: bold; font-style:italic; margin:0 0 0px;}
-.item-info .item-title{color: #000000; font-size: 22px; font-weight: bold;}
-.item-info .price{font-size: 17px; font-weight: bold; margin:25px 0;}
+.item-info .item-title{color: #000000; font-size:14px; font-weight: bold;}
+.item-info .price{font-size: 14px; font-weight: bold; margin:25px 0;}
 
 h3.subtitle{border-bottom: 1px solid #000000; color: #6C6C6C; font-size: 16px; font-weight: bold; text-align: left;}
 .item-info .detail{margin: 0 0 25px; line-height:1.4; color:#444;}
@@ -724,8 +724,8 @@ h3.subtitle{border-bottom: 1px solid #000000; color: #6C6C6C; font-size: 16px; f
 .listing ul li .image{display:block; height:232px; border:1px solid #ddd; margin:0 0 10px;}
 .listing ul li .image a{display:block; line-height:232px; height:100%; width:100%; text-align:center;}
 .listing ul li .image img{max-height:99%; max-width:100%; vertical-align:middle;}
-.listing .info{color: #444444; font-size: 14px; font-weight: bold; line-height:18px;}
-.listing .info .i-title{color: #444444; display:block; font-size: 14px; font-weight: bold; margin-bottom: 5px;}
+.listing .info{color: #444444; font-size: 14px; font-weight: bold; height: 60px; line-height:18px; overflow: hidden;}
+.listing .info .i-title{color: #444444; display:block; font-size:12px; font-weight: bold; margin-bottom: 5px;}
 .listing .info .user-name{}
 .listing .info .sact{position:absolute; top:207px; padding:5px; left:0; right:0; background:rgba(255,255,255,0.7);}
 .del-icn{background: url(../img/cros.png) 5px 50% no-repeat; padding-left:20px;}
