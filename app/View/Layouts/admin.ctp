@@ -67,6 +67,7 @@ $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 					<ul>
 						<li class=""><?php echo $this->Html->link('View Products', array('controller' => 'Admin', 'action' => 'view_products')); ?></li>
 						<li class=""><?php echo $this->Html->link('Add Products', array('controller' => 'Admin', 'action' => 'add_products')); ?></li>
+						
 					</ul>
 				</li>
 			</ul>
@@ -144,6 +145,11 @@ $cakeDescription = __d('cake_dev', 'Esmees'); ?>
 			
 		
 		</li>
+		
+		<li class=""><?php echo $this->Html->link('Not available Products', array('controller' => 'Admin', 'action' => 'missing_productls')); ?></li>
+		
+		<li class=""><?php echo $this->Html->link('Signature Order', array('controller' => 'Admin', 'action' => 'signature_order')); ?></li>
+		
 		<li><?php echo $this->Html->link('Logout', array('controller' => 'Admin', 'action' => 'logout'), array('class'=>'')); ?></li>
 		</ul></li>
 	</ul>

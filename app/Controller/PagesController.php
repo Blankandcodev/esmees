@@ -50,6 +50,7 @@ class PagesController extends AppController {
 		
 		$footerbanners=$this->Banner->find('first',  array('conditions'=>array('Banner.pages'=>'footer','Banner.status'=>1),'limit'=>1,array('order' => array('Banner.created' => 'DESC'))));
 		$this->set('footers', $footerbanners);
+		
 	}
 	
 

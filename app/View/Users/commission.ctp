@@ -100,7 +100,9 @@
 						 
 						
 						 <div class="users form">
+						 
 <?php echo $this->Form->create('fetch_request', array('class'=>'cform')); ?>
+<fieldset>
   <?php   echo $this->Form->input('vamount', array('value'=>'0', 'type'=>'hidden','value'=>
 	$hidden));?>
     <?php
@@ -111,6 +113,12 @@
 		
     ?>
 	<?php echo $this->Form->submit('Widthdraw', array('class'=>'primary button med')) ?>
+	<br>
+	<h4 style="color:#009003; font-size:14px;">Please ensure correct Name and Address is provided prior to withdrawing funds<span style="color:red; font-size:14px;">*</span></h4>
+	
+	<?php echo $this->Html->link('Update Account
+Info', array('controller'=>'Users', 'action'=>'update_bank_details'), array('class'=>'button primary med')); ?>
+	 </fieldset>
  
 <?php echo $this->Form->end(); ?>
 </div>

@@ -26,7 +26,7 @@
 							</div>
 							<div class="info">
 								<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>" class="i-title">
-									<?php echo $this->Text->truncate($_product['name'],23,	array('ellipsis' => '...','exact' => 'false')); ?>
+									<?php echo $this->Text->truncate($_product['name'],23,	array('ellipsis' => '','exact' => 'false')); ?>
 								</a>
 								<div class="price-box">
 									<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>">

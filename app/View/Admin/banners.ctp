@@ -10,8 +10,8 @@
 <table class="dtable" cellspacing="0"> 
 			<thead> 
 				<tr>
-					<th>Heading </th> 
-    				<th>Page</th> 
+					
+    				<th>Banners</th> 
 					<th>Section</th> 
 					<th>Status</th>
     				<th>Image</th> 
@@ -27,9 +27,65 @@
 	 <?php foreach ($bannerList as $banner): ?>
     <tr>
         
-	    <td><?php echo  $banner['Banner']['heading']; ?></td>
-       <td><?php echo  $banner['Banner']['pages']; ?></td>
-	    <td><?php echo $banner['Banner']['section']; ?></td>
+	    
+       <td><?php 
+					
+					  $page=$banner['Banner']['pages']; 
+					  if($page=='index')
+					  {
+						echo "<div>Home</div>";
+					  }
+					  
+					  if($page=='men')
+					  {
+						echo "<div >Men</div>";
+					  }
+					  
+					  if($page=='women')
+					  {
+						echo "<div >Women</div>";
+					  }
+					  if($page=='banner1')
+					  {
+						echo "<div >Become a Member banner Men</div>";
+					  }
+					  
+					  if($page=='banner2')
+					  {
+						echo "<div >Become a Member banner Women</div>";
+					  }
+					  if($page=='header')
+					  {
+						echo "<div >Header</div>";
+					  }
+					
+					  
+					  if($page=='footer')
+					  {
+						echo "<div >Footer</div>";
+					  }
+					
+					
+					  
+	   
+	   
+			?>
+	   </td>
+	    <td><?php 
+				$section=$banner['Banner']['section'];
+				if($section=='left')
+					  {
+						echo "<div >Left</div>";
+					  }
+				if($section=='right')
+					  {
+						echo "<div >Right</div>";
+					  }
+				
+		
+		?>
+		
+		</td>
 		
 		<td>
 			<?php

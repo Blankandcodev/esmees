@@ -30,6 +30,15 @@ class CronController extends AppController{
 	}
 	
 	public function fetchsavedata($bdate = null, $edate = null){
+	
+	if($bdate == null && $edate == null){
+		$bdate = $edate = date('Ymd');
+	}elseif($edate == null){
+		$edate = date('Ymd');
+	}
+	$bdate = date('Ymd', strtotime($bdate));
+	$edate = date('Ymd', strtotime($edate));
+	
 		$this->fatchlsdata($bdate,$edate);
 		$this->saveorder();
 		$this->savelscommission();

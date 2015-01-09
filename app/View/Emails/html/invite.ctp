@@ -23,7 +23,7 @@
 		
 		<!-- ------------ CONTENT STARTS HERE ------- -->
 			<h4 style="font-size:14px; font-family:Arial, Helvetica, sans-serif; margin:0 0 20px;">Purchase Order</h4>
-			<p style="font-size:12px; font-family:Arial, Helvetica; line-height:18px; margin:0 0 15px;">Hello,<br>
+			<p style="font-size:12px; font-family:Arial, Helvetica; line-height:18px; margin:0 0 15px;">Hello,<br><?php echo $data['nickname'];?><br>
 			
             <p style="font-size:12px; font-family:Arial, Helvetica; line-height:18px; margin:0 0 15px;"></p>
 			
@@ -32,31 +32,8 @@
                         	
                                 <tr>
                                 	<td>
-                    					<table width="100%" cellspacing="0" cellpadding="0" border="0">
-                                        	<thead>
-                                            	<tr>
-                                                	<th width="325" bgcolor="#EAEAEA" align="left" style="font-size: 13px; padding: 5px  9px  6px  9px; line-height: 1em;">User Information:</th>
-                                                 	<th width="10"></th>
-                                                 
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            	<tr>
-                                                	<td valign="top" style="font-size: 12px; padding: 7px  9px  9px  9px; border-left: 1px  solid  #EAEAEA; border-bottom: 1px  solid  #EAEAEA; border-right: 1px  solid  #EAEAEA;">
-                                                       <?php echo $data['name'];?> <?php echo $data['last_name'];?><br>
-                                                       <?php echo $data['address1'];?><br>
-                                                       <?php echo $data['city'];?><br>
-                                                       <?php echo $data['state'];?><br>
-                                                       <?php echo $data['country'];?><br>
-                                                       
-                                                    
-                                                    </td>
-                                                    <td>&nbsp;</td>
-                                                    
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <br>
+                    					
+                                    
                                         <table width="100%" cellspacing="0" cellpadding="0" border="0" style="border: 1px  solid  #EAEAEA;">
                                         	<thead>
                                             	<tr>
@@ -73,17 +50,22 @@
 
 											  <tr>
                                             
-                                           <td valign="top" align="left" style="font-size: 11px; padding: 3px  9px; border-bottom: 1px  dotted  #CCCCCC;"><b style="font-size: 11px;" ><br> <?php echo $commi['order_id'];?></b></td>
+                                           <td valign="top" align="left" style="font-size: 11px; padding: 3px  9px; border-bottom: 1px  dotted  #CCCCCC;">
+										   <?php echo $commi['order_id'];?></td>
 										   
-										      <td valign="top" align="left" style="font-size: 11px; padding: 3px  9px; border-bottom: 1px  dotted  #CCCCCC;"><b style="font-size: 11px;"><?php echo $commi['transaction_date'];?></b></td>
+										      <td valign="top" align="right" style="font-size: 11px; padding: 3px  9px; border-bottom: 1px  dotted  #CCCCCC;">
+											  <?php echo $commi['transaction_date'];?></td>
 											  
-										    <td valign="top" align="left" style="font-size: 11px; padding: 3px  9px; border-bottom: 1px  dotted  #CCCCCC;"><b style="font-size: 11px;"> <?php echo $commi['sku_number'];?></b></td>
+										    <td valign="top" align="left" style="font-size: 11px; padding: 3px  9px; border-bottom: 1px  dotted  #CCCCCC;">
+											<?php echo $commi['sku_number'];?></td>
 											
 											
 											 
-											  <td valign="top" align="left" style="font-size: 11px; padding: 3px  9px; border-bottom: 1px  dotted  #CCCCCC;"><b style="font-size: 11px;"><?php echo $commi['quantity'];?></b></td>
+											  <td valign="top" align="center" style="font-size: 11px; padding: 3px  9px; border-bottom: 1px  dotted  #CCCCCC;">
+											  <?php echo $commi['quantity'];?></td>
 											  
-											   <td valign="top" align="left" style="font-size: 11px; padding: 3px  9px; border-bottom: 1px  dotted  #CCCCCC;"><b style="font-size: 11px;"><?php echo $commi['sales'];?></b></td>
+											   <td valign="top" align="center" style="font-size: 11px; padding: 3px  9px; border-bottom: 1px  dotted  #CCCCCC;">
+											   <?php echo $commi['sales'];?></td>
 											  
 											
                                                 

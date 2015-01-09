@@ -76,7 +76,7 @@ $_product = $looks['Product'];
 								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['id']),true) ?>"><?php echo $this->Html->image('Looks/home/'.$mlook['Look']['image']);?></a>
 							</div>
 							<div class="info">
-								<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '...','exact' => 'false')); ?></p>
+								<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '','exact' => 'false')); ?></p>
 								
 								<?php if(!empty($mlook['Like'])){
 									echo $this->Html->link($mlook['Look']['likes'], array('action' => 'ullike', $mlook['Like'][0]['id']), array('class'=>'like-btn small right unlike'));
@@ -88,7 +88,7 @@ $_product = $looks['Product'];
 								
 								
 								<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'followers', $mlook['Look']['user_id']),true) ?>" class="user-name">
-									<?php echo $this->Text->truncate($mlook['User']['nickname'],50,	array('ellipsis' => '...','exact' => 'false')); ?>
+									<?php echo $this->Text->truncate($mlook['User']['nickname'],50,	array('ellipsis' => '','exact' => 'false')); ?>
 								</a>
 							</div>
 						</li>

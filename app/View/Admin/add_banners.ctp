@@ -7,7 +7,7 @@
 
 		<fieldset>
  <?php
-	echo $this->Form->input('pages', array('label'=>'Select', 'type'=>'select', 'options' => array('index' => 'Index Page','men' => 'Men', 'women' => 'Women','footer' => 'Member Banner In bottom','header' => 'Header'
+	echo $this->Form->input('pages', array('label'=>'Select', 'type'=>'select', 'options' => array('index' => 'Index Page','men' => 'Men', 'women' => 'Women','banner1' => 'Become a Member banner Men','banner2' => 'Become a Member banner Women','header' => 'Header','footer' => 'Footer '
         )));?>
 		
  <?php
@@ -15,9 +15,9 @@
         )));?>
     
      
-    <?php echo $this->Form->input('heading', array('label'=>'Heading', 'type'=>'text', 'class'=>'required'));?>
-	<?php echo $this->Form->input('description', array('label'=>'Description', 'type'=>'textarea', 'class'=>'required'));?>
-	<?php echo $this->Form->input('buy_url', array('label'=>'Buy URL', 'type'=>'text', 'class'=>'required'));?>
+    <?php echo $this->Form->input('heading', array('label'=>'Heading', 'type'=>'text'));?>
+	<?php echo $this->Form->input('description', array('label'=>'Description', 'type'=>'textarea', 'rows'=>20, 'class'=>'editor full required'));?>
+	<?php echo $this->Form->input('buy_url', array('label'=>'Buy URL', 'type'=>'text','placeholder'=>'Example : http://www.esmees.com', 'class'=>'required'));?>
 	<div class="input">
 					<?php echo $this->Form->file('image', array('class'=>'required')); ?>
 	</div>

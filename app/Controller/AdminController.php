@@ -1,6 +1,6 @@
 <?php class AdminController extends AppController {
 	
-	var $uses = array('User','Adv','Category','Product','Look','Commission','Page','Link','Widthdraw','Payment','Banner');
+	var $uses = array('User','Adv','Category','Product','Look','Commission','Page','Link','Widthdraw','Payment','Banner','Lsorder');
 	
 	var $helpers = array('Form', 'Country','Paginator' => array('Paginator'));
 	
@@ -712,25 +712,55 @@
 		if ($this->request->is('post') || $this->request->is('put')) {
 			
 			
+			 $secction=$this->request->data['Banner']['section'];
+			 $pages=$this->request->data['Banner']['pages'];
+			 $active=$this->request->data['Banner']['status'];
 			
+			 
+			 $banners = $this->Banner->find('first', array('conditions' => array('Banner.section' => $secction,'Banner.pages' => $pages ,'Banner.status' => 1)));
 			
-               $image_path = $this->Image->upload_image_and_thumbnail($this->data['Banner']['image'], "Banners");
-              
+			 $status =$banners['Banner']['status'];
+			 $id=$banners['Banner']['id'];
+			 $this->Banner->delete($id);
+			 if($active==1)
+			 {
 				
-         
+				$image_path = $this->Image->upload_image_and_thumbnail($this->data['Banner']['image'], "Banners");
+			
                 $this->request->data['Banner']['image'] = $image_path;
-                
-				
 				if ($this->Banner->save($this->request->data)) 
 				{
 					$this->Session->setFlash(__('The Banners  has been saved.'), 'flash_success');
-					return $this->redirect(array('action' => 'banners'));	
+					return $this->redirect(array('action' => 'add_banners'));	
 						   
 				}
 				else
 				{
 					 $this->Session->setFlash(__('The Banner has been not saved, try again'));
 				}
+			 }
+			 else if($active==0){
+				$image_path = $this->Image->upload_image_and_thumbnail($this->data['Banner']['image'], "Banners");
+         
+         
+                $this->request->data['Banner']['image'] = $image_path;
+				if ($this->Banner->save($this->request->data)) 
+				{
+					$this->Session->setFlash(__('The Banners  has been saved.'), 'flash_success');
+					return $this->redirect(array('action' => 'add_banners'));	
+						   
+				}
+				else
+				{
+					 $this->Session->setFlash(__('The Banner has been not saved, try again'));
+				}
+			 }
+			 else
+			 {
+				
+			 }
+			
+              
 		
 		}
        			
@@ -1201,8 +1231,63 @@ public function fetch_commissionls()
 		}
 	}
 	
+	public function missing_productls()
+	{
+		$this->Lsorder->contain();
+		$productls = $this->Lsorder->find('all', array('conditions' => array('Lsorder.status' => 3)));
+		$this->set('products',$productls);
+		
+		if ($this->request->is('post'))
+		{
+		
+			
+			$date1= $this->request->data['fetch_reports']['sdate'];
+			$date2= $this->request->data['fetch_reports']['edate'];
+			
+			$sdate = date('Ymd', strtotime($date1));
+			$edate = date('Ymd', strtotime($date2));
+		 $URI = 'https://reportws.linksynergy.com/downloadreport.php?bdate='.$sdate.'&edate='.$edate.'&token=cd4f37dc86a07f7845f3d54a4c594f6fdd45a96355367de7348e3c77971aebd9&nid=1&reportid=7';
+		
+		
+		
+		$this->redirect($URI);
+		}
+	
+		
+	
+	}
+	
+	public function signature_order()
+	{
+		
+		
+		
+		$this->Paginator->settings = array('limit' => 50);
+		$data = $this->Paginator->paginate('Lsorder');
+		$this->set('products', $data);
+		if ($this->request->is('post')) 
+		{
+		
+		$this->Paginator->settings = array(
+		'conditions' =>array('OR' =>array('Lsorder.merchant_name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','Lsorder.order_id LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','Lsorder.sku_number LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%','Lsorder.merchant_name LIKE' => '%'.$this->request->data['product_fetch']['keyword'].'%' )
+	
+		));
+		$data = $this->Paginator->paginate('Lsorder');
+		$this->set('products',$data);
+		}
+		else
+		{
+		 
+		}
+		
+		
+		
+		
+		
+		
+	}
+	
 	
 
 
 }
-

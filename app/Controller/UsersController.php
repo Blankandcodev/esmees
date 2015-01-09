@@ -150,6 +150,12 @@
 			$this->redirect($this->referer());
 		}
 	}
+	
+	function convertDates( &$data ){
+    if (!empty($data['date_of_birth']) && strtotime($data['date_of_birth']) ){
+        $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
+    }
+}
 
 	
 	public function edit_profile(){
@@ -174,9 +180,10 @@
          
                 $this->request->data['User']['image'] = $image_path;
                 $this->request->data['User']['id'] = $users['User']['id'];
-				
+				$this->convertDates( $this->request->data['User'] );
 				if ($this->User->save($this->request->data)) 
 				{
+					
 					$this->Session->setFlash(__('The User Profile has been saved.'));
 					return $this->redirect(array('action' => 'index'));	
 						   
@@ -628,11 +635,19 @@ public function password()
 		$bankaccount_no=$user['User']['bankaccount_no'];
 		$bankrouting_no=$user['User']['bankrouting_no'];
 		$bankname=$user['User']['bankname'];
-		if(empty($ss_number) && empty($bankaccount_no) && empty($bankrouting_no) &&  empty($bankname))
+		$address=$user['User']['address'];
+		//if(empty($ss_number) && empty($bankaccount_no) && empty($bankrouting_no) &&  empty($bankname))
+		 //{
+		//	$this->Session->setFlash('Banking Details can not blank!');
+		//	$this->redirect(array('controller' => 'Users','action' => 'bank_details'));
+		 //}
+		 
+		 if(empty($address))
 		 {
-			$this->Session->setFlash('Banking Details can not blank!');
+			$this->Session->setFlash('Please enter your address details');
 			$this->redirect(array('controller' => 'Users','action' => 'bank_details'));
-		 }
+		}
+		
 		 else
 		 {
 			$amount= $this->request->data['fetch_request']['amount'];
@@ -807,26 +822,26 @@ public function password()
 			$lname=$this->request->data['bank']['last_name'];
 			$email=$this->request->data['bank']['username'];
 			$address=$this->request->data['bank']['address'];
-			$address1=$this->request->data['bank']['addres1'];
+			$address1=$this->request->data['bank']['address1'];
 			$city=$this->request->data['bank']['city'];
 			$state=$this->request->data['bank']['state'];
 			$zip=$this->request->data['bank']['zip'];
 			
-			$bankname= $this->request->data['bank']['bankname'];
-			$acnumber= $this->request->data['bank']['acnumber'];
-			$ssnumber=$this->request->data['bank']['ssnumber'];
-			$brtnumber=$this->request->data['bank']['br_number'];
-			echo $brtnumber;
+			//$bankname= $this->request->data['bank']['bankname'];
+			//$acnumber= $this->request->data['bank']['acnumber'];
+			//$ssnumber=$this->request->data['bank']['ssnumber'];
+			//$brtnumber=$this->request->data['bank']['br_number'];
 			
-			if ($this->User->save(array('nickname'=>$nickname,'name'=>$fname,'middle_name'=>$mname,'last_name'=>$lname,'username'=>$email,'address'=>$address,'address1'=>$address1,'city'=>$city,'state'=>$state,'zip'=>$zip,'bankname'=>$bankname, 'bankaccount_no'=>$acnumber,'ss_number'=>$ssnumber,'bankaccount_no'=>$acnumber ,'bankrouting_no'=>$brtnumber,'id'=>$userid)))
+			
+			if ($this->User->save(array('nickname'=>$nickname,'name'=>$fname,'middle_name'=>$mname,'last_name'=>$lname,'username'=>$email,'address'=>$address,'address1'=>$address1,'city'=>$city,'state'=>$state,'zip'=>$zip,'id'=>$userid)))
 				{
-					$this->Session->setFlash('The bank details saved .', 'flash_success');
+					$this->Session->setFlash('Address details saved .', 'flash_success');
 					 $this->redirect(array('controller' => 'Users','action' => 'commission'));
 					
 				}
 				else
 				{
-				 $this->Session->setFlash(__('The bank details could not be saved. Please, try again.'));
+				 $this->Session->setFlash(__('The Address could not be saved. Please, try again.'));
 				}
 			
 			
@@ -834,7 +849,56 @@ public function password()
 		
 		 }
 		
+		
 	}
+	
+public function update_bank_details()
+	{
+		$this->User->contain();
+		$userinfo = $this->User->find('first', array('conditions'=>array('User.id'=>$this->user['id'])));
+		$this->set('userInfo',$userinfo);
+		
+		
+		if ($this->request->is('post'))
+		 {
+			$userid = $this->user['id'];
+			$nickname= $this->request->data['bank']['nickname'];
+			$fname= $this->request->data['bank']['name'];
+			$mname=$this->request->data['bank']['middle_name'];
+			$lname=$this->request->data['bank']['last_name'];
+			$email=$this->request->data['bank']['username'];
+			$address=$this->request->data['bank']['address'];
+			$address1=$this->request->data['bank']['address1'];
+			$city=$this->request->data['bank']['city'];
+			$state=$this->request->data['bank']['state'];
+			$zip=$this->request->data['bank']['zip'];
+			
+			//$bankname= $this->request->data['bank']['bankname'];
+			//$acnumber= $this->request->data['bank']['bankaccount_no'];
+			//$ssnumber=$this->request->data['bank']['ss_number'];
+			//$brtnumber=$this->request->data['bank']['bankrouting_no'];
+			
+			
+			if ($this->User->save(array('nickname'=>$nickname,'name'=>$fname,'middle_name'=>$mname,'last_name'=>$lname,'username'=>$email,'address'=>$address,'address1'=>$address1,'city'=>$city,'state'=>$state,'zip'=>$zip,'id'=>$userid)))
+				{
+					$this->Session->setFlash('Address details saved .', 'flash_success');
+					 $this->redirect(array('controller' => 'Users','action' => 'commission'));
+					
+				}
+				else
+				{
+				 $this->Session->setFlash(__('The Address could not be saved. Please, try again.'));
+				}
+			
+			
+			
+		
+		 }
+		
+		
+	}
+	
+	
 
 	public function download_reports()
 	{

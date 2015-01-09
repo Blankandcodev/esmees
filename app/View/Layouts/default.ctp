@@ -61,8 +61,8 @@ $cakeDescription = __d('cake_dev', 'Esmees');
 					  
 					  <?php
 								if(!empty($topbnr)){ ?>
-	
-						<a href="#"><?php echo $this->Html->image('Banners/'.$topbnr['Banner']['image']);?></a>
+						<a  target="_blank" class="btn1" href="<?php  echo $topbnr['Banner']['buy_url'] ?>"><?php echo $this->Html->image('Banners/'.$topbnr['Banner']['image']);?></a>	
+						<a href="#"></a>
 						<?php } ?>
 					  
 					  

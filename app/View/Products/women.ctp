@@ -4,18 +4,20 @@
 			<?php foreach($banners as $banner){ ?>
 				<div class="banner <?php echo count($banners) > 1 ? 'half '.$banner['Banner']['section'] : 'full'.$banner['Banner']['section']; ?>">
 					<div class="banner-img">
+					<a  target="_blank" class="btn1" href="<?php  echo $banner['Banner']['buy_url'] ?>">
 						<?php echo $this->Html->image('Banners/'.$banner['Banner']['image']);?>
+					</a>	
 					</div>
 					<div class="caption">
 						<p class="ctitle"><?php echo $banner['Banner']['heading'] ?></p>
 						<p class="cdesc"><?php  echo $banner['Banner']['description'] ?> </p>
-						<a  target="_blank" class="btn1" href="<?php  echo $banner['Banner']['buy_url'] ?>">Buy Now</a>				
+								
 					</div>
 				</div>
 			<?php } ?>
 		</div>
 	<?php } ?>
-	<div class="banr"></div>
+
 	
 	<?php if(!empty($looks)){ ?>
 	<div class="look-listing">	
@@ -30,7 +32,7 @@
 				<?php foreach($looks as $mlook){?>
 					<li>
 						<div class="image">
-							<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['id']),true) ?>"><?php echo $this->Html->image('Looks/home/'.$mlook['Look']['image']);?></a>
+							<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'profile', $mlook['Look']['user_id']),true) ?>"><?php echo $this->Html->image('Looks/home/'.$mlook['Look']['image']);?></a>
 						</div>
 						<div class="info">
 							<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '...','exact' => 'false')); ?></p>
@@ -52,7 +54,7 @@
 			<div class="title-btn">
 				<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'gallery','women'),true) ?>">View All</a>
 			</div>
-			<h1>#HotOfThe<span>Web</span></h1>
+			<h1>#HotOffThe<span>Web</span></h1>
 		</div>
 		<?php if(!empty($products)){ ?>
 			<div class="listing cf">
@@ -72,7 +74,7 @@
 							</div>
 							<div class="info">
 								<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>" class="i-title">
-									<?php echo $this->Text->truncate($_product['name'],23,	array('ellipsis' => '...','exact' => 'false')); ?>
+									<?php echo $this->Text->truncate($_product['name'],23,	array('ellipsis' => '','exact' => 'false')); ?>
 								</a>
 								<div class="price-box">
 									<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>">
@@ -92,5 +94,16 @@
 		<?php }else{
 			echo '<div class="flash">No looks uploaded yet!</div>';
 		} ?>
+	</div>
+		<div class="banner-img">
+	
+
+	<?php foreach($middle as $member){ ?>
+		<a  target="_blank" class="btn1" href="<?php  echo $member['Banner']['buy_url'] ?>">
+						<?php echo $this->Html->image('Banners/'.$member['Banner']['image']);?>
+					</a>	
+		<?php } ?>
+		
+	
 	</div>
 </div>

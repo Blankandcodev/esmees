@@ -37,7 +37,7 @@
 				</ul>
 			</div>
 			<div class="nav-box">
-				<h3 class="box-title">Brands</h3>
+				<h3 class="box-title">Sites</h3>
 				<ul class="left-nav">
 					<?php foreach($AllBrands as $brand){ ?>
 						<li>
@@ -70,12 +70,12 @@
 									</div>
 									<div class="info">
 										<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>" class="i-title">
-											<?php echo $this->Text->truncate($_product['name'],23,	array('ellipsis' => '...','exact' => 'false')); ?>
+											<?php echo $this->Text->truncate($_product['name'],23,	array('ellipsis' => '','exact' => 'false')); ?>
 										</a>
 										<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $_product['id']),true) ?>" class="i-title">
-											<?php echo $this->Text->truncate($_product['mnf_name'],23,	array('ellipsis' => '...','exact' => 'false')); ?>
+											<?php echo $this->Text->truncate($_product['mnf_name'],15,	array('ellipsis' => '','exact' => 'false')); ?>
 											<?php if(empty($_product['mnf_name'])){
-												echo $this->Text->truncate($_product['advetiser_name'],23,	array('ellipsis' => '...','exact' => 'false'));
+												echo $this->Text->truncate($_product['advetiser_name'],15,	array('ellipsis' => '','exact' => 'false'));
 											}; ?>
 										</a>
 										<div class="price-box">

@@ -93,12 +93,12 @@ if (!empty($vestedCommission))
 								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['id']),true) ?>"><?php echo $this->Html->image('Looks/home/'.$mlook['Look']['image']);?></a>
 							</div>
 							<div class="info">
-								<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '...','exact' => 'false')); ?></p>
+								<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '','exact' => 'false')); ?></p>
 								
 								<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['Id']),true) ?>" class="like-btn right small"><?php echo $mlook['Look']['likes'] ?></a>
 								
 								<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'profile', $mlook['Look']['user_id']),true) ?>" class="user-name">
-									<?php echo $this->Text->truncate($mlook['User']['nickname'],50,	array('ellipsis' => '...','exact' => 'false')); ?>
+									<?php echo $this->Text->truncate($mlook['User']['nickname'],50,	array('ellipsis' => '','exact' => 'false')); ?>
 								</a>
 							</div>
 						</li>
@@ -132,7 +132,7 @@ if (!empty($vestedCommission))
 								</div>
 								<div class="info">
 									<a href="<?php echo $this->Html->url(array('controller'=>'Products', 'action'=>'product_details', $itm['id']),true) ?>" class="user-name">
-										<?php echo $this->Text->truncate($itm['name'],25,	array('ellipsis' => '...','exact' => 'false')); ?>
+										<?php echo $this->Text->truncate($itm['name'],25,	array('ellipsis' => '','exact' => 'false')); ?>
 									</a>
 									<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'delete_wishlist', $item['Wishlist']['id'])); ?>" class="del-icn">Delete</a>
 								</div>
@@ -151,7 +151,7 @@ if (!empty($vestedCommission))
 								</div>
 								<div class="info">
 									<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $itm['Id']),true) ?>" class="user-name">
-										<?php echo $this->Text->truncate($itm['caption_name'],25,	array('ellipsis' => '...','exact' => 'false')); ?>
+										<?php echo $this->Text->truncate($itm['caption_name'],25,	array('ellipsis' => '','exact' => 'false')); ?>
 									</a>
 									<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'delete_wishlist', $item['Wishlist']['id'])); ?>" class="del-icn">Delete</a>
 								</div>

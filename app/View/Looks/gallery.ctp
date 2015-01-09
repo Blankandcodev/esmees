@@ -39,12 +39,12 @@
 				</ul>
 			</div>
 			<div class="nav-box">
-				<h3 class="box-title">Brands</h3>
+				<h3 class="box-title">Sites</h3>
 				<ul class="left-nav">
 					<?php foreach($AllBrands as $brand){ ?>
 						<li>
-							<a href="<?php echo $this->Menu->qurl('brand', $brand['Product']['mnf_name']); ?>">
-								<?php echo  $brand['Product']['mnf_name']; ?>
+							<a href="<?php echo $this->Menu->qurl('brand', $brand['Look']['brands']); ?>">
+								<?php echo  $brand['Look']['brands']; ?>
 							</a>
 						</li>
 					<?php }; ?>
@@ -63,12 +63,12 @@
 										<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['id']),true) ?>"><?php echo $this->Html->image('Looks/home/'.$mlook['Look']['image']);?></a>
 									</div>
 									<div class="info">
-										<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],20,	array('ellipsis' => '...','exact' => 'false')); ?></p>
+										<p class="i-title"><?php echo $this->Text->truncate($mlook['Look']['caption_name'],25,	array('ellipsis' => '','exact' => 'false')); ?></p>
 										
 										<a href="<?php echo $this->Html->url(array('controller'=>'Looks', 'action'=>'detail', $mlook['Look']['Id']),true) ?>" class="like-btn right small"><?php echo $mlook['Look']['likes'] ?></a>
 										
 										<a href="<?php echo $this->Html->url(array('controller'=>'Users', 'action'=>'profile', $mlook['Look']['user_id']),true) ?>" class="user-name">
-											<?php echo $this->Text->truncate($mlook['User']['nickname'],50,	array('ellipsis' => '...','exact' => 'false')); ?>
+											<?php echo $this->Text->truncate($mlook['User']['nickname'],15,	array('ellipsis' => '','exact' => 'false')); ?>
 										</a>
 									</div>
 								</li>

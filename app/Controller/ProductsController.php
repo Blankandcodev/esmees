@@ -15,6 +15,9 @@
 		if($cat == null){
 			$this->redirect(array('action'=>'gallery', 'all'));
 		}
+		
+		
+		
 		$parent = $this->Category->find('first', array('conditions' => array(
 			'Category.name' => $cat
 		)));
@@ -59,8 +62,13 @@
 			$products = $this->paginate('Product');
 			$this->set('products', $products);
 			
-			$brand_data = $this->Product->find('all',array('fields'=>'mnf_name','recursive'=>0,'group' => 'Product.mnf_name','conditions' => array('not' => array('Product.mnf_name'))));
+			
+			$pid=$parent['Category']['id'];
+			
+			
+			$brand_data = $this->Product->find('all',array('fields'=>'mnf_name','recursive'=>0,'group' => 'Product.mnf_name','conditions' =>array('not' => array('Product.mnf_name'), array('Product.Parent_id'=>$pid))));
 			$this->set('AllBrands',$brand_data);
+			
 		}else{
 			throw new NotFoundException(__('Not Found'));
 		}
@@ -130,6 +138,12 @@
 			$banners=$this->Banner->find('all',  array('conditions'=>array('Banner.pages'=>'men','Banner.status'=>1),array('order' => array('Banner.created' => 'DESC'), 'limit'=>2)));
 			$this->set('banners', $banners);
 			
+			$members=$this->Banner->find('all',  array('conditions'=>array('Banner.pages'=>'banner1','Banner.status'=>1),array('order' => array('Banner.created' => 'DESC'), 'limit'=>1)));
+			$this->set('members', $members);
+			
+			
+			
+			
 			
 		}
     }
@@ -163,7 +177,10 @@
 			$this->set('looks', $looks);
 			
 			$banners=$this->Banner->find('all',  array('conditions'=>array('Banner.pages'=>'women','Banner.status'=>1),array('order' => array('Banner.created' => 'DESC'), 'limit'=>2)));
-		$this->set('banners', $banners);
+			$this->set('banners', $banners);
+			
+			$bannerlits=$this->Banner->find('all',  array('conditions'=>array('Banner.pages'=>'banner2','Banner.status'=>1),array('order' =>array('Banner.created' => 'DESC'), 'limit'=>1)));
+			$this->set('middle',$bannerlits);
 		}
     }
 	public function product_details($id=null)
@@ -181,7 +198,7 @@
 				$this->set('similarLooks',$similarLooks);
 			}
 			if(!empty($brand)){
-				$brandLooks = $this->Look->find('all', array('conditions' => array('Look.brand' => $brand, 'Look.cover'=>1 ), 'limit'=>10));
+				$brandLooks = $this->Look->find('all', array('conditions' => array('Look.brands' => $brand, 'Look.cover'=>1 ), 'limit'=>10));
 				$this->set('brandLooks',$brandLooks);
 			}
 		}else{

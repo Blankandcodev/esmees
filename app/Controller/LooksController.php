@@ -66,7 +66,7 @@
 			array_push($cond0, "Look.cover = 1");
 			if(isset($this->request->query['brand']) && $this->request->query['brand'] != ''){
 				$brand = $this->request->query['brand'];
-				array_push($cond0, "Look.brand = '$brand'");
+				array_push($cond0, "Look.brands = '$brand'");
 			};
 			if(isset($this->request->query['keyword']) && $this->request->query['keyword'] != ''){
 				$keyword = '%'.$this->request->query['keyword'].'%';
@@ -101,7 +101,10 @@
 
 			$this->set('looks', $looks);
 			
-			$brand_data = $this->Product->find('all',array('fields'=>'mnf_name','recursive'=>0,'group' => 'Product.mnf_name','conditions' => array('not' => array('Product.mnf_name'))));
+			
+			$pid=$parent['Category']['id'];
+			
+			$brand_data = $this->Look->find('all',array('fields'=>'brands','recursive'=>0,'group' => 'Look.brands','conditions' => array('not' => array('Look.brands'),array('Look.category_id'=>$pid))));
 			$this->set('AllBrands',$brand_data);
 		}else{
 			throw new NotFoundException(__('Not Found'));
